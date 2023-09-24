@@ -21,6 +21,14 @@ class BusinessType extends Model
     const ALTARA_PAY_CASH_LOAN_NO_COLLATERAL = 'ap_cash_loan-no_collateral';
     const ALTARA_PAY_STARTER_CASH_LOAN_NO_COLLATERAL = 'ap_starter_cash_loan-no_collateral';
     const ALTARA_PAY_CASH_N_CARRY = 'ap_cash_n_carry';
+    const ALTARA_PAY_NO_BS_NEW_NON_VERVE = 'ap_no_bs_new_non_verve';
+    const ALTARA_PAY_NO_BS_NEW_VERVE = 'ap_no_bs_new_verve';
+    const ALTARA_PAY_NO_BS_RENEWAL_NON_VERVE = 'ap_no_bs_renewal_non_verve';
+    const ALTARA_PAY_NO_BS_RENEWAL_VERVE = 'ap_no_bs_renewal_verve';
+    const ALTARA_PAY_NO_BS_PRODUCT_VERVE = 'ap_no_bs_product_verve';
+    const ALTARA_PAY_NO_BS_PRODUCT_RENEWAL_VERVE = 'ap_no_bs_product_renewal_verve';
+    const ALTARA_PAY_NO_BS_PRODUCT_NON_VERVE = 'ap_no_bs_product_non_verve';
+    const ALTARA_PAY_NO_BS_PRODUCT_RENEWAL_NON_VERVE = 'ap_no_bs_product_renewal_non_verve';
 
     //
     public function newOrder()

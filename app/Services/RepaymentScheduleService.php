@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helper\GenerateDateRange;
+use App\Helper\Helper;
 use App\Models\BusinessType;
 use App\Repositories\BranchRepository;
 use Carbon\Carbon;
@@ -20,6 +21,7 @@ class RepaymentScheduleService
 
     public function getRepaymentPerMonth($dailySalesNewOrdersQuery)
     {
+        //** Without Cash and Carry businessTypes */
         $withoutCNC = $dailySalesNewOrdersQuery->whereHas('businessType', function ($query) {
             $query->select('business_type_id')
                 ->from('business_types')
@@ -28,7 +30,7 @@ class RepaymentScheduleService
 
         $expectedRepayment = $withoutCNC->withSum('amortization', 'expected_amount')->get()->sum('amortization_sum_expected_amount');
         $totalOrders = $withoutCNC->count();
-        $orderGroup = $this->groupAmortizationByMonth(clone $withoutCNC);
+        $orderGroup = $this->groupAmortizationByRepaymentCount(clone $withoutCNC);
         $actualRepayment = $withoutCNC->withSum('amortization', 'actual_amount')->get()->sum('amortization_sum_actual_amount');
         $defaultingOrders = $this->getDefaultingOrders(clone $withoutCNC);
         $orders = $withoutCNC->paginate(10);
@@ -67,6 +69,52 @@ class RepaymentScheduleService
 
             ];
         });
+    }
+
+    private function groupAmortizationByRepaymentCount($newOrdersToBeGrouped)
+    {
+        // Create an empty array to hold the grouped amortization
+        // Get the highest number of amortization
+        // loop through the available orders and pluck the amortization to an array
+        // Using the length of the highest number of amortization, for loop length
+        // Generate a unique key for each index
+        // Check if the current order amortization count is less than or eqaul to current index
+        // Use the current index in the loop to pick the amortization and push it to the grouped amortization array
+        // $groupedAmortization = collect([]);
+        $groupedAmortization = array();
+        $orders = clone $newOrdersToBeGrouped->withCount('amortization')->with('amortization')->get();
+
+        $maxAmortizationCount = $orders->pluck('amortization_count')->max();
+
+        foreach ($orders as $order) {
+            $amortization = $order->amortization->toArray();
+            $amortizationCount = count($amortization);
+            for ($i = 0; $i < $maxAmortizationCount; $i++) {
+                $key = Helper::getEnglishOrdinalSuffix($i + 1) . '_repayment';
+                if (!array_key_exists($key, $groupedAmortization)) {
+                    $groupedAmortization[$key] = [];
+                }
+                if ($amortizationCount <= $i) {
+                    continue;
+                }
+                array_push($groupedAmortization[$key], $amortization[$i]);
+            }
+        }
+
+        $groupedAmortizationCollection = collect($groupedAmortization);
+        $data = $groupedAmortizationCollection->map(function ($item) {
+            $itemCollection = collect($item);
+            return [
+                "expected_repayment" => $itemCollection->sum('expected_amount'),
+                "actual_repayment" => $itemCollection->sum('actual_amount'),
+
+            ];
+        });
+        return $data;
+
+
+
+
     }
 
 

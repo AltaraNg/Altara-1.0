@@ -2,11 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Amortization\Custom;
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
 use App\Helper\Helper;
 use App\Models\Branch;
 use App\Models\BusinessType;
+use App\Models\Customer;
 use App\Models\GeneralFeedback;
 use App\Models\Inventory;
 use App\Models\InventoryStatus;
@@ -68,7 +70,7 @@ class NewOrderRepository extends Repository
         }
         if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
             $user_id = $validated['owner_id'];
-            $branch_id = Branch::query()->where('name', 'Ikoyi')->first()->id;
+            $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id;
         } else {
             $user_id = auth()->user()->id;
             $branch_id = auth()->user()->branch_id;
