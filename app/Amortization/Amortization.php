@@ -173,9 +173,12 @@ abstract class Amortization
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
         $IsRental = Str::contains($this->order->businessType->slug, 'rentals');
         $isSixMonth = $this->repaymentDurationName() == 'six_months';
+        $isThreeMonth = $this->repaymentDurationName() == 'three_months';
         $repaymentCycleName = $this->repaymentCircleName();
-        $isAltaraCredit = Str::contains($this->order->businessType->slug, 'ac');
+        $isAltaraCredit = Str::contains($this->order->businessType->slug, 'ac') ;
         $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
+        $is20Percent = $this->order->downPaymentRate->name == 'twenty';
+        $is40Percent = $this->order->downPaymentRate->name == 'forty';
 
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC') && !$isSixMonth) {
@@ -186,8 +189,17 @@ abstract class Amortization
         }
         
         else if (!$this->order->fixed_repayment || $IsRental) {
+            if($isAltaraCredit)
+            {
+                if(($isSixMonth || $isThreeMonth) && ($is20Percent || $is40Percent)){
+                    return $this->getDecliningPaymentPlans();
+                }
+                else{
+                    return $this->getNormalPaymentPlans();
 
-            if (
+                }
+            }
+            else if (
                 ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'bi_monthly' && !$isAltaraCredit ) ||
                 ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'custom'  && !$isAltaraCredit)
             ) {
