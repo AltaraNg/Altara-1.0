@@ -324,14 +324,15 @@ abstract class Amortization
         $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
         $isAltaraCredit = Str::contains($this->order->businessType->slug, 'ac');
         $is20Percent = $this->order->downPaymentRate->name == 'twenty';
+        $is40Percent = $this->order->downPaymentRate->name == 'forty';
 
 
         $plan = [];
-        if($is20Percent && $isAltaraCredit && $is3MonthsDuration)
+        if(($is20Percent || $is40Percent) && $isAltaraCredit && $is3MonthsDuration)
         {
             $percentages = $this->altaraCredit3MnthsPercentages();
         }
-        else if($is20Percent && $isAltaraCredit && $is6MonthsDuration)
+        else if(($is20Percent || $is40Percent) && $isAltaraCredit && $is6MonthsDuration)
         {
             $percentages = $this->altaraCredit6MnthsPercentages();
         }
