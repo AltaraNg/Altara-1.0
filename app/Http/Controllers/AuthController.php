@@ -50,7 +50,8 @@ class AuthController extends Controller
                     'user_name' => $user->full_name,
                     'portal_access' => $user->portal_access,
                     'branch_id' => $user->branch_id,
-
+                    'tenant' => $user->tenant,
+                    'in_house' => $user->tenant_id == 1,
                     'message' => 'You have successfully logged in'
                 ], 200);
             }

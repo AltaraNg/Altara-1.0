@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Helper\DataViewer;
 use App\Http\Filters\Filterable;
+use App\Scopes\FilterByTenantIdScope;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -26,6 +28,8 @@ class User extends Authenticatable
     public static $columns = [
         'id', 'full_name', 'staff_id', 'phone_number', 'portal_access', 'email', 'date_of_appointment'
     ];
+
+    protected $with = ['tenant'];
 
     /** this is the user object form, it is sent to the js
      * view when the user creation
@@ -227,6 +231,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(Feedback::class);
     }
+
+    public function tenant() : BelongsTo {
+        return $this->belongsTo(Tenant::class);
+    }
+
+
+
+    protected static function booted(): void
+    {
+        parent::boot();
+        static::addGlobalScope(new FilterByTenantIdScope());
+    }
+
+
+    
 
     /*public function counterSales()
     {

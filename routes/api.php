@@ -89,6 +89,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalesCategoryController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TenantController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
@@ -100,6 +101,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/password/reset', [AuthController::class, 'sendResetLinkEmail']);
 Route::put('/password/reset', [AuthController::class, 'reset']);
 Route::group(['middleware' => ['auth:api']], function () {
+    Route::get('tenants', [TenantController::class, 'index']);
     Route::get('/branches', [BranchController::class, 'allBranches']);
     Route::post('/customer/autocomplete', [CustomerController::class, 'autocompleteSearch']);
     Route::get('/customer/lookup/{customer}', [CustomerController::class, 'customerLookup']);
