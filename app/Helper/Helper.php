@@ -39,6 +39,11 @@ class Helper
         return strtoupper(substr(uniqid($prefix, true), 0, $length));
     }
 
+    public static function generateRaffleDrawCode(string $prefix, $length = 15)
+    {
+        return strtoupper(substr(uniqid($prefix, true), 0, $length));
+    }
+
     /**
      * Generates custom SKU for product, can be used for generating other uniques
      * @param int length,
@@ -102,7 +107,7 @@ class Helper
         return number_format($number) . $suffix;
     }
 
-    public static  function calculator(int $productPrice, $data)
+    public static function calculator(int $productPrice, $data)
     {
         $count = Helper::repaymentCount($data->repayment_dur, $data->repayment_cycle);
         // $marketPrice = $productPrice * (1 + $params->margin);
@@ -149,5 +154,33 @@ class Helper
     public static function PaymentCompleted($order): bool
     {
         return $order->amortization->sum('actual_amount') >= $order->amortization->sum('expected_amount');
+    }
+
+
+    /**
+     * getEnglishOrdinalSuffix
+     * 
+     * converts number to ordinal suffix
+     * example:
+     * getEnglishOrdinalSuffix(2) = 2nd
+     * getEnglishOrdinalSuffix(31) = 31st
+     *
+     * @param  mixed $n
+     * @return void
+     */
+    public static function getEnglishOrdinalSuffix($n): string
+    {
+        if (!in_array(($n % 100), array(11, 12, 13))) {
+            switch ($n % 10) {
+                // Only Handle 1st, 2nd, 3rd from Here
+                case 1:
+                    return $n . 'st';
+                case 2:
+                    return $n . 'nd';
+                case 3:
+                    return $n . 'rd';
+            }
+        }
+        return $n . 'th';
     }
 }

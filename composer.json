@@ -18,7 +18,8 @@
         "laravel/framework": "^9.0",
         "laravel/tinker": "^v2.8.1",
         "league/flysystem-aws-s3-v3": "^3.15.0",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "owen-it/laravel-auditing": "^13.5"
     },
     "require-dev": {
         "composer/composer": "^2.5",

@@ -35,4 +35,10 @@ class NewOrderRequest extends FormRequest
             default:break;
         }
     }
+    public function messages()
+    {
+        return [
+            'raffle_code.exists' => "This raffle code is invalid. Please try another"
+        ];
+    }
 }

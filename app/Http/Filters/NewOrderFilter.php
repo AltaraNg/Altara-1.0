@@ -99,6 +99,19 @@ class NewOrderFilter extends BaseFilter
                 ->where('id', $type);
         });
     }
+    public function billboardOrders(string $true)
+    {
+        $this->builder->has('raffleDrawCode');
+    }
+
+    public function repaymentPlan(int $type)
+    {
+        $this->builder->whereHas('repaymentDuration', function ($query) use ($type) {
+            $query->select('repayment_duration_id')
+                ->from('repayment_durations')
+                ->where('id', $type);
+        });
+    }
 
     public function renewalList(string $renew)
     {
@@ -152,6 +165,13 @@ class NewOrderFilter extends BaseFilter
             ->whereDate($column, '<=', $this->request->toDate ?? Carbon::now());
     }
 
+    public function scheduleDate($date, $column = 'order_date')
+    {
+        $dateRange = json_decode($date);
+        $this->builder->whereBetween(DB::raw('DATE(order_date)'), array($dateRange[0], $dateRange[1]));
+
+    }
+
     /**
      * @param string $orderType
      * Filter orders by order type
@@ -184,7 +204,7 @@ class NewOrderFilter extends BaseFilter
 
     public function renewalPrompterStatus(string $renewalPrompterStatus)
     {
-        $renewalPrompterStatusId =  RenewalPrompterStatus::where('name', 'like', '%' . $renewalPrompterStatus . '%')->first()->id ?? '';
+        $renewalPrompterStatusId = RenewalPrompterStatus::where('name', 'like', '%' . $renewalPrompterStatus . '%')->first()->id ?? '';
         $this->builder->whereHas('renewalPrompters', function ($query) use ($renewalPrompterStatusId) {
             $query->where('renewal_prompter_status_id', $renewalPrompterStatusId);
         });
@@ -256,12 +276,12 @@ class NewOrderFilter extends BaseFilter
     {
         if ($group == 'cash') {
             $searchTerms = ['cash_loan', '_rentals', 'super_loan'];
-            $closure =   function ($query) use ($searchTerms) {
+            $closure = function ($query) use ($searchTerms) {
                 //this method is a laravel query builder macro, you can find in the app service provider.
                 $query->appplyLikeOnMultipleSearchTerms('slug', $searchTerms);
             };
         } else if ($group == 'product') {
-            $closure =   function ($query) {
+            $closure = function ($query) {
                 $query->where('slug', 'like', "%_products%");
             };
         }
@@ -279,17 +299,20 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->whereNotNull('bnpl_vendor_product_id')->orderBy('order_date', 'desc');
     }
-    public function orderStatus($status){
+    public function orderStatus($status)
+    {
         $this->builder->where('status_id', OrderStatus::where('name', $status)->first()->id);
     }
-    public function vendor($vendor){
-        $this->builder->whereHas('bnplVendorProduct.vendor',function($q) use ($vendor) {
-            $q->where('full_name', 'like', '%'. $vendor . '%');
+    public function vendor($vendor)
+    {
+        $this->builder->whereHas('bnplVendorProduct.vendor', function ($q) use ($vendor) {
+            $q->where('full_name', 'like', '%' . $vendor . '%');
         });
     }
-    public function customerPhone($phone){
-        $this->builder->whereHas('customer', function($q) use ($phone){
-            $q->where('telephone', 'like', '%'. $phone . '%');
+    public function customerPhone($phone)
+    {
+        $this->builder->whereHas('customer', function ($q) use ($phone) {
+            $q->where('telephone', 'like', '%' . $phone . '%');
         });
     }
 }

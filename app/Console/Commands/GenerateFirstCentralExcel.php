@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\NewOrder;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\FirstCentralCreditBureauExport;
 use Carbon\Carbon;
@@ -50,21 +51,18 @@ class GenerateFirstCentralExcel extends Command
         $from = '2021-09-01';
         $to = '2021-09-30';
 
-        $this->info('-----Generating Data From: ' . $from . ' ---To: ' . $to);
+        $this->info('-----Generating Data for: ' . Carbon::now()->format('Y-F'));
 
         $this->info('Getting order....');
-        \DB::enableQueryLog();
+
         $orders = NewOrder::query()
             ->orderBy('customer_id')
             // ->whereBetween('order_date', [$from, $to])
             // ->whereIn('customer_id', $customerIds)
-            ->with('amortization')
-            ->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status'])
+            ->has('amortization')
+            ->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status', 'repaymentDuration', 'repaymentCycle'])
             ->get();
 
-            dd(\DB::getQueryLog());
-
-            // dd($orders);
         $customers = $orders->pluck('customer')->unique('id');
 
 
@@ -77,7 +75,7 @@ class GenerateFirstCentralExcel extends Command
 
 
         $this->info($orders->count() . " orders about to be populated into the excel");
-        $fileName = 'Credit-Report-for-' . $from . "-" . $to . '.xlsx';
+        $fileName = 'Credit-Report-for-' . Carbon::now()->format('Y-F') . '.xlsx';
         $this->info('Population of Excel sheet started');
 
         try {
@@ -99,6 +97,7 @@ class GenerateFirstCentralExcel extends Command
 
 
         } catch (\Throwable $th) {
+            Log::error($th);
             $this->error($th->getMessage());
         }
         $timeInSeconds = $start->diffInSeconds(now());
