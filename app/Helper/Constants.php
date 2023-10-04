@@ -15,7 +15,7 @@ namespace App\Helper;
  */
 class Constants
 {
-
+    const ADMIN_ROLES = [1,2,8,9];
     const F_SMS = 'first_sms';
     const S_SMS = 'second_sms';
     const T_SMS = 'third_sms';

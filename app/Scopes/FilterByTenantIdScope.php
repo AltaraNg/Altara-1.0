@@ -2,6 +2,7 @@
 
 namespace App\Scopes;
 
+use App\Helper\Constants;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -23,7 +24,7 @@ class FilterByTenantIdScope implements Scope
         /** @var User $user */
         if (Auth::hasUser()) {
             $user = auth()->user();
-            if (!UserService::hasAnyRole($user, [1,2,8,9])) {
+            if (!UserService::hasAnyRole($user, Constants::ADMIN_ROLES)) {
                 return $builder->where('tenant_id', $user->tenant_id);
             }
         }
