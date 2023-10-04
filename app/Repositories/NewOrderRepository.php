@@ -2,11 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Amortization\Custom;
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
 use App\Helper\Helper;
 use App\Models\Branch;
 use App\Models\BusinessType;
+use App\Models\Customer;
 use App\Models\GeneralFeedback;
 use App\Models\Inventory;
 use App\Models\InventoryStatus;
@@ -14,6 +16,7 @@ use App\Models\NewOrder;
 use App\Models\OrderStatus;
 use App\Models\PaymentGateway;
 use App\Models\PaymentType;
+use App\Models\RaffleDrawCode;
 use App\Models\RepaymentCycle;
 use Carbon\Carbon;
 use Exception;
@@ -50,25 +53,29 @@ class NewOrderRepository extends Repository
         unset($validated['account_name']);
         unset($validated['bank_name']);
         unset($validated['reference']);
+        $raffleCode = array_key_exists('raffle_code', $validated);
         $costPriceIsSent = array_key_exists('cost_price', $validated);
         if ($costPriceIsSent){
             unset($validated['cost_price']);
         }
 
+        if ($raffleCode){
+            $raffleCodeItem = RaffleDrawCode::where('code', $validated['raffle_code'])->first();
+            
+            unset($validated['raffle_code']);
+        }
 
         if ($validated['financed_by'] != NewOrder::ALTARA_BNPL) {
             unset($validated['bnpl_vendor_product_id']);
         }
         if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
             $user_id = $validated['owner_id'];
-            $branch_id = Branch::query()->where('name', 'Ikoyi')->first()->id;
+            $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id;
         } else {
             $user_id = auth()->user()->id;
             $branch_id = auth()->user()->branch_id;
         }
         $businessType = BusinessType::query()->where('id', $data['business_type_id'])->first();
-
-
 
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
@@ -78,6 +85,14 @@ class NewOrderRepository extends Repository
             'status_id' => $validated['repayment'] > 0 &&  $businessType->slug != 'ap_cash_n_carry' ? OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id : OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,
             'product_id' => $inventory->product_id
         ]));
+
+        if($raffleCode){
+            $raffleCodeItem->update([
+                'order_id' => $order->id
+            ]);
+        }
+
+
         if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM) {
             $order->customDate()->create(['custom_date' => $data['custom_date']]);
             $order->custom_date = $data['custom_date'];
@@ -149,5 +164,13 @@ class NewOrderRepository extends Repository
             ->has('unpaidAmortizations')
             ->with('customer')
             ->first();
+    }
+
+    public function changeOrderStatus(array $data)
+    {
+        $order = $this->firstById($data['order_id']);
+        $order->status_id = $data['status_id'];
+        $order->save();
+        return $order;
     }
 }

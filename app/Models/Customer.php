@@ -9,13 +9,15 @@ use App\Helper\Scopes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use OwenIt\Auditing\Auditable;
 
-class Customer extends Model
+class Customer extends Model implements \OwenIt\Auditing\Contracts\Auditable
 {
     /** this is a generic trait created to serve as a generic
      * scope for fetching and paginating the
      * model where it is called */
-    use DataViewer, Scopes, AutoCompleteSearchTrait, Notifiable;
+    use DataViewer, Scopes, AutoCompleteSearchTrait, Notifiable, Auditable;
 
     protected $guarded = [];
 
@@ -30,7 +32,6 @@ class Customer extends Model
         'branch_id',
         'date_of_registration',
         'telephone',
-        'bvn'
     ];
 
     /** this is the user object form, it is sent to the js
@@ -236,9 +237,22 @@ class Customer extends Model
 
     protected function bvn(): Attribute
     {
+
         return Attribute::make(
             // if bvn value is null return it, if user is not admin and value is not null, return -1 else return value;
-            get: fn($value) => $value === null ? $value : (in_array(auth()->user()->role_id ?? 10000000000, User::BVN_ACCESS) ? $value : -1),
+            // get: fn($value) => $value === null ? $value : (in_array(auth()->user()->role_id ?? 10000000000, User::BVN_ACCESS) ? $value : -1),
+            get: function ($value) {
+                //if the bvn value is null or the auth object has no  authenticated user, we return the value
+                if ($value == null || !Auth::hasUser()) {
+                    return $value;
+                }
+                // This means there is an auth user, so we can check if the user has the ability to view a customer bvn
+                $authUserRoleId = auth()->user()->role_id ?? -1;
+                if (in_array($authUserRoleId, User::BVN_ACCESS)) {
+                    return $value;
+                }
+                return -1;
+            }
 
         );
     }

@@ -13,9 +13,11 @@ use App\Repositories\PaystackAuthCodeRepository;
 use App\Services\CreditCheckService;
 use App\Services\DirectDebitService;
 use App\Services\NewOrdersReportService;
+use App\Services\RepaymentScheduleService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class NewOrderController extends Controller
 {
@@ -159,6 +161,16 @@ class NewOrderController extends Controller
         return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
     }
 
+    public function repaymentSchedule(NewOrderFilter $filter, RepaymentScheduleService $repaymentScheduleService)
+    {
+        $newOrdersQuery = $this->newOrderRepository->reportQuery($filter);
+        $getTotalRepaymentExpected = $repaymentScheduleService->getRepaymentPerMonth($newOrdersQuery);
+        
+        return $this->sendSuccess(["meta" => $getTotalRepaymentExpected], 'Orders retrieved successfully');
+    }
+
+
+
 
     public function chargeCustomerOrder(Request $request, DirectDebitService $directDebitService)
     {
@@ -177,5 +189,18 @@ class NewOrderController extends Controller
             return $this->sendError($response['statusMessage'], 400, [], 400);
         }
         return $this->sendSuccess([], 'Customer debited successfully and amortization(s) has been updated');
+    }
+
+    public function changeOrderStatus(Request $request)
+    {
+       $validated =  $this->validate($request, [
+            'status_id' => ['required', 'integer', 'exists:order_statuses,id'],
+            'order_id' => ['required', 'integer', 'exists:new_orders,id'],
+        ]);
+
+        $newOrder = $this->newOrderRepository->changeOrderStatus($validated);
+
+        return $this->sendSuccess(["order" => $newOrder], 'Order Status Changed successfully');
+
     }
 }

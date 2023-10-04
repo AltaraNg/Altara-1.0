@@ -5,12 +5,12 @@ namespace App\Models;
 use App\Http\Filters\Filterable;
 use App\Rules\Money;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Auditable;
 
-class Amortization extends Model
+class Amortization extends Model implements \OwenIt\Auditing\Contracts\Auditable
 {
-    use Filterable;
+    use Filterable, Auditable;
     protected $guarded = [];
-
     /**
      * The model's default rules.
      *
