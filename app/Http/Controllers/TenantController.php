@@ -9,7 +9,7 @@ class TenantController extends Controller
 {
     public function index()
     {
-        $tenants = Tenant::query()->all();
+        $tenants = Tenant::query()->get();
         return $this->sendSuccess(['tenants' => $tenants], 'Tenants Retrieved');
     }
 }

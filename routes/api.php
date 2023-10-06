@@ -102,6 +102,7 @@ Route::post('/password/reset', [AuthController::class, 'sendResetLinkEmail']);
 Route::put('/password/reset', [AuthController::class, 'reset']);
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('tenants', [TenantController::class, 'index']);
+    Route::get('/auth/user', [AuthController::class, 'user']);
     Route::get('/branches', [BranchController::class, 'allBranches']);
     Route::post('/customer/autocomplete', [CustomerController::class, 'autocompleteSearch']);
     Route::get('/customer/lookup/{customer}', [CustomerController::class, 'customerLookup']);

@@ -74,6 +74,23 @@ class AuthController extends Controller
         $user->save();
         return response()->json(['logged_out' => true]);
     }
+    public function user(Request $request)
+    {
+        $user = $request->user();   
+
+        $data = [
+            'user_id' => $user->id,
+            'auth' => true,
+            'role' => $user->role_id,
+            'user_name' => $user->full_name,
+            'portal_access' => $user->portal_access,
+            'branch_id' => $user->branch_id,
+            'tenant' => $user->tenant,
+            'in_house' => $user->tenant_id == 1,
+        ];
+        
+        return $this->sendSuccess(['user ' => $data]);
+    }
 
     public function sendResetLinkEmail()
     {
