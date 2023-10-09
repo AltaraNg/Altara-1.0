@@ -90,7 +90,7 @@ class UserController extends Controller
             'date_of_birth' => 'older_than:18',
             'guarantor_phone_no' => 'unique:users',
             'guarantor_phone_no_2' => 'unique:users',
-            'tenant_id' => ['required', 'exists:tenants']
+            'tenant_id' => ['required', 'exists:tenants,id']
         ]);
 
         if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
