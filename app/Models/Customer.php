@@ -8,6 +8,7 @@ use App\Helper\DataViewer;
 use App\Helper\Scopes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use OwenIt\Auditing\Auditable;
@@ -294,5 +295,10 @@ class Customer extends Model implements \OwenIt\Auditing\Contracts\Auditable
     public function missMatchedPayments()
     {
         return $this->hasMany(MissMatchedPayments::class, 'customer_id');
+    }
+
+    public  function mobileAppAudits(): HasMany
+    {
+        return $this->hasMany(CustomerMobileAppAudit::class, 'customer_id');
     }
 }
