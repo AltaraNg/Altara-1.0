@@ -29,7 +29,7 @@ class BusinessType extends Model
     const ALTARA_PAY_NO_BS_PRODUCT_RENEWAL_VERVE = 'ap_no_bs_product_renewal_verve';
     const ALTARA_PAY_NO_BS_PRODUCT_NON_VERVE = 'ap_no_bs_product_non_verve';
     const ALTARA_PAY_NO_BS_PRODUCT_RENEWAL_NON_VERVE = 'ap_no_bs_product_renewal_non_verve';
-
+    const ALTARA_PAY_STARTER_CASH_LOAN_COLLATERAL = 'ap_cash_loan-collateral';
     //
     public function newOrder()
     {
