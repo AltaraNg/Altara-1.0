@@ -49,6 +49,7 @@ use App\Http\Controllers\LateFeeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MobileAppLoanController;
 use App\Http\Controllers\MobileMessageNotificationController;
 use App\Http\Controllers\NewDocumentController;
 use App\Http\Controllers\NewOrderController;
@@ -266,6 +267,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::patch('/update/credit/checker/status/{creditCheckerVerification}', [BnlpController::class, 'updateCreditCheckerVerificationStatus']);
     Route::get('all/credit/checker', [BnlpController::class, 'allCreditCheckerVerification']);
+
+    Route::patch('/update/credit/checker/status/{creditCheckerVerification}/loan', [MobileAppLoanController::class, 'updateCreditCheckerVerificationStatus']);
+    Route::get('all/credit/checker/loan', [MobileAppLoanController::class, 'allCreditCheckerVerification']);
 
 });
 

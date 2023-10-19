@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\ResponseHelper;
-use App\Http\Requests\NewOrderRequest;
-use App\Models\CreditCheckerVerification;
-use App\Repositories\NewOrderRepository;
-use App\Services\AmmortizationService;
-use App\Services\MessageService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Helper\ResponseHelper;
 use Illuminate\Validation\Rule;
+use App\Services\MessageService;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\NewOrderRequest;
+use App\Services\AmmortizationService;
+use App\Repositories\NewOrderRepository;
+use App\Models\CreditCheckerVerification;
+use App\Services\CreditCheckerVerificationService;
 
 class BnlpController extends Controller
 {
+
+    private CreditCheckerVerificationService $creditCheckerVerificationService;
+    private NewOrderRepository $newOrderRepository;
+    public function __construct(CreditCheckerVerificationService $creditCheckerVerificationService, NewOrderRepository $newOrderRepository) {
+        $this->creditCheckerVerificationService = $creditCheckerVerificationService;
+        $this->newOrderRepository = $newOrderRepository;
+    }
 
     public function previewAmortization(NewOrderRequest $request, AmmortizationService $service)
     {
@@ -58,12 +66,7 @@ class BnlpController extends Controller
     public function allCreditCheckerVerification(Request $request)
     {
         $status = $request->query('status', CreditCheckerVerification::PENDING);
-        $query =  CreditCheckerVerification::query()->search()->when($request->query('status'), function ($query) use ($status) {
-            $query->where('status', $status);
-        })->with('bnplProduct', 'vendor', 'documents', 'product')->with(['customer' => function($q){
-            $q->with('guarantors');
-        }]);
-        $creditCheckerVerifications = $query->latest('created_at')->paginate(request('per_page', 15));
+        $creditCheckerVerifications = $this->creditCheckerVerificationService->allCreditCheckerVerification('bnpl', $status);
         return $this->sendSuccess(['creditCheckerVerifications' => $creditCheckerVerifications], 'Data fetched successfully');
     }
 }
