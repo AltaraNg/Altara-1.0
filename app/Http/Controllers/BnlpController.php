@@ -60,7 +60,7 @@ class BnlpController extends Controller
         $status = $request->query('status', CreditCheckerVerification::PENDING);
         $query =  CreditCheckerVerification::query()->search()->when($request->query('status'), function ($query) use ($status) {
             $query->where('status', $status);
-        })->with('bnplProduct', 'vendor', 'documents')->with(['customer' => function($q){
+        })->with('bnplProduct', 'vendor', 'documents', 'product')->with(['customer' => function($q){
             $q->with('guarantors');
         }]);
         $creditCheckerVerifications = $query->latest('created_at')->paginate(request('per_page', 15));
