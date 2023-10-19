@@ -19,9 +19,11 @@ class BnlpController extends Controller
 
     private CreditCheckerVerificationService $creditCheckerVerificationService;
     private NewOrderRepository $newOrderRepository;
-    public function __construct(CreditCheckerVerificationService $creditCheckerVerificationService, NewOrderRepository $newOrderRepository) {
+    private MessageService $messageService;
+    public function __construct(CreditCheckerVerificationService $creditCheckerVerificationService, NewOrderRepository $newOrderRepository, MessageService $messageService) {
         $this->creditCheckerVerificationService = $creditCheckerVerificationService;
         $this->newOrderRepository = $newOrderRepository;
+        $this->messageService = $messageService;
     }
 
     public function previewAmortization(NewOrderRequest $request, AmmortizationService $service)
@@ -30,14 +32,13 @@ class BnlpController extends Controller
         return ResponseHelper::createSuccessResponse($resp);
     }
 
-    public function sendMessage(Request $request, MessageService $messageService)
+    public function sendMessage(Request $request)
     {
         $this->validate($request, [
             'message' => ['required', 'string'],
             'phone_number' => ['required', 'string'],
         ]);
-        $response = $messageService->sendMessage($request->input('phone_number'), $request->input('message'));
-        Log::info(json_encode($response));
+        $response = $this->messageService->sendMessage($request->input('phone_number'), $request->input('message'));
         return $this->sendSuccess(['response' => $response], 'Message Response');
     }
 
@@ -56,11 +57,12 @@ class BnlpController extends Controller
         if ($creditCheckerVerification->status == CreditCheckerVerification::FAILED){
             return  $this->sendError('You are not allowed to change the status of a declined or failed credit check', 401);
         }
-        $creditCheckerVerification->status = $request->input('status');
-        $creditCheckerVerification->reason = $request->input('reason', $creditCheckerVerification->reason);
-        $creditCheckerVerification->processed_by =  $request->user()->id;
-        $creditCheckerVerification->processed_at = Carbon::now();
-        $creditCheckerVerification->update();
+        $creditCheckerVerification =  $this->creditCheckerVerificationService->updateCreditCheckerVerificationStatus(
+            $request->user()->id,
+            $request->input('status'), 
+            $request->input('reason'),
+            $creditCheckerVerification
+        );
         return $this->sendSuccess([], 'Credit check status updated successfully');
     }
     public function allCreditCheckerVerification(Request $request)
