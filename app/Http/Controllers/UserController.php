@@ -89,7 +89,8 @@ class UserController extends Controller
             'phone_number' => 'unique:users',
             'date_of_birth' => 'older_than:18',
             'guarantor_phone_no' => 'unique:users',
-            'guarantor_phone_no_2' => 'unique:users'
+            'guarantor_phone_no_2' => 'unique:users',
+            'tenant_id' => ['required', 'exists:tenants,id']
         ]);
 
         if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
@@ -163,7 +164,8 @@ class UserController extends Controller
             'phone_number' => 'unique:users,phone_number,' . $id,
             'date_of_birth' => 'older_than:18',
             'guarantor_phone_no' => 'unique:users,guarantor_phone_no,' . $id,
-            'guarantor_phone_no_2' => 'unique:users,guarantor_phone_no_2,' . $id
+            'guarantor_phone_no_2' => 'unique:users,guarantor_phone_no_2,' . $id,
+            'tenant_id' => ['sometimes', 'exists:tenants']
         ]);
 
         /** fetch the user*/

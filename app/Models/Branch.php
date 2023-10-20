@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Helper\DataViewer;
+use App\Scopes\FilterByTenantIdScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 
 class Branch extends Model
@@ -96,6 +98,16 @@ class Branch extends Model
     public function contact_customers()
     {
         return $this->hasMany(ContactCustomer::class);
+    }
+    public function tenant() : BelongsTo {
+        return $this->belongsTo(Tenant::class);
+    }
+
+
+    protected static function booted()
+    {
+        parent::boot();
+        static::addGlobalScope(new FilterByTenantIdScope());
     }
 
 }
