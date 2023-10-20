@@ -13,7 +13,7 @@ class AppLoanRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class AppLoanRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'repayment' => ['required', 'numeric'],
+            'product_price' => ['required', 'numeric'],
+            'down_payment' => ['required', 'numeric'],
+            'fixed_repayment' => ['sometimes', 'boolean'],
+            'credit_checker_verification_id' => ['required', 'integer', 'exists:credit_checker_verifications,id']
         ];
     }
 }

@@ -8,8 +8,13 @@ use Illuminate\Validation\Rule;
 use App\Services\MessageService;
 use App\Services\CreditCheckService;
 use App\Http\Requests\AppLoanRequest;
+use App\Services\AmmortizationService;
 use App\Repositories\NewOrderRepository;
 use App\Models\CreditCheckerVerification;
+use App\Models\NewOrder;
+use App\Models\OrderType;
+use App\Models\PaymentMethod;
+use App\Models\SalesCategory;
 use App\Services\CreditCheckerVerificationService;
 
 class MobileAppLoanController extends Controller
@@ -17,20 +22,49 @@ class MobileAppLoanController extends Controller
     private CreditCheckerVerificationService $creditCheckerVerificationService;
     private NewOrderRepository $newOrderRepository;
     private  MessageService $messageService;
+    private  AmmortizationService $amortizationService;
     public function __construct(
         CreditCheckerVerificationService $creditCheckerVerificationService,
         NewOrderRepository $newOrderRepository,
-        MessageService $messageService
+        MessageService $messageService,
+        AmmortizationService $amortizationService
     ) {
         $this->creditCheckerVerificationService = $creditCheckerVerificationService;
         $this->newOrderRepository = $newOrderRepository;
         $this->messageService = $messageService;
+        $this->amortizationService = $amortizationService;
     }
 
-    public function createLoan(AppLoanRequest $request,)
+    public function createLoan(AppLoanRequest $request)
     {
-        $loan = $this->newOrderRepository->store($request->validated());
+        $creditCheckerVerification = CreditCheckerVerification::query()
+            ->with(['product', 'repaymentCycle', 'downPaymentRate', 'repaymentDuration', 'businessType'])
+            ->where('id', $request->input('credit_checker_verification_id'))
+            ->where('bnpl_vendor_product_id', '=', null)
+            ->first();
+        $repayment = $request->input('repayment');
+        $down_payment = $request->input('down_payment');
+        $product_price = $request->input('product_price');
+        $fixed_repayment = $request->input('fixed_repayment', false);
+        $data = $this->orderData($creditCheckerVerification, $repayment, $down_payment, $product_price, $fixed_repayment);
+        $loan = $this->newOrderRepository->store($data);
         return $this->sendSuccess(['loan' => $loan], 'Loan created');
+    }
+
+    public function previewAmortization(AppLoanRequest $request)
+    {
+        $creditCheckerVerification = CreditCheckerVerification::query()
+            ->with(['product', 'repaymentCycle', 'downPaymentRate', 'repaymentDuration', 'businessType'])
+            ->where('id', $request->input('credit_checker_verification_id'))
+            ->where('bnpl_vendor_product_id', '=', null)
+            ->first();
+        $repayment = $request->input('repayment');
+        $down_payment = $request->input('down_payment');
+        $product_price = $request->input('product_price');
+        $fixed_repayment = $request->input('fixed_repayment', false);
+        $data = $this->orderData($creditCheckerVerification, $repayment, $down_payment, $product_price, $fixed_repayment);
+        $resp = $this->amortizationService->generatePreview($data);
+        return $this->sendSuccess(['preview' => $resp], 'Amortization preview');
     }
 
     public function updateCreditCheckerVerificationStatus(Request $request, CreditCheckerVerification $creditCheckerVerification)
@@ -60,5 +94,37 @@ class MobileAppLoanController extends Controller
         $status = $request->query('status', CreditCheckerVerification::PENDING);
         $creditCheckerVerifications = $this->creditCheckerVerificationService->allCreditCheckerVerification('loan', $status);
         return $this->sendSuccess(['creditCheckerVerifications' => $creditCheckerVerifications], 'Data fetched successfully');
+    }
+
+
+    public function orderData(CreditCheckerVerification $creditCheckerVerification, float $repayment, float $down_payment, float $product_price, bool $fixed_repayment): array
+    {
+        // $businessType = BusinessType::query()->where('slug', 'ap_products')->first();
+        $orderType = OrderType::query()->where('name', 'Altara Credit')->first();
+        $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
+        $saleCategory = SalesCategory::query()->first();
+        $product = $creditCheckerVerification->product;
+
+        return [
+            "bnpl_vendor_product_id" => $product->id,
+            'business_type_id' => $creditCheckerVerification->business_type_id,
+            "customer_id" => $creditCheckerVerification->customer_id,
+            "bank_id" => 1,
+            "owner_id" => 1,
+            "inventory_id" => 2,
+            "payment_method_id" => $paymentMethod->id,
+            "payment_gateway_id" => 1,
+            "order_type_id" => $orderType->id,
+            "sales_category_id" => $saleCategory->id,
+            "repayment_cycle_id" => $creditCheckerVerification->repayment_cycle_id,
+            "repayment_duration_id" => $creditCheckerVerification->repayment_duration_id,
+            "repayment" => $repayment,
+            "down_payment" => $down_payment,
+            "down_payment_rate_id" => $creditCheckerVerification->down_payment_rate_id,
+            "financed_by" => NewOrder::ALTARA_LOAN_APP,
+            "product_price" => $product_price,
+            "fixed_repayment" => $fixed_repayment,
+            "cost_price" => $product->retail
+        ];
     }
 }

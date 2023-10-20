@@ -299,3 +299,8 @@ Route::middleware('bnpl.admin.access')->prefix('/bnlp')->group(function () {
     Route::post('/create/order', [BnlpController::class, 'createOrder']);
     Route::post('/send/message', [BnlpController::class, 'sendMessage']);
 });
+
+Route::middleware('mobile.app.access')->prefix('/mobile-app')->group(function () {
+    Route::post('/amortization/preview', [MobileAppLoanController::class, 'previewAmortization']);
+    Route::post('/create/loan', [MobileAppLoanController::class, 'createLoan']);
+});

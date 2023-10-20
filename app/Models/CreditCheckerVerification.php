@@ -53,4 +53,22 @@ class CreditCheckerVerification extends Model
     {
         return $this->morphMany(NewDocument::class, 'documentable');
     }
+
+    public function repaymentDuration()
+    {
+        return $this->belongsTo(RepaymentDuration::class);
+    }
+
+    public function repaymentCycle()
+    {
+        return $this->belongsTo(RepaymentCycle::class);
+    }
+    public function downPaymentRate()
+    {
+        return $this->belongsTo(DownPaymentRate::class, 'down_payment_rate_id');
+    }
+    public function businessType()
+    {
+        return $this->belongsTo(BusinessType::class);
+    }
 }
