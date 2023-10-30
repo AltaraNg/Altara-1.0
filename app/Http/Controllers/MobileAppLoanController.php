@@ -11,11 +11,18 @@ use App\Http\Requests\AppLoanRequest;
 use App\Services\AmmortizationService;
 use App\Repositories\NewOrderRepository;
 use App\Models\CreditCheckerVerification;
+use App\Models\Customer;
 use App\Models\NewOrder;
 use App\Models\OrderType;
 use App\Models\PaymentMethod;
 use App\Models\SalesCategory;
+use App\Notifications\CustomerLoanApprovalNotification;
+use App\Notifications\CustomerLoanConfirmationNotification;
 use App\Services\CreditCheckerVerificationService;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class MobileAppLoanController extends Controller
 {
@@ -84,8 +91,12 @@ class MobileAppLoanController extends Controller
             $creditCheckerVerification
         );
         if (env('SEND_CREDIT_CHECK_VERIFICATION') && $creditCheckerVerification->status == CreditCheckerVerification::PASSED) {
-            $message = "Credit check verification approved";
-            $this->messageService->sendMessage($request->input('phone_number'), $message);
+            $customer = $creditCheckerVerification->customer;
+            $this->sendLoanConfirmationMessageToCustomer($customer);
+            if ($customer->email) {
+                
+                $this->sendLoanConfirmationEmailToCustomer($creditCheckerVerification);
+            }
         }
         return $this->sendSuccess([], 'Credit check status updated successfully');
     }
@@ -127,4 +138,50 @@ class MobileAppLoanController extends Controller
             "cost_price" => $product->retail
         ];
     }
+
+
+    private function sendLoanConfirmationMessageToCustomer(Customer $customer)
+    {
+        try {
+            $isInProduction = App::environment() === 'production';
+            $customerPhoneNumber =  $customer->telephone;
+            //check if there is an authenticated user and app is not in production
+            //if there is an authenticated user and is not in production
+            // the authenticated user email receives the mail
+            if (Auth::check() && !$isInProduction) {
+                $customerPhoneNumber = auth()->user()->telephone ?  auth()->user()->telephone : null;
+            }
+
+            Log::info("Message about to be sent to customer if customer has a mail");
+            if ($customerPhoneNumber) {
+                $message = "Congrats! Your loan is approved. Please make downpayment through the app to receive funds. Thank you!";
+                $this->messageService->sendMessage($customer->telephone, $message);
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
+    }
+
+    private function sendLoanConfirmationEmailToCustomer(CreditCheckerVerification $creditCheckerVerification)
+    {
+        try {
+            $isInProduction = App::environment() === 'production';
+            $customerEmail =  config('app.credit_checker_mail');
+            //check if there is an authenticated user and app is not in production
+            //if there is an authenticated user and is not in production
+            // the authenticated user email receives the mail
+            if (Auth::check() && !$isInProduction) {
+                $customerEmail = auth()->user()->email ?  auth()->user()->email : null;
+            }
+
+            Log::info("Mail about to be sent to customer if customer has a mail");
+            if ($customerEmail) {
+                Notification::route('mail', $customerEmail)->notify(new CustomerLoanApprovalNotification($creditCheckerVerification->customer, $creditCheckerVerification->product, $creditCheckerVerification));
+                Log::info("Mail is sent to Customer");
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
+    }
+
 }
