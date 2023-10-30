@@ -71,7 +71,10 @@ class NewOrderRepository extends Repository
         if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
             $user_id = $validated['owner_id'];
             $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id;
-        } else {
+        } elseif ($data['financed_by'] === NewOrder::ALTARA_LOAN_APP) {
+            $user_id = $validated['owner_id'];
+            $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id ?? Branch::query()->where('name', 'Ikoyi')->first()->id;
+        }else {
             $user_id = auth()->user()->id;
             $branch_id = auth()->user()->branch_id;
         }

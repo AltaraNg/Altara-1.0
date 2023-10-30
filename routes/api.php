@@ -49,6 +49,7 @@ use App\Http\Controllers\LateFeeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MobileAppLoanController;
 use App\Http\Controllers\MobileMessageNotificationController;
 use App\Http\Controllers\NewDocumentController;
 use App\Http\Controllers\NewOrderController;
@@ -267,6 +268,9 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('/update/credit/checker/status/{creditCheckerVerification}', [BnlpController::class, 'updateCreditCheckerVerificationStatus']);
     Route::get('all/credit/checker', [BnlpController::class, 'allCreditCheckerVerification']);
 
+    Route::patch('/update/credit/checker/status/{creditCheckerVerification}/loan', [MobileAppLoanController::class, 'updateCreditCheckerVerificationStatus']);
+    Route::get('all/credit/checker/loan', [MobileAppLoanController::class, 'allCreditCheckerVerification']);
+
 });
 
 
@@ -294,4 +298,9 @@ Route::middleware('bnpl.admin.access')->prefix('/bnlp')->group(function () {
     Route::post('/amortization/preview', [BnlpController::class, 'previewAmortization']);
     Route::post('/create/order', [BnlpController::class, 'createOrder']);
     Route::post('/send/message', [BnlpController::class, 'sendMessage']);
+});
+
+Route::middleware('mobile.app.access')->prefix('/mobile-app')->group(function () {
+    Route::post('/amortization/preview', [MobileAppLoanController::class, 'previewAmortization']);
+    Route::post('/create/loan', [MobileAppLoanController::class, 'createLoan']);
 });
