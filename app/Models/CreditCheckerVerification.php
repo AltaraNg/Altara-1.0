@@ -26,6 +26,7 @@ class CreditCheckerVerification extends Model
    public  $searchable = [
       'customer_id',
       'bnplProduct.name',
+      'credit_check_no',
       'customer.first_name', 'customer.last_name', 'customer.middle_name', 'customer.telephone',
       'vendor.full_name', 'vendor.phone_number'
    ];

@@ -49,6 +49,9 @@ class MobileAppLoanController extends Controller
             ->where('id', $request->input('credit_checker_verification_id'))
             ->where('bnpl_vendor_product_id', '=', null)
             ->first();
+        if ($creditCheckerVerification == null) {
+            return $this->sendError('Invalid Credit check verification ID supplied', 404, [], 404);
+        }
         $repayment = $request->input('repayment');
         $down_payment = $request->input('down_payment');
         $product_price = $request->input('product_price');
@@ -94,7 +97,7 @@ class MobileAppLoanController extends Controller
             $customer = $creditCheckerVerification->customer;
             $this->sendLoanConfirmationMessageToCustomer($customer);
             if ($customer->email) {
-                
+
                 $this->sendLoanConfirmationEmailToCustomer($creditCheckerVerification);
             }
         }
@@ -183,5 +186,4 @@ class MobileAppLoanController extends Controller
             Log::error($th);
         }
     }
-
 }
