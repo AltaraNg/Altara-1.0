@@ -3,10 +3,11 @@
 
 namespace App\Services;
 
-
+use App\Events\MobileAppActivityEvent;
 use App\Events\RepaymentEvent;
 use App\Exports\DirectDebitExport;
 use App\Models\Amortization;
+use App\Models\MobileAppActivity;
 use App\Models\NewOrder;
 use App\Models\OrderStatus;
 use App\Models\OrderType;
@@ -58,12 +59,11 @@ class DirectDebitService
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
-
             })->orderBy('id', $sortOrder);
         return $data->get();
     }
 
-    public function handle($sortOrder="DESC")
+    public function handle($sortOrder = "DESC")
     {
         $items = $this->fetchOrders($sortOrder);
         $res = array();
@@ -101,6 +101,20 @@ class DirectDebitService
                 $item->new_orders['is_dd'] = true;
                 $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
                 event(new RepaymentEvent($item->new_orders, $item));
+                if ($item->new_orders->financed_by == NewOrder::ALTARA_LOAN_APP) {
+                    event(
+                        new MobileAppActivityEvent(
+                            MobileAppActivity::query()->where('slug', 'make_repayment')->first(),
+                            $item->new_orders->customer,
+                            [
+                                'order' => $item->new_order,
+                                'data_for_log' => $data_for_log,
+                                'paystack_response' => $response
+                            ]
+                        )
+                    );
+                }
+
                 $res[] = array_merge($data, [
                     'bank' => $response->data->authorization->bank ?? '',
                     'status' => 'success',
@@ -121,8 +135,8 @@ class DirectDebitService
         }
 
         try {
-            $json_array=array_map(function ($item) {
-                return array_merge($item,['created_at'=> Carbon::now(),'updated_at'=> Carbon::now()]);
+            $json_array = array_map(function ($item) {
+                return array_merge($item, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
             }, $res);
             foreach ($json_array as $record) {
                 $uniqueColumn = $record['order_id'];
@@ -218,7 +232,7 @@ class DirectDebitService
             Excel::store($export, 'dd/' . $filename . '.xlsx', 's3');
 
             $url = Storage::disk('s3')->url('dd/' . $filename . '.xlsx');
-            FacadesLog::debug('Skipping ' . $url );
+            FacadesLog::debug('Skipping ' . $url);
 
             $this->mailService->sendReportAsMail(
                 'Direct Debit Report',
@@ -228,7 +242,6 @@ class DirectDebitService
                 'DirectDebitLink',
                 'Direct Debit Report ' . Carbon::now()->toDateString()
             );
-
         } catch (BindingResolutionException $e) {
             FacadesLog::error($e->getMessage());
         } catch (Exception $e) {
