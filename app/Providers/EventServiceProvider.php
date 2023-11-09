@@ -19,11 +19,13 @@ use Illuminate\Support\Facades\Event;
 use App\Events\CustomerStageUpdatedEvent;
 use App\Events\SendPasswordResetLinkEvent;
 use App\Events\LateFeeDebitEvent;
+use App\Events\MobileAppActivityEvent;
 use App\Listeners\Bank45RepaymentListener;
 use App\Listeners\LateFeeDebitListener;
 
 use App\Listeners\Bank54OrderPlacedListener;
 use App\Listeners\CustomerStageProspectActivityListener;
+use App\Listeners\MobileAppActivityListener;
 use App\Listeners\ProductTransferListener;
 use App\Listeners\UpdateInventoryListener;
 use App\Listeners\ProspectActivityListener;
@@ -82,6 +84,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         LateFeeDebitEvent::class => [
             LateFeeDebitListener::class
+        ],
+        MobileAppActivityEvent::class => [
+            MobileAppActivityListener::class,
         ]
     ];
 

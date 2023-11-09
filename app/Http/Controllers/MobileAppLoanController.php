@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MobileAppActivityEvent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -12,6 +13,7 @@ use App\Services\AmmortizationService;
 use App\Repositories\NewOrderRepository;
 use App\Models\CreditCheckerVerification;
 use App\Models\Customer;
+use App\Models\MobileAppActivity;
 use App\Models\NewOrder;
 use App\Models\OrderType;
 use App\Models\PaymentMethod;
@@ -58,6 +60,17 @@ class MobileAppLoanController extends Controller
         $fixed_repayment = $request->input('fixed_repayment', false);
         $data = $this->orderData($creditCheckerVerification, $repayment, $down_payment, $product_price, $fixed_repayment);
         $loan = $this->newOrderRepository->store($data);
+        event(
+            new MobileAppActivityEvent(
+                MobileAppActivity::query()->where('slug', 'make_downpaymnt')->first(),
+                $creditCheckerVerification->customer,
+                [
+                    'credit_check' => $creditCheckerVerification->load(['product', 'repaymentDuration', 'repaymentCycle', 'downPaymentRate', 'businessType', 'documents']),
+                    'loan' => $loan,
+                    
+                ]
+            )
+        );
         return $this->sendSuccess(['loan' => $loan], 'Loan created');
     }
 
