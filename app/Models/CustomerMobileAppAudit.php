@@ -10,6 +10,10 @@ class CustomerMobileAppAudit extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $casts = [
+        'meta' => 'array',
+    ];
+
 
     public function mobileAppActivity(): BelongsTo
     {
