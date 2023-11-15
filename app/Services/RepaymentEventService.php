@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
-use App\Helper\Constants;
 use App\Helper\Helper;
-use App\Helper\LogHelper;
 use App\Models\Customer;
 use App\Models\NewOrder;
-use App\Notifications\RepaymentNotification;
+use App\Helper\Constants;
+use App\Helper\LogHelper;
+use App\Models\MobileAppActivity;
+use App\Events\MobileAppActivityEvent;
 use App\Repositories\NewOrderRepository;
+use App\Notifications\RepaymentNotification;
 
 class RepaymentEventService
 {
@@ -25,6 +27,17 @@ class RepaymentEventService
             $customer->notify(new RepaymentNotification($order));
             if (Helper::PaymentCompleted($order)) {
                 $this->newOrderRepository->updateOrderStatus($order->id);
+                if ($order->financed_by == NewOrder::ALTARA_LOAN_APP) {
+                    event(
+                        new MobileAppActivityEvent(
+                            MobileAppActivity::query()->where('slug', 'loan_repayment_completed')->first(),
+                            $order->customer,
+                            [
+                                'order' => $order
+                            ]
+                        )
+                    );
+                }
             }
         } catch (\Exception $e) {
             LogHelper::error(strtr(Constants::REPAYMENT_NOTIFICATION_ERROR, $newOrder->toArray()), $e);
