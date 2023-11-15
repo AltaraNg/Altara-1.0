@@ -108,8 +108,7 @@ class DirectDebitService
                             $item->new_orders->customer,
                             [
                                 'order' => $item->new_order,
-                                'data_for_log' => $data_for_log,
-                                'paystack_response' => $response
+                                'payment' => $resp
                             ]
                         )
                     );
