@@ -31,7 +31,7 @@ class AuthController extends Controller
     {
         $message = 'Check your login details and try again!';
         $user = User::where('staff_id', $request->staff_id)->first();
-
+        
         if (!$user) return response()->json([
             'staff_id' => ['The combination does not exist in our record!'],
             'message' => $message

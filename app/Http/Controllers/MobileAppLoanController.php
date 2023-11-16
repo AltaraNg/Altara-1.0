@@ -59,15 +59,15 @@ class MobileAppLoanController extends Controller
         $product_price = $request->input('product_price');
         $fixed_repayment = $request->input('fixed_repayment', false);
         $data = $this->orderData($creditCheckerVerification, $repayment, $down_payment, $product_price, $fixed_repayment);
+       
         $loan = $this->newOrderRepository->store($data);
         event(
             new MobileAppActivityEvent(
-                MobileAppActivity::query()->where('slug', 'make_downpaymnt')->first(),
+                MobileAppActivity::query()->where('slug', 'make_downpayment')->first(),
                 $creditCheckerVerification->customer,
                 [
                     'credit_check' => $creditCheckerVerification->load(['product', 'repaymentDuration', 'repaymentCycle', 'downPaymentRate', 'businessType', 'documents']),
                     'loan' => $loan,
-                    
                 ]
             )
         );
@@ -131,7 +131,7 @@ class MobileAppLoanController extends Controller
         $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
         $saleCategory = SalesCategory::query()->first();
         $product = $creditCheckerVerification->product;
-
+    
         return [
             "bnpl_vendor_product_id" => $product->id,
             'business_type_id' => $creditCheckerVerification->business_type_id,
