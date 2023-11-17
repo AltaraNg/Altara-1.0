@@ -59,8 +59,15 @@ class MobileAppLoanController extends Controller
         $product_price = $request->input('product_price');
         $fixed_repayment = $request->input('fixed_repayment', false);
         $data = $this->orderData($creditCheckerVerification, $repayment, $down_payment, $product_price, $fixed_repayment);
-       
+
         $loan = $this->newOrderRepository->store($data);
+        $creditCheckerVerification = $this->creditCheckerVerificationService->updateCreditCheckerVerificationStatus(
+            $creditCheckerVerification,
+            1,
+            CreditCheckerVerification::COMPLETED,
+            'Verification Passed & Down payment made',
+            $loan->id
+        );
         event(
             new MobileAppActivityEvent(
                 MobileAppActivity::query()->where('slug', 'make_downpayment')->first(),
@@ -71,6 +78,8 @@ class MobileAppLoanController extends Controller
                 ]
             )
         );
+
+
         return $this->sendSuccess(['loan' => $loan], 'Loan created');
     }
 
@@ -101,10 +110,10 @@ class MobileAppLoanController extends Controller
         }
 
         $creditCheckerVerification =  $this->creditCheckerVerificationService->updateCreditCheckerVerificationStatus(
+            $creditCheckerVerification,
             $request->user()->id,
             $request->input('status'),
             $request->input('reason'),
-            $creditCheckerVerification
         );
         if (env('SEND_CREDIT_CHECK_VERIFICATION') && $creditCheckerVerification->status == CreditCheckerVerification::PASSED) {
             $customer = $creditCheckerVerification->customer;
@@ -131,7 +140,7 @@ class MobileAppLoanController extends Controller
         $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
         $saleCategory = SalesCategory::query()->first();
         $product = $creditCheckerVerification->product;
-    
+
         return [
             "bnpl_vendor_product_id" => $product->id,
             'business_type_id' => $creditCheckerVerification->business_type_id,

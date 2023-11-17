@@ -7,12 +7,13 @@ use App\Models\CreditCheckerVerification;
 
 class CreditCheckerVerificationService
 {
-    public function updateCreditCheckerVerificationStatus(int $user_id,string $status = null, string $reason = null,  CreditCheckerVerification $creditCheckerVerification)
+    public function updateCreditCheckerVerificationStatus(CreditCheckerVerification $creditCheckerVerification, int $user_id, string $status = null, string $reason = null, int $loan_id = null)
     {
         $creditCheckerVerification->status = $status;
         $creditCheckerVerification->reason = $reason ?? $creditCheckerVerification->reason;
         $creditCheckerVerification->processed_by =  $user_id;
         $creditCheckerVerification->processed_at = Carbon::now();
+        $creditCheckerVerification->loan_id = $loan_id;
         $creditCheckerVerification->update();
         return $creditCheckerVerification->fresh();
     }

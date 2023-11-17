@@ -14,7 +14,8 @@ class CreditCheckerVerification extends Model
    const PENDING = 'pending';
    const PASSED = 'passed';
    const FAILED = 'failed';
-   const STATUSES = [self::PENDING, self::PASSED, self::FAILED];
+   const COMPLETED = 'completed';
+   const STATUSES = [self::PENDING, self::PASSED, self::FAILED, self::COMPLETED];
 
    protected $guarded = [];
 
