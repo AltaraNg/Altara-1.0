@@ -58,10 +58,10 @@ class BnlpController extends Controller
             return  $this->sendError('You are not allowed to change the status of a declined or failed credit check', 401);
         }
         $creditCheckerVerification =  $this->creditCheckerVerificationService->updateCreditCheckerVerificationStatus(
+            $creditCheckerVerification,
             $request->user()->id,
             $request->input('status'), 
             $request->input('reason'),
-            $creditCheckerVerification
         );
         return $this->sendSuccess([], 'Credit check status updated successfully');
     }
