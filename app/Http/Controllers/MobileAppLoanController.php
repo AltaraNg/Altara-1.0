@@ -54,7 +54,7 @@ class MobileAppLoanController extends Controller
         if ($creditCheckerVerification == null) {
             return $this->sendError('Invalid Credit check verification ID supplied', 404, [], 404);
         }
-        $repayment = $request->input('repayment');
+        $repayment = $creditCheckerVerification->repayment;
         $down_payment = $request->input('down_payment');
         $product_price = $request->input('product_price');
         $fixed_repayment = $request->input('fixed_repayment', false);

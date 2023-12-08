@@ -24,7 +24,7 @@ class AppLoanRequest extends FormRequest
     public function rules()
     {
         return [
-            'repayment' => ['required', 'numeric'],
+            // 'repayment' => ['required', 'numeric'],
             'product_price' => ['required', 'numeric'],
             'down_payment' => ['required', 'numeric'],
             'fixed_repayment' => ['sometimes', 'boolean'],
