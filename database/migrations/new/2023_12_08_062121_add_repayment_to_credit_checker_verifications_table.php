@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('credit_checker_verifications', function (Blueprint $table) {
-            $table->decimal('float')->nullable();
+            $table->decimal('repayment', 10, 2)->nullable();
         });
     }
 
