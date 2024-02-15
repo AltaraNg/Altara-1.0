@@ -2,7 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Events\MobileAppActivityEvent;
 use App\Events\RepaymentEvent;
+use App\Models\MobileAppActivity;
+use App\Models\NewOrder;
 use App\Models\PaymentReconcile;
 use App\Models\PaymentType;
 use App\Services\PaymentService;
@@ -37,6 +40,18 @@ class PaymentReconcileRepository extends Repository
 
         if ($payment_type->type == PaymentType::REPAYMENTS) {
             event(new RepaymentEvent($model));
+            if ($model->financed_by == NewOrder::ALTARA_LOAN_APP) {
+                event(
+                    new MobileAppActivityEvent(
+                        MobileAppActivity::query()->where('slug', 'make_repayment')->first(),
+                        $model->customer,
+                        [
+                            'order' => $model,
+                            'payment' => $resp
+                        ]
+                    )
+                );
+            }
         }
         return $resp;
     }
