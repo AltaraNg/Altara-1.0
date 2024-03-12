@@ -21,4 +21,8 @@ class PaymentFilter extends BaseFilter
     {
         $this->builder->where('bank_id', $id);
     }
+    public function customer(int $id)
+    {
+        $this->builder->where('customer_id', $id);
+    }
 }
