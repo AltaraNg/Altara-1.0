@@ -173,8 +173,12 @@ abstract class Amortization
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
         $IsRental = Str::contains($this->order->businessType->slug, 'rentals');
         $isSixMonth = $this->repaymentDurationName() == 'six_months';
+        $isThreeMonth = $this->repaymentDurationName() == 'three_months';
         $repaymentCycleName = $this->repaymentCircleName();
+        $isAltaraCredit = Str::contains($this->order->businessType->slug, 'ac') ;
         $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
+        $is20Percent = $this->order->downPaymentRate->name == 'twenty';
+        $is40Percent = $this->order->downPaymentRate->name == 'forty';
 
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC') && !$isSixMonth) {
@@ -185,10 +189,19 @@ abstract class Amortization
         }
         
         else if (!$this->order->fixed_repayment || $IsRental) {
+            if($isAltaraCredit)
+            {
+                if(($isSixMonth || $isThreeMonth) && ($is20Percent || $is40Percent)){
+                    return $this->getDecliningPaymentPlans();
+                }
+                else{
+                    return $this->getNormalPaymentPlans();
 
-            if (
-                ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'bi_monthly') ||
-                ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'custom')
+                }
+            }
+            else if (
+                ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'bi_monthly' && !$isAltaraCredit ) ||
+                ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'custom'  && !$isAltaraCredit)
             ) {
                 return $this->getDecliningPaymentPlansForSixMonths();
             }
@@ -228,6 +241,16 @@ abstract class Amortization
     public function decliningPaymentPercentages($relativePercentage): Collection
     {
         return collect(self::FACTORS)->map(fn($factor) => $factor * $relativePercentage * 100);
+    }
+
+    private function altaraCredit3MnthsPercentages()
+    {
+        return [27, 17, 6];
+    }
+
+    private function altaraCredit6MnthsPercentages()
+    {
+        return [14.4, 11.5, 5.4, 2.5];
     }
 
     public function applyDiscountOnDecliningRepayment(array $repayments, float $discount): array
@@ -307,13 +330,25 @@ abstract class Amortization
     {
         $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
         $is3MonthsDuration = $this->order->repaymentDuration->name == "three_months";
+        $is6MonthsDuration = $this->order->repaymentDuration->name == "six_months";
         $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
         $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
+        $isAltaraCredit = Str::contains($this->order->businessType->slug, 'ac');
+        $is20Percent = $this->order->downPaymentRate->name == 'twenty';
+        $is40Percent = $this->order->downPaymentRate->name == 'forty';
 
 
         $plan = [];
-        if ($useBNPLPercentage || $is3MonthsDuration) {
+        if(($is20Percent || $is40Percent) && $isAltaraCredit && $is3MonthsDuration)
+        {
+            $percentages = $this->altaraCredit3MnthsPercentages();
+        }
+        else if(($is20Percent || $is40Percent) && $isAltaraCredit && $is6MonthsDuration)
+        {
+            $percentages = $this->altaraCredit6MnthsPercentages();
+        }
+        else if ($useBNPLPercentage || $is3MonthsDuration) {
             $percentages = $this->bnpl40PercentPercentage();
         } else if ($IsNoBsRenewalLoan) {
             $percentages = $this->nobsRenewalPercentages();
@@ -372,13 +407,11 @@ abstract class Amortization
 
     private function getDecliningPaymentPlansForSixMonths(): array
     {
-        $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
         $is3MonthsDuration = $this->order->repaymentDuration->name == "three_months";
         $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
         $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
         $residual = $this->getResidual();
-        $repaymentAmount = $this->order->repayment;
         $normalInstallment = $residual / $repaymentCount;
         $discountValue = $this->getDiscountValue();
         $priceCalculator = $this->getPriceCalculator();
