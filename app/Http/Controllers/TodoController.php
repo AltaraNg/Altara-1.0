@@ -6,10 +6,8 @@ use App\Events\ProspectActivityEvent;
 use App\Events\TodoCreatedEvent;
 use App\Http\Filters\TodoFilter;
 use App\Http\Requests\TodoRequest;
-use App\ProspectActivity;
+use App\Models\Todo;
 use App\Repositories\TodosRepository;
-use App\Todo;
-use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
@@ -48,7 +46,7 @@ class TodoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Todo  $todo
+     * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
      */
     public function show(Todo $todo)
@@ -62,7 +60,7 @@ class TodoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Todo  $todo
+     * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
      */
     public function update(Todo $todo, TodoRequest $request)
@@ -74,7 +72,7 @@ class TodoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Todo  $todo
+     * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
      */
     public function destroy(Todo $todo)

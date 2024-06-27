@@ -3,22 +3,24 @@
 
 namespace App\Services;
 
-
-use App\Log;
-use Exception;
-use App\NewOrder;
-use App\OrderType;
-use Carbon\Carbon;
-use App\OrderStatus;
-use App\PaymentType;
-use App\Amortization;
-use App\PaymentMethod;
-use App\PaymentGateway;
+use App\Events\MobileAppActivityEvent;
 use App\Events\RepaymentEvent;
-use App\Notifications\RepaymentNotification;
-use Illuminate\Support\Facades\Log as FacadesLog;
+use App\Exports\DirectDebitExport;
+use App\Models\Amortization;
+use App\Models\MobileAppActivity;
+use App\Models\NewOrder;
+use App\Models\OrderStatus;
+use App\Models\OrderType;
+use App\Models\PaymentGateway;
+use App\Models\PaymentMethod;
+use App\Models\PaymentType;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log as FacadesLog;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DirectDebitService
 {
@@ -47,38 +49,44 @@ class DirectDebitService
         $this->repaymentEventService = $repaymentEventService;
     }
 
-    private function fetchOrders()
+    private function fetchOrders($sortOrder)
     {
         //get list of due payments
-        $data = Amortization::where('actual_payment_date', null)
-            ->whereDate('expected_payment_date', '<=', Carbon::now())
-            ->orWhere(function (Builder $query) {
-                $query->whereDate('expected_payment_date', '<=', Carbon::now())->whereColumn('actual_amount', '<', 'expected_amount');
-            })
+        $data = Amortization::whereDate('expected_payment_date', '<=', Carbon::now())
+            // ->whereColumn('actual_amount', '<', 'expected_amount')
+            ->whereRaw('expected_amount - actual_amount > 100')
             ->whereHas('new_orders', function ($q) {
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
-
-            })->orderBy('id', 'DESC');
+            })->orderBy('id', $sortOrder);
         return $data->get();
     }
 
-    public function handle()
+    public function handle($sortOrder = "DESC")
     {
-        $items = $this->fetchOrders();
+        $items = $this->fetchOrders($sortOrder);
         $res = array();
         if (empty($items)) {
             return 'No Customers are available';
         }
+        $skip = 0;
+        $errorMessage = "";
         foreach ($items as $item) {
+            if ($skip == $item->new_order_id) {
+                FacadesLog::debug('Skipping Order ID ' . $item->new_order_id . ' because of ' . $errorMessage);
+                continue;
+            }
             $amountToDeduct = $item->expected_amount - $item->actual_amount;
             $response = $this->paystackService->charge($item);
             # code...
             $data = [
                 'customer_id' => $item->new_orders->customer_id,
                 'customer_name' => $item->new_orders->customer->full_name,
+                'branch' => $item->new_orders->branch->name ?? "",
                 'order_id' => $item->new_orders->order_number,
+                'order_date' => $item->new_orders->order_date,
+                'business_type' => $item->new_orders->businessType->name ?? null,
                 'amount' => $amountToDeduct,
             ];
             $data_for_log =  [
@@ -93,16 +101,48 @@ class DirectDebitService
                 $item->new_orders['is_dd'] = true;
                 $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
                 event(new RepaymentEvent($item->new_orders, $item));
+                if ($item->new_orders->financed_by == NewOrder::ALTARA_LOAN_APP) {
+                    event(
+                        new MobileAppActivityEvent(
+                            MobileAppActivity::query()->where('slug', 'make_repayment')->first(),
+                            $item->new_orders->customer,
+                            [
+                                'order' => $item->new_order,
+                                'payment' => $resp
+                            ]
+                        )
+                    );
+                }
+
                 $res[] = array_merge($data, [
+                    'bank' => $response->data->authorization->bank ?? '',
                     'status' => 'success',
                     'statusMessage' => 'Approved'
                 ]);
             } else {
+                $skip = $item->new_order_id;
+                $errorMessage =  (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong');
+                if (str_contains($errorMessage, "Charge attempt")) {
+                    continue;
+                }
                 $res[] = array_merge($data, [
+                    'bank' => $response->data->authorization->bank ?? '',
                     'status' => 'failed',
-                    'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
+                    'statusMessage' => $errorMessage
                 ]);
             }
+        }
+
+        try {
+            $json_array = array_map(function ($item) {
+                return array_merge($item, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+            }, $res);
+            foreach ($json_array as $record) {
+                $uniqueColumn = $record['order_id'];
+                DB::table('dd_responses')->updateOrInsert(['order_id' => $uniqueColumn], $record);
+            }
+        } catch (\Throwable $e) {
+            FacadesLog::debug($e->getMessage());
         }
 
         # send report mail
@@ -161,7 +201,7 @@ class DirectDebitService
                     $item->update([
                         'actual_payment_date' => Carbon::now(),
                         'actual_amount' => $item->new_orders['amount'],
-                        'user_id' => 1
+                        'user_id' => auth()->user()->id ?? 1
                     ]);
                     $this->repaymentEventService->repaymentListenerAction($item->new_orders);
                     $this->repaymentEventService->bank54RepaymentListenerAction($item->new_orders);
@@ -184,12 +224,21 @@ class DirectDebitService
     private function sendDirectDebitReport(array $response)
     {
         try {
+            $filename = 'direct-debit-report-' . \Carbon\Carbon::now()->format('Y-m-d_H:i:s');
+
+            $export = new DirectDebitExport($response);
+
+            Excel::store($export, 'dd/' . $filename . '.xlsx', 's3');
+
+            $url = Storage::disk('s3')->url('dd/' . $filename . '.xlsx');
+            FacadesLog::debug('Skipping ' . $url);
+
             $this->mailService->sendReportAsMail(
                 'Direct Debit Report',
-                $response,
+                [$url],
                 [config('app.operations_email'), config('app.admin_email')],
                 'Direct Debit Report',
-                'DirectDebit',
+                'DirectDebitLink',
                 'Direct Debit Report ' . Carbon::now()->toDateString()
             );
         } catch (BindingResolutionException $e) {

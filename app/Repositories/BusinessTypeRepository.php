@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\BusinessType;
+use App\Models\BusinessType;
 
 class BusinessTypeRepository extends Repository
 {
@@ -12,7 +12,7 @@ class BusinessTypeRepository extends Repository
     {
         return BusinessType::class;
     }
-    /** 
+    /**
      * @var string $businessTypeName "pay" || "cash"
      * This methods accepts "cash" or "pay", pay is the default string
      * @return array of type illuminate collection

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 
-use App\Customer;
+use App\Models\Customer;
 
 class CustomerRepository extends Repository
 {

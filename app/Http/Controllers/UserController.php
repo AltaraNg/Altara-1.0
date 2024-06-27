@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Branch;
-use App\Counter;
-use App\EmployeeCategory;
 use App\Events\Event;
-use App\Events\NewOrderEvent;
 use App\Http\Filters\UserFilter;
-use App\NewOrder;
+use App\Models\Branch;
+use App\Models\Counter;
+use App\Models\EmployeeCategory;
+use App\Models\Role;
+use App\Models\User;
 use App\Repositories\UserRepository;
-use App\Role;
-use App\User;
-use Carbon\Carbon;
 use DateTime;
 use Hash;
 use Illuminate\Http\Request;
@@ -34,7 +31,7 @@ class UserController extends Controller
         /** gets list of users(paginated), searchPaginateAndOrder is a custom
          * query scope used by all the models that use data viewer trait
          * in this application */
-        $model = User::select('id', 'full_name', 'staff_id', 'phone_number', 'portal_access', 'email', 'date_of_appointment')
+        $model = User::select('id', 'full_name', 'staff_id', 'phone_number', 'portal_access', 'email', 'date_of_appointment', 'tenant_id')
             ->searchPaginateAndOrder();
         /** the columns used to render the data viewer for users*/
         $columns = User::$columns;
@@ -92,7 +89,8 @@ class UserController extends Controller
             'phone_number' => 'unique:users',
             'date_of_birth' => 'older_than:18',
             'guarantor_phone_no' => 'unique:users',
-            'guarantor_phone_no_2' => 'unique:users'
+            'guarantor_phone_no_2' => 'unique:users',
+            'tenant_id' => ['required', 'exists:tenants,id']
         ]);
 
         if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
@@ -165,8 +163,9 @@ class UserController extends Controller
             'email' => 'unique:users,email,' . $id,
             'phone_number' => 'unique:users,phone_number,' . $id,
             'date_of_birth' => 'older_than:18',
-            'guarantor_phone_no' => 'unique:users,guarantor_phone_no,' . $id,
-            'guarantor_phone_no_2' => 'unique:users,guarantor_phone_no_2,' . $id
+            // 'guarantor_phone_no' => 'unique:users,guarantor_phone_no,' . $id,
+            // 'guarantor_phone_no_2' => 'unique:users,guarantor_phone_no_2,' . $id,
+            'tenant_id' => ['sometimes', 'exists:tenants,id']
         ]);
 
         /** fetch the user*/
@@ -192,7 +191,7 @@ class UserController extends Controller
 
         /** update the user and save in db*/
         unset($request['transfer']);
-        $user->update($request->except('cv'));
+        $user->update($request->except('cv', 'tenant_id', 'tenant'));
         $user->update(['staff_id' => $newId]);
 
         return response()->json([

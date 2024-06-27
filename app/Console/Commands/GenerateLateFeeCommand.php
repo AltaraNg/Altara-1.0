@@ -47,6 +47,7 @@ class GenerateLateFeeCommand extends BaseCommand
         //
         $this->valInput();
         $this->process();
+        return 0;
     }
 
     public function process()

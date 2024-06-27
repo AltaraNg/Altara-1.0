@@ -4,8 +4,8 @@
 namespace App\Repositories;
 
 
-use App\ContactCustomer;
-use App\CustomerStage;
+use App\Models\ContactCustomer;
+use App\Models\CustomerStage;
 use Carbon\Carbon;
 
 class ContactCustomerRepository extends Repository

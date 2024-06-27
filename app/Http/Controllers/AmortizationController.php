@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Amortization;
-use App\DownPaymentRate;
 use App\Exceptions\AException;
 use App\Helper\ResponseHelper;
 use App\Http\Filters\AmortizationFilter;
 use App\Http\Requests\NewOrderRequest;
+use App\Models\Amortization;
+use App\Models\DownPaymentRate;
+use App\Models\Recommendation;
+use App\Models\RepaymentCycle;
+use App\Models\RepaymentDuration;
 use App\Repositories\AmortizationRepository;
 use App\Services\AmmortizationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
-use App\Recommendation;
-use App\RepaymentCycle;
-use App\RepaymentDuration;
 
 class AmortizationController extends Controller
 {
@@ -77,9 +77,21 @@ class AmortizationController extends Controller
         $resp = $service->generatePreview($request->validated());
         return ResponseHelper::createSuccessResponse($resp);
     }
-    public function recommend(AmmortizationService $service)
+    public function recommend(AmmortizationService $service, Request $request)
     {
         // dd(request('down_payment'));
+        if (request('type') == 'verification' || request('type') == 'credit_report') {
+            $data = $request->all();
+            $data['verifiedBy'] = auth()->user()->full_name;
+            $verifiedData = Recommendation::create([
+                "staff_id" => auth()->user()->id,
+                "customer_id" => request("customer_id"),
+                "type" => request('type'),
+                "input_data" => json_encode($data),
+                "result" => json_encode([])
+            ]);
+            return $this->sendSuccess($verifiedData->toArray(), 'data saved successfully');
+        }
         if (request('type') == 'formal') {
             $data = [
                 'salary' => request('salary'),
@@ -111,7 +123,7 @@ class AmortizationController extends Controller
                 "result" => json_encode($resp)
             ]);
             return ResponseHelper::createSuccessResponse($resp);
-        }else{
+        } else {
             $data = [
                 'month1' => request('balances')[0],
                 'month2' => request('balances')[1],

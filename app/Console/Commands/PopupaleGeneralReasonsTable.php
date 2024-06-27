@@ -58,12 +58,13 @@ class PopupaleGeneralReasonsTable extends Command
         ];
         $this->info('Found ' . count($reasons). ' reasons');
         foreach ($reasons as $data) {
-            \App\GeneralReason::updateOrCreate([
+            \App\Models\GeneralReason::updateOrCreate([
                 'reason' => $data,
                 'reason_type' => 'recollection',
                 'status' => true,
             ]);
         }
         $this->info('All reasons successfully inserted');
+        return 0;
     }
 }

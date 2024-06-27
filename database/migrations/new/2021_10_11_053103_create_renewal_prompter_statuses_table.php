@@ -1,9 +1,9 @@
 <?php
 
-use App\RenewalPrompterStatus;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\RenewalPrompterStatus;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateRenewalPrompterStatusesTable extends Migration
 {

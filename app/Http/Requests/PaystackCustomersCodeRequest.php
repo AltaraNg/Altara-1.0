@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\PaystackCustomersCode;
+use App\Models\PaystackCustomersCode;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PaystackCustomersCodeRequest extends FormRequest

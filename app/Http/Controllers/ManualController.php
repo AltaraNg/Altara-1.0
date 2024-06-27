@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\TempExport;
 use App\Imports\TempImport;
-use App\PaystackAuthCode;
+use App\Models\PaystackAuthCode;
 use Illuminate\Support\Facades\Artisan;
 use Maatwebsite\Excel\Facades\Excel;
 

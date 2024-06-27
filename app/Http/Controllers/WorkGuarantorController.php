@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Verification;
-use App\WorkGuarantor;
+use App\Models\Verification;
+use App\Models\WorkGuarantor;
 use Illuminate\Http\Request;
 
 class WorkGuarantorController extends Controller

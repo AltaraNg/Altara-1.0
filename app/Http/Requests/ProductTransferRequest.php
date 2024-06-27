@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\ProductTransfer;
+use App\Models\ProductTransfer;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductTransferRequest extends FormRequest

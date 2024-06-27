@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
-use App\InventoryStatus;
+use App\Models\InventoryStatus;
 use Carbon\Carbon;
 
 class UpdateInventoryListener

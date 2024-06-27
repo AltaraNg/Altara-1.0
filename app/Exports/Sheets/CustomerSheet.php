@@ -2,19 +2,19 @@
 
 namespace App\Exports\Sheets;
 
-use App\Customer;
 use Carbon\Carbon;
 use Generator;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromGenerator;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithLimit;
-class CustomerSheet implements FromGenerator, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithLimit, WithCustomChunkSize
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithTitle;
+
+class CustomerSheet implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithCustomChunkSize
 {
     use Exportable;
 
@@ -27,10 +27,10 @@ class CustomerSheet implements FromGenerator, WithHeadings, WithMapping, WithTit
     {
         return 'Individual Borrowers';
     }
-  
-    public function generator(): Generator
+
+    public function collection()
     {
-        return $this->customers->cursor();
+        return $this->customers;
     }
 
     public function map($customer): array
@@ -50,7 +50,7 @@ class CustomerSheet implements FromGenerator, WithHeadings, WithMapping, WithTit
             $dateOfBirth,   // 'Date of Birth',
             'N/A', // 'National Identity Number',
             'N/A', // 'Drivers License No',
-            $customer->bvn_no ?? 'N/A', // 'BVN No',
+            $customer->bvn ?? 'N/A', // 'BVN No',
             $customer->passport_no ?? 'N/A', // 'Passport No',
             $customer->gender, // 'Gender',
             'NG',   // 'Nationality',
@@ -155,13 +155,9 @@ class CustomerSheet implements FromGenerator, WithHeadings, WithMapping, WithTit
         return $status;
     }
 
-    public function limit(): int
-    {
-        return 500;
-    }
 
     public function chunkSize(): int
     {
-        return 500;
+        return 100;
     }
 }

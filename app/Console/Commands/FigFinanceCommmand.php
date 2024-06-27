@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Customer;
-use App\FigFinance;
-use App\NewOrder;
-use App\SalesCategory;
+use App\Models\Customer;
+use App\Models\FigFinance;
+use App\Models\NewOrder;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
@@ -125,6 +124,7 @@ class FigFinanceCommmand extends Command
             FigFinance::query()->updateOrCreate(['date' => $metric['date'], 'key' => $metric['key']], ['value' => $metric['value']]);
             $this->info('Updating or inserting metrics into database');
         }
+        return 0;
 
     }
     private function transactionsQuarterlyGrowth($startOfQ, $endOfQ)

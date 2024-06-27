@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SendPasswordResetLinkEvent;
-use App\PasswordResets;
+use App\Models\PasswordResets;
+use App\Models\User;
 use App\Repositories\AuthRepository;
-use App\User;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -32,7 +31,7 @@ class AuthController extends Controller
     {
         $message = 'Check your login details and try again!';
         $user = User::where('staff_id', $request->staff_id)->first();
-
+        
         if (!$user) return response()->json([
             'staff_id' => ['The combination does not exist in our record!'],
             'message' => $message
@@ -51,7 +50,8 @@ class AuthController extends Controller
                     'user_name' => $user->full_name,
                     'portal_access' => $user->portal_access,
                     'branch_id' => $user->branch_id,
-
+                    'tenant' => $user->tenant,
+                    'in_house' => $user->tenant_id == 1,
                     'message' => 'You have successfully logged in'
                 ], 200);
             }
@@ -73,6 +73,23 @@ class AuthController extends Controller
         $user->api_token = null;
         $user->save();
         return response()->json(['logged_out' => true]);
+    }
+    public function user(Request $request)
+    {
+        $user = $request->user();   
+
+        $data = [
+            'user_id' => $user->id,
+            'auth' => true,
+            'role' => $user->role_id,
+            'user_name' => $user->full_name,
+            'portal_access' => $user->portal_access,
+            'branch_id' => $user->branch_id,
+            'tenant' => $user->tenant,
+            'in_house' => $user->tenant_id == 1,
+        ];
+        
+        return $this->sendSuccess(['user ' => $data]);
     }
 
     public function sendResetLinkEmail()

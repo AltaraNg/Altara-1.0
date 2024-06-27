@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 /*use App\Caution;
 use App\User;*/
-use App\{User, Caution};
+
+use App\{Models\Caution, Models\User};
 use Illuminate\Http\Request;
 
 class CautionController extends Controller
@@ -64,7 +65,7 @@ class CautionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Caution $caution
+     * @param  \App\Models\Caution $caution
      * @return \Illuminate\Http\Response
      */
     public function show(Caution $caution)
@@ -75,7 +76,7 @@ class CautionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Caution $caution
+     * @param  \App\Models\Caution $caution
      * @return \Illuminate\Http\Response
      */
     public function edit(Caution $caution)
@@ -87,7 +88,7 @@ class CautionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Caution $caution
+     * @param  \App\Models\Caution $caution
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Caution $caution)
@@ -98,7 +99,7 @@ class CautionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Caution $caution
+     * @param  \App\Models\Caution $caution
      * @return \Illuminate\Http\Response
      */
     public function destroy(Caution $caution)

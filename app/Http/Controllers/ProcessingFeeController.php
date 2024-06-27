@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerStage;
 use App\Events\CustomerStageUpdatedEvent;
-use App\Http\Filters\ContactCustomerFilter;
-use App\ProcessingFee;
+use App\Models\CustomerStage;
+use App\Models\ProcessingFee;
+use App\Models\Verification;
 use App\Repositories\ContactCustomerRepository;
-use App\Verification;
 use Illuminate\Http\Request;
 
 class ProcessingFeeController extends Controller

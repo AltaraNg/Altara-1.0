@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Address;
-use App\Branch;
-use App\ContactCustomer;
-use App\Customer;
-use App\CustomerStage;
-use App\Document;
 use App\Events\CustomerCreatedEvent;
-use App\Events\CustomerStageUpdatedEvent;
-use App\Http\Filters\ContactCustomerFilter;
-use App\PersonalGuarantor;
-use App\ProcessingFee;
-use App\Repositories\ContactCustomerRepository;
-use App\State;
-use App\Verification;
-use App\WorkGuarantor;
+use App\Models\Address;
+use App\Models\Branch;
+use App\Models\Customer;
+use App\Models\Document;
+use App\Models\PersonalGuarantor;
+use App\Models\ProcessingFee;
+use App\Models\State;
+use App\Models\Verification;
+use App\Models\WorkGuarantor;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -68,17 +63,42 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         /** 1. validate the customer's phone number */
-        $this->validate($request, [
-            'telephone' => 'required|string|unique:customers,telephone',
-            'email' => 'required|string|email|unique:customers,email',
-            'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'telephone' => 'required|string|unique:customers,telephone',
+                'email' => 'sometimes|string|email|unique:customers,email',
+                'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
+                'bvn' => 'sometimes|string|max:11|min:11'
+            ],
+            [
+                'telephone.required' => 'Phone number field is required',
+                'telephone.unique' => 'The supplied phone number has already been taken',
+                'email.unique' => 'The supplied email address has already been taken',
+                'reg_id.exists' => 'The supplied registration id does not exists in our system',
+                'reg_id.unique' => 'The supplied registration id has already been taken',
+                'bvn.min' => 'The bvn should be 11 characters',
+                'bvn.max' => 'The bvn should be 11 characters',
+            ]
+        );
+
+
+        $data = $request->all();
+        if (array_key_exists('customer_type', $data)) {
+            unset($data['customer_type']);
+        }
+
+
+        if (array_key_exists('days_of_work', $data)) {
+            /** 3. Add other key value pairs */
+            $data['days_of_work'] = implode(' ', $request['days_of_work']);
+            unset($data['days_of_work']);
+        }
 
         /** 2. Create a new customer instance */
-        $customer = new Customer($request->all());
+        $customer = new Customer($data);
 
-        /** 3. Add other key value pairs */
-        $customer->days_of_work = implode(' ', $request['days_of_work']);
+
 
         /** 4. save the customer to db */
         $customer->save();
@@ -110,7 +130,7 @@ class CustomerController extends Controller
             /** 2. Check if the customer is linked to a branch(NB:: this is as a result of the new field branch_id
              * in the customers table during the migration to this new portal) hence most
              * of the old records dont have branch_id */
-            if (!isset($customer->branch)) {
+            if (!isset($customer->branch) && property_exists($customer, 'user')) {
                 /** 2 if the branch is not set (ie its an old record)*/
                 /** 2.a set the branch id of the customer to the branch of the DSA that registered the customer*/
                 $customer->branch_id = $customer->user->branch_id;
@@ -173,6 +193,8 @@ class CustomerController extends Controller
         unset($request['processing_fee']);
         unset($request['personal_guarantor']);
         unset($request['guarantor_paystack']);
+        unset($request['new_documents']);
+
         /** 2. Update the customer*/
         Customer::whereId($id)->update($request->all());
         /** return the update flag, prepare form
@@ -192,7 +214,7 @@ class CustomerController extends Controller
             'user' => function ($query) {
                 $query->select('id', 'full_name', 'branch_id');
             },
-            'guarantorPaystack' => function($query) {
+            'guarantorPaystack' => function ($query) {
                 return $query->where('status', 'active');
             },
             'branch',
@@ -200,8 +222,9 @@ class CustomerController extends Controller
             'address',
             'workGuarantor',
             'personalGuarantor',
+            'newDocuments',
             'document',
-            'processingFee'
+            'processingFee',
         ])->whereId($id)->first();
         /** 2. return the customer fetched*/
         return $customer;
@@ -238,7 +261,7 @@ class CustomerController extends Controller
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack' => function($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'newDocuments', 'guarantorPaystack' => function ($query) {
             return $query->where('status', 'active');
         },  'branch', 'new_orders' => function ($query) {
 

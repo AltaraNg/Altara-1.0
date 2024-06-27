@@ -5,8 +5,6 @@ namespace App\Repositories;
 
 
 
-use App\Feedback;
-
 class ReasonRepository extends Repository
 {
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerStage;
+use App\Models\CustomerStage;
 use Illuminate\Http\Response;
 
 class CustomerStageController extends Controller

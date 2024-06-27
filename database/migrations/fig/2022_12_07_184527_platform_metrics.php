@@ -13,7 +13,7 @@ class PlatformMetrics extends Migration
      */
     public function up()
     {
-        Schema::connection('fig')->create('platform_metrics', function (Blueprint $table) {
+        Schema::connection('fig')->create('platform-metrics', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('key');
             $table->date('date');

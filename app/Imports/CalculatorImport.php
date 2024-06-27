@@ -2,11 +2,11 @@
 
 namespace App\Imports;
 
-use App\BusinessType;
-use App\DownPaymentRate;
 use App\Helper\LogHelper;
-use App\PriceCalculator;
-use App\RepaymentDuration;
+use App\Models\BusinessType;
+use App\Models\DownPaymentRate;
+use App\Models\PriceCalculator;
+use App\Models\RepaymentDuration;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;

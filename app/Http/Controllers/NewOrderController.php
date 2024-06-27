@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\NewOrder;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
-use App\Repositories\NewOrderRepository;
-use App\Services\NewOrdersReportService;
-use App\Http\Filters\DailySalesNewOrderFilter;
+use App\Models\NewOrder;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\DirectDebitDataRepository;
+use App\Repositories\NewOrderRepository;
 use App\Repositories\PaystackAuthCodeRepository;
+use App\Services\CreditCheckService;
 use App\Services\DirectDebitService;
+use App\Services\NewOrdersReportService;
+use App\Services\RepaymentScheduleService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class NewOrderController extends Controller
 {
@@ -22,6 +25,7 @@ class NewOrderController extends Controller
     private $newOrderRepository;
     private $paystackAuthCodeRepository;
     private $directDebitDataRepository;
+    private $contactRepository;
 
     public function __construct(
         NewOrderRepository $newOrderRepository,
@@ -30,7 +34,7 @@ class NewOrderController extends Controller
         DirectDebitDataRepository $directDebitDataRepository
     ) {
         $this->newOrderRepository = $newOrderRepository;
-        $this->contactRepo = $contactRepository;
+        $this->contactRepository = $contactRepository;
         $this->paystackAuthCodeRepository = $paystackAuthCodeRepository;
         $this->directDebitDataRepository = $directDebitDataRepository;
     }
@@ -60,6 +64,15 @@ class NewOrderController extends Controller
         if ($request->authorization_code) {
             $data = ['order_id' => $order->order_number, 'auth_code' => $request->authorization_code];
             $this->paystackAuthCodeRepository->store($data);
+            if ($request->has('account_number')) {
+                CreditCheckService::accountNumberVerification(
+                    $order->customer_id,
+                    $order->id,
+                    $request->input('account_number'),
+                    $request->input('account_name'),
+                    $request->input('bank_name')
+                );
+            }
         }
         if ($request->collection_verification_data) {
             $collection_verification_data = (object) $request->collection_verification_data;
@@ -148,6 +161,16 @@ class NewOrderController extends Controller
         return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
     }
 
+    public function repaymentSchedule(NewOrderFilter $filter, RepaymentScheduleService $repaymentScheduleService)
+    {
+        $newOrdersQuery = $this->newOrderRepository->reportQuery($filter);
+        $getTotalRepaymentExpected = $repaymentScheduleService->getRepaymentPerMonth($newOrdersQuery);
+        
+        return $this->sendSuccess(["meta" => $getTotalRepaymentExpected], 'Orders retrieved successfully');
+    }
+
+
+
 
     public function chargeCustomerOrder(Request $request, DirectDebitService $directDebitService)
     {
@@ -166,5 +189,18 @@ class NewOrderController extends Controller
             return $this->sendError($response['statusMessage'], 400, [], 400);
         }
         return $this->sendSuccess([], 'Customer debited successfully and amortization(s) has been updated');
+    }
+
+    public function changeOrderStatus(Request $request)
+    {
+       $validated =  $this->validate($request, [
+            'status_id' => ['required', 'integer', 'exists:order_statuses,id'],
+            'order_id' => ['required', 'integer', 'exists:new_orders,id'],
+        ]);
+
+        $newOrder = $this->newOrderRepository->changeOrderStatus($validated);
+
+        return $this->sendSuccess(["order" => $newOrder], 'Order Status Changed successfully');
+
     }
 }

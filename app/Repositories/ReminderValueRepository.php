@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\ReminderValue;
+use App\Models\ReminderValue;
 
 class ReminderValueRepository extends Repository
 {

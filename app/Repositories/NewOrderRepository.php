@@ -2,19 +2,24 @@
 
 namespace App\Repositories;
 
-use Exception;
-use App\NewOrder;
-use App\Inventory;
-use Carbon\Carbon;
-use App\OrderStatus;
-use App\PaymentType;
-use App\Helper\Helper;
-use App\PaymentGateway;
-use App\RepaymentCycle;
-use App\GeneralFeedback;
-use App\InventoryStatus;
+use App\Amortization\Custom;
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
+use App\Helper\Helper;
+use App\Models\Branch;
+use App\Models\BusinessType;
+use App\Models\Customer;
+use App\Models\GeneralFeedback;
+use App\Models\Inventory;
+use App\Models\InventoryStatus;
+use App\Models\NewOrder;
+use App\Models\OrderStatus;
+use App\Models\PaymentGateway;
+use App\Models\PaymentType;
+use App\Models\RaffleDrawCode;
+use App\Models\RepaymentCycle;
+use Carbon\Carbon;
+use Exception;
 
 class NewOrderRepository extends Repository
 {
@@ -43,15 +48,54 @@ class NewOrderRepository extends Repository
         unset($validated['bank_id']);
         unset($validated['discount']);
         unset($validated['bvn']);
+        unset($validated['fixed_repayment']);
+        unset($validated['account_number']);
+        unset($validated['account_name']);
+        unset($validated['bank_name']);
+        unset($validated['reference']);
+        $raffleCode = array_key_exists('raffle_code', $validated);
+        $costPriceIsSent = array_key_exists('cost_price', $validated);
+        if ($costPriceIsSent){
+            unset($validated['cost_price']);
+        }
+
+        if ($raffleCode){
+            $raffleCodeItem = RaffleDrawCode::where('code', $validated['raffle_code'])->first();
+            
+            unset($validated['raffle_code']);
+        }
+
+        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL) {
+            unset($validated['bnpl_vendor_product_id']);
+        }
+        if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
+            $user_id = $validated['owner_id'];
+            $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id;
+        } elseif ($data['financed_by'] === NewOrder::ALTARA_LOAN_APP) {
+            $user_id = $validated['owner_id'];
+            $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id ?? Branch::query()->where('name', 'Ikoyi')->first()->id;
+        }else {
+            $user_id = auth()->user()->id;
+            $branch_id = auth()->user()->branch_id;
+        }
+        $businessType = BusinessType::query()->where('id', $data['business_type_id'])->first();
 
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
             'order_date' => Carbon::now(),
-            'user_id' => auth()->user()->id,
-            'branch_id' => auth()->user()->branch_id,
-            'status_id' => OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id,
+            'user_id' => $user_id,
+            'branch_id' => $branch_id,
+            'status_id' => $validated['repayment'] > 0 &&  $businessType->slug != 'ap_cash_n_carry' ? OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id : OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,
             'product_id' => $inventory->product_id
         ]));
+
+        if($raffleCode){
+            $raffleCodeItem->update([
+                'order_id' => $order->id
+            ]);
+        }
+
+
         if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM) {
             $order->customDate()->create(['custom_date' => $data['custom_date']]);
             $order->custom_date = $data['custom_date'];
@@ -67,6 +111,12 @@ class NewOrderRepository extends Repository
         $order->payment_method_id = $data['payment_method_id'];
         $order->bank_id = $data['bank_id'];
         $order->inventory = $inventory;
+        $order->fixed_repayment = $data['fixed_repayment'];
+        if ($costPriceIsSent){
+            $order->cost_price = $data['cost_price'];
+        }
+
+        $order = $order->load('businessType', 'discount', 'customer', 'bnplVendorProduct', 'repaymentDuration', 'repaymentCycle', 'product', 'downPaymentRate');
         event(new NewOrderEvent($order));
 
         return $order->fresh();
@@ -92,9 +142,9 @@ class NewOrderRepository extends Repository
         $order->update(['status_id' =>  OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id]);
     }
 
-    public function firstById (int $orderId)
+    public function firstById(int $orderId)
     {
-       return $this->model::findOrFail($orderId);
+        return $this->model::findOrFail($orderId);
     }
     public function saveFeedBack($data)
     {
@@ -106,16 +156,24 @@ class NewOrderRepository extends Repository
             'feedback' => $data['feedback'],
             'follow_up_date' => $data['follow_up_date']
         ]);
-       return $order->generalFeedBacks()->save($feedback);
+        return $order->generalFeedBacks()->save($feedback);
     }
 
     public function getDirectDebitOrderWithUnpaidAmortization(int $order_id)
     {
-       return $this->model::where('id', $order_id)
+        return $this->model::where('id', $order_id)
             ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id)
             ->has('authCode')
             ->has('unpaidAmortizations')
             ->with('customer')
             ->first();
+    }
+
+    public function changeOrderStatus(array $data)
+    {
+        $order = $this->firstById($data['order_id']);
+        $order->status_id = $data['status_id'];
+        $order->save();
+        return $order;
     }
 }

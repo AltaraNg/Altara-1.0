@@ -2,12 +2,12 @@
 
 namespace App\Imports;
 
-use App\Branch;
-use App\Inventory;
-use App\InventoryStatus;
-use App\InventoryDictionary;
-use App\Product;
-use App\Supplier;
+use App\Models\Branch;
+use App\Models\Inventory;
+use App\Models\InventoryDictionary;
+use App\Models\InventoryStatus;
+use App\Models\Product;
+use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

@@ -2,10 +2,7 @@
 
 namespace App\Listeners;
 
-use App\NewOrder;
 use App\Services\RepaymentEventService;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class Bank45RepaymentListener
 {

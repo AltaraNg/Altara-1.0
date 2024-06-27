@@ -4,15 +4,8 @@
 namespace App\Services;
 
 
-use App\Amortization;
-use App\BusinessType;
-use App\OrderType;
-use App\PaymentGateway;
-use App\Events\RepaymentEvent;
-use App\NewOrder;
-use App\OrderStatus;
-use App\PaymentMethod;
-use App\PaymentType;
+use App\Models\BusinessType;
+use App\Models\NewOrder;
 use Carbon\Carbon;
 
 class GenerateLateFeeService
@@ -26,10 +19,28 @@ class GenerateLateFeeService
      */
     private $paystackService;
 
-    private  $businessType = [BusinessType::ALTARA_CREDIT_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_NINE_MONTHS, BusinessType::ALTARA_PAY_SUPER_LOAN_RENEWAL, BusinessType::ALTARA_PAY_SUPER_LOAN_NEW, BusinessType::ALTARA_PAY_CASH_LOAN_NO_COLLATERAL, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_NO_COLLATERAL, BusinessType::ALTARA_PAY_RENTALS_SLUG];
+    private  $businessType = [
+        BusinessType::ALTARA_CREDIT_CASH_LOAN_SLUG,
+        BusinessType::ALTARA_PAY_CASH_LOAN_SLUG,
+        BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT_SLUG,
+        BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_SLUG,
+        BusinessType::ALTARA_PAY_STARTER_CASH_NINE_MONTHS,
+        BusinessType::ALTARA_PAY_SUPER_LOAN_RENEWAL,
+        BusinessType::ALTARA_PAY_SUPER_LOAN_NEW,
+        BusinessType::ALTARA_PAY_CASH_LOAN_NO_COLLATERAL,
+        BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_NO_COLLATERAL,
+        BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_COLLATERAL,
+        BusinessType::ALTARA_PAY_RENTALS_SLUG,
+        BusinessType::ALTARA_PAY_NO_BS_NEW_NON_VERVE,
+        BusinessType::ALTARA_PAY_NO_BS_NEW_VERVE,
+        BusinessType::ALTARA_PAY_NO_BS_RENEWAL_NON_VERVE,
+        BusinessType::ALTARA_PAY_NO_BS_RENEWAL_VERVE,
+        BusinessType::ALTARA_PAY_NO_BS_PRODUCT_RENEWAL_NON_VERVE,
+        BusinessType::ALTARA_PAY_NO_BS_PRODUCT_NON_VERVE
+
+    ];
 
     /**
-     * DirectDebitService constructor.
      * @param MailService $mailService
      * @param PaystackService $paystackService
      */
@@ -44,13 +55,13 @@ class GenerateLateFeeService
         $today = '';
         $data = NewOrder::whereHas('businessType', function ($q) {
             $q->whereIn('slug', $this->businessType);
-        })
-            ->whereHas('late_fee_gen')->with('late_fee_gen');
+        })->whereHas('late_fee_gen')->with('late_fee_gen');
         if ($day == null) {
             $today = Carbon::now()->day;
         } else {
             $today = $day;
         }
+       
         return $data->get()->filter(function ($c) use ($today) {
             return Carbon::parse($c->amortization[$c->amortization->count() - 1]->expected_payment_date)->day == $today;
         })->values();

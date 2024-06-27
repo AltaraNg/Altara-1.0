@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\AltaraPayDdData;
+use App\Models\AltaraPayDdData;
 
 class DirectDebitDataRepository extends Repository
 {

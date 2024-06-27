@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\LateFee;
+use App\Models\LateFee;
 
 class LateFeeRepository extends Repository
 {

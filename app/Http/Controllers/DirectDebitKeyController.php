@@ -3,8 +3,8 @@
 
 namespace App\Http\Controllers;
 
-use App\DirectDebitKey;
 use App\Helper\ResponseHelper;
+use App\Models\DirectDebitKey;
 
 class DirectDebitKeyController
 {

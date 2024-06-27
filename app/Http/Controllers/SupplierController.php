@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Bank;
 use App\Http\Filters\SupplierFilter;
 use App\Http\Requests\SupplierRequest;
+use App\Models\Supplier;
 use App\Repositories\SupplierRepository;
-use App\Supplier;
-use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {

@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Feedback;
+use App\Models\Feedback;
 
 class FeedbackRepository extends Repository
 {

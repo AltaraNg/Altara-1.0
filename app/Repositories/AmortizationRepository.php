@@ -3,7 +3,7 @@
 
 namespace App\Repositories;
 
-use App\Amortization;
+use App\Models\Amortization;
 
 class AmortizationRepository extends Repository
 {

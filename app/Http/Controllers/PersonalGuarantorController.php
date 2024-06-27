@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\PersonalGuarantor;
-use App\Verification;
+use App\Models\PersonalGuarantor;
+use App\Models\Verification;
 use Illuminate\Http\Request;
 
 class PersonalGuarantorController extends Controller
@@ -60,7 +60,7 @@ class PersonalGuarantorController extends Controller
    /**
     * Display the specified resource.
     *
-    * @param  \App\PersonalGuarantor $personalGuarantor
+    * @param  \App\Models\PersonalGuarantor $personalGuarantor
     * @return \Illuminate\Http\Response
     */
    public function show(PersonalGuarantor $personalGuarantor)
@@ -71,7 +71,7 @@ class PersonalGuarantorController extends Controller
    /**
     * Show the form for editing the specified resource.
     *
-    * @param  \App\PersonalGuarantor $personalGuarantor
+    * @param  \App\Models\PersonalGuarantor $personalGuarantor
     * @return \Illuminate\Http\Response
     */
    public function edit(PersonalGuarantor $personalGuarantor)
@@ -83,7 +83,7 @@ class PersonalGuarantorController extends Controller
     * Update the specified resource in storage.
     *
     * @param  \Illuminate\Http\Request $request
-    * @param  \App\PersonalGuarantor $personalGuarantor
+    * @param  \App\Models\PersonalGuarantor $personalGuarantor
     * @return \Illuminate\Http\Response
     */
    public function update(Request $request, PersonalGuarantor $personalGuarantor)
@@ -94,7 +94,7 @@ class PersonalGuarantorController extends Controller
    /**
     * Remove the specified resource from storage.
     *
-    * @param  \App\PersonalGuarantor $personalGuarantor
+    * @param  \App\Models\PersonalGuarantor $personalGuarantor
     * @return \Illuminate\Http\Response
     */
    public function destroy(PersonalGuarantor $personalGuarantor)

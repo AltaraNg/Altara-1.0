@@ -2,21 +2,18 @@
 
 namespace App\Exports\Sheets;
 
-use Generator;
-use App\NewOrder;
 use Carbon\Carbon;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithLimit;
-use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Generator;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromGenerator;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithLimit;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
-class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithLimit, WithCustomChunkSize
+class CreditInformationSheet implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithCustomChunkSize
 {
 
     private $orders;
@@ -30,18 +27,17 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
     }
     // public function query()
     // {
-    //     // dd($this->orders->count());
     //     return $this->orders;
     // }
-    public function generator(): Generator
+    public function collection()
     {
-        // 
-        return $this->orders->cursor();
+        //
+        return $this->orders;
     }
 
     public function map($order): array
     {
-        //   dd($order);
+
         $lastNonePaymentDate = null;
         $lastPaymentDate = null;
         $days_in_arrears = '0';
@@ -58,7 +54,7 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
         }
 
         $outStandingBalance = $this->outstandingBalance(clone $order) ?? '0';
-        $accountStatus = $this->openOrClosed(clone $order);
+        $accountStatus = $this->openOrClosed($outStandingBalance);
         $accountStatusDate = $this->accountStatusDate($accountStatus, $order);
         $overDueAmount =  $this->overdueAmount(clone $order) ?? '0';
         $repaymentFrequencyName =  $this->repaymentCycleName($order->repaymentCycle->name);
@@ -67,7 +63,7 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
 
         return [
             $order->customer->id, // 'Customer ID',
-            $order->id, // 'Account Number',
+            $order->order_number, // 'Account Number',
             $accountStatus, // 'Account Status',
             $accountStatusDate, // 'Account status date',
             $order->order_date, // 'Date of loan (facility) disbursement/Loan effective date',
@@ -140,28 +136,29 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
 
     private function outstandingBalance($order)
     {
+        // return 10;
         $sum = $order->amortization->where('actual_payment_date',  null)->where('actual_amount', '<', 1)->sum('expected_amount');
         return  $sum > 0 ? $sum : '0';
     }
     private function overdueAmount($order)
     {
+        // return 10;
         $sum =  $order->amortization->where('expected_payment_date', '<', Carbon::now()->endOfDay())
             ->where('actual_payment_date',  null)
             ->where('actual_amount', '<', 1)->sum('expected_amount');
         return $sum > 0 ? $sum : '0';
     }
 
-    public function openOrClosed($order)
+    public function openOrClosed($outStandingBalance)
     {
-        $sumOfRepaymentMade = (clone $order)->amortization->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->sum('actual_amount');
+        // return 'Open';
+        // $sumOfRepaymentMade = (clone $order)->amortization->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->sum('actual_amount');
 
-        $expectedSumOfPayment = $order->amortization->sum('expected_amount');
+        // $expectedSumOfPayment = $order->amortization->sum('expected_amount');
 
-        $amountLeftToBePayed =  $expectedSumOfPayment - $sumOfRepaymentMade;
-        if ($amountLeftToBePayed > 0) {
+        // $amountLeftToBePayed =  $expectedSumOfPayment - $sumOfRepaymentMade;
+        if ($outStandingBalance > 0) {
             return 'Open';
-        } elseif ($amountLeftToBePayed == 0) {
-            return 'Closed';
         } else {
             return 'Closed';
         }
@@ -169,20 +166,25 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
 
     public function accountStatusDate($status, $order)
     {
-        $date = null;
+        // return "2202-01-29";
         if ($status == 'Closed' && $order->latestAmortizationPayed) {
-            $date =  $order->latestAmortizationPayed->actual_payment_date;
+            return $order->latestAmortizationPayed->actual_payment_date;
         }
         if ($status == 'Open' &&  $order->latestAmortizationNotPayed) {
-            $date = $order->latestAmortizationNotPayed->expected_payment_date;
+            return $order->latestAmortizationNotPayed->expected_payment_date;
         }
-        return $date;
+        //this is to consider situations where all amortization has been filled but repayment is not completely paid
+        if ($status == 'Open' && $order->latestAmortizationNotPayed == null && $order->latestAmortizationPayed) {
+            return $order->latestAmortizationPayed->actual_payment_date;
+        }
+        return $order->amortization[$order->amortization->count() - 1]->expected_payment_date;
     }
 
 
 
     public function loanClassification($days)
     {
+        // return "testing";
         if (in_array($days, range(0, 30))) {
             return 'Performing';
         }
@@ -205,13 +207,13 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
         }
         return 'N/A';
     }
-    public function limit(): int
-    {
-        return 500;
-    }
+    // public function limit(): int
+    // {
+    //     return 500;
+    // }
 
     public function chunkSize(): int
     {
-        return 500;
+        return 100;
     }
 }

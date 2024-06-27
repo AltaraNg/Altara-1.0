@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\NewOrder;
+use App\Models\NewOrder;
 use Illuminate\Foundation\Http\FormRequest;
 
 class NewOrderRequest extends FormRequest
@@ -34,5 +34,11 @@ class NewOrderRequest extends FormRequest
             }
             default:break;
         }
+    }
+    public function messages()
+    {
+        return [
+            'raffle_code.exists' => "This raffle code is invalid. Please try another"
+        ];
     }
 }

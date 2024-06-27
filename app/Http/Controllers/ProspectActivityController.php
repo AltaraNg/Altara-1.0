@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\ProspectActivity;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Services\ProspectActivityService;
 use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Filters\ProspectActivityFilter;
+use App\Models\ProspectActivity;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\ProspectActivityRepository;
+use App\Services\ProspectActivityService;
 
 
 class ProspectActivityController extends Controller

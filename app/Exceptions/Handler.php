@@ -14,6 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Exception;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -39,11 +40,11 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *=
-     * @param Exception $e
+     * @param Throwable $e
      * @return void=
-     * @throws Exception
+     * @throws Throwable
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
         parent::report($e);
     }
@@ -52,34 +53,43 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param Request $request
-     * @param Exception $e
+     * @param Throwable $e
      * @return Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         if ($e instanceof AException) {
             return ResponseHelper::createErrorResponse($e->getMessage(), $e->getCode(), [
                 'errors' => $e->getErrorMessages()
             ]);
-        } elseif ($e instanceof ValidationException) {//handle validation errors
+        } elseif ($e instanceof ValidationException) { //handle validation errors
             $data = ["errors" => $e->validator->getMessageBag()->getMessages()];
             return ResponseHelper::createErrorResponse(ResponseMessages::FAILED_VALIDATION, ResponseCodes::FAILED_VALIDATION, $data, ResponseCodes::UNPROCESSABLE_ENTITY);
         } elseif ($e instanceof ModelNotFoundException) {
             return ResponseHelper::createErrorResponse(
-                ResponseMessages::RESOURCE_NOT_FOUND, ResponseCodes::RESOURCE_NOT_FOUND
+                ResponseMessages::RESOURCE_NOT_FOUND,
+                ResponseCodes::RESOURCE_NOT_FOUND
             );
         } elseif ($e instanceof MethodNotAllowedHttpException) {
             return ResponseHelper::createErrorResponse(
-                ResponseMessages::ROUTE_NOT_FOUND, ResponseCodes::ROUTE_NOT_FOUND, [], 404
+                ResponseMessages::ROUTE_NOT_FOUND,
+                ResponseCodes::ROUTE_NOT_FOUND,
+                [],
+                404
             );
         } elseif ($e instanceof AuthenticationException) {
             return ResponseHelper::createErrorResponse($e->getMessage(), ResponseCodes::RESOURCE_AUTHORISATION_ERROR, [], ResponseCodes::UNAUTHENTICATED);
+        } elseif ($e instanceof InvalidApiKeyException) {
+          
+            return ResponseHelper::createErrorResponse($e->getMessage(), ResponseCodes::BAD_REQUEST, [], ResponseCodes::BAD_REQUEST);
         } else {
             return ResponseHelper::createErrorResponse(
-                ResponseMessages::EXCEPTION_THROWN, ResponseCodes::EXCEPTION_THROWN,
+                ResponseMessages::EXCEPTION_THROWN,
+                ResponseCodes::EXCEPTION_THROWN,
                 [
                     "error_message" => $e->getMessage()
-                ], 400
+                ],
+                400
             );
         }
     }
