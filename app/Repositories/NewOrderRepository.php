@@ -61,7 +61,7 @@ class NewOrderRepository extends Repository
 
         if ($raffleCode){
             $raffleCodeItem = RaffleDrawCode::where('code', $validated['raffle_code'])->first();
-            
+
             unset($validated['raffle_code']);
         }
 
@@ -82,7 +82,7 @@ class NewOrderRepository extends Repository
 
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
-            'order_date' => Carbon::now(),
+            'order_date' => $validated['order_date'] ?? Carbon::now(),
             'user_id' => $user_id,
             'branch_id' => $branch_id,
             'status_id' => $validated['repayment'] > 0 &&  $businessType->slug != 'ap_cash_n_carry' ? OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id : OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,

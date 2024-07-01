@@ -88,7 +88,7 @@ abstract class Amortization
     {
         $discount = $this->order->discount;
         if ($discount) {
-            return (float) $discount->percentage_discount;
+            return (float)$discount->percentage_discount;
         }
         return 0.0;
     }
@@ -139,8 +139,7 @@ abstract class Amortization
             throw new AException("Calculation of residual failed, cost price must be higher than down payment");
         }
         // dd($this->order->down_payment);
-
-        return (float) $price - $this->order->down_payment;
+        return (float)$price - $this->order->down_payment;
     }
 
     /**
@@ -175,16 +174,17 @@ abstract class Amortization
         $isSixMonth = $this->repaymentDurationName() == 'six_months';
         $repaymentCycleName = $this->repaymentCircleName();
         $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
+        $isCollection = $this->order->businessType->slug == 'collection';
 
 
+        if ($isCollection) {
+            return $this->getCollectionRepaymentPlans();
+        }
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC') && !$isSixMonth) {
             return $this->getSuperLoaPaymentPlans();
-        }
-        else if($useBNPLPercentage){
+        } else if ($useBNPLPercentage) {
             return $this->getDecliningPaymentPlans();
-        }
-        
-        else if (!$this->order->fixed_repayment || $IsRental) {
+        } else if (!$this->order->fixed_repayment || $IsRental) {
 
             if (
                 ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'bi_monthly') ||
@@ -194,7 +194,9 @@ abstract class Amortization
             }
 
             return $this->getDecliningPaymentPlans();
+
         } else {
+
             return $this->getNormalPaymentPlans();
         }
     }
@@ -384,7 +386,7 @@ abstract class Amortization
         $priceCalculator = $this->getPriceCalculator();
         $plan = [];
         if ($useBNPLPercentage || $is3MonthsDuration) {
-            
+
             $interestOnNormalSingleRepayment = ($priceCalculator->interest / 100) * $residual;
         } else {
             $relativePercentage = $this->getRelativePercentage($normalInstallment, $residual);
@@ -411,7 +413,7 @@ abstract class Amortization
         $percentages = $this->bnpl40PercentPercentage();
         $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
-        $residual = $this->getResidual();        
+        $residual = $this->getResidual();
         $discountValue = $this->getDiscountValue();
         $plan = [];
         $orderCount = $this->order->customer->new_orders->count();
@@ -500,6 +502,53 @@ abstract class Amortization
 
 
         return $repayments;
+    }
+
+    private function getCollectionRepaymentPlans(): array
+    {
+        $plan = [];
+        $payments = [];
+        $totalAmount = $this->order->repayment;
+        $useFloat = is_float($totalAmount);
+
+        if ($useFloat) {
+            $basePayment = floor($totalAmount / $this->repaymentCount() * 100) / 100;
+            $remainder = round(($totalAmount - ($basePayment * $this->repaymentCount())), 2);
+        } else {
+            $basePayment = intdiv($totalAmount, $this->repaymentCount());
+            $remainder = $totalAmount % $this->repaymentCount();
+        }
+
+
+        for ($i = 1; $i <= $this->repaymentCount(); $i++) {
+            if ($useFloat) {
+                if ($i <= $remainder * 100) {
+                    $plan[] = [
+                        'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                        'expected_amount' => $basePayment + 0.01
+                    ];
+                } else {
+                    $plan[] = [
+                        'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                        'expected_amount' => $basePayment
+                    ];
+                }
+            } else {
+                if ($i <= $remainder) {
+                    $plan[] = [
+                        'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                        'expected_amount' => $basePayment + 1
+                    ];
+                } else {
+                    $plan[] = [
+                        'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                        'expected_amount' => $basePayment
+                    ];
+                }
+            }
+            $payments[] = $plan[$i - 1]['expected_amount'];
+        }
+        return $plan;
     }
 
     private function getNormalPaymentPlans(): array

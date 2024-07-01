@@ -66,6 +66,7 @@ use App\Http\Controllers\PaystackAuthCodeController;
 use App\Http\Controllers\PaystackCustomersCodeController;
 use App\Http\Controllers\PersonalGuarantorController;
 use App\Http\Controllers\PriceCalculatorController;
+use App\Http\Controllers\ProcessClientCustomerController;
 use App\Http\Controllers\ProcessingFeeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTransferController;
@@ -271,6 +272,7 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('/update/credit/checker/status/{creditCheckerVerification}/loan', [MobileAppLoanController::class, 'updateCreditCheckerVerificationStatus']);
     Route::get('all/credit/checker/loan', [MobileAppLoanController::class, 'allCreditCheckerVerification']);
 
+    Route::post('upload/client/customer', [ProcessClientCustomerController::class, 'store']);
 });
 
 

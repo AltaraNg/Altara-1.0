@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BnplVendorProduct extends Model
 {
+    protected $guarded = [];
     //
     public function vendor(){
         return $this->belongsTo(User::class, 'vendor_id');
