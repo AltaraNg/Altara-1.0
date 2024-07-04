@@ -230,7 +230,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'employment_status' => $collection['customer_employment_status'],
             'area_address' => $collection['customer_home_address'],
             'cadd_addinfo' => $collection['customer_work_address'],
-            'comp_area' => $collection['customer_work_address'],
+            'comp_area' => $collection['customer_work_address'] ?? 'N/A',
             'date_of_birth' => $collection['customer_date_of_birth'],
             'add_addinfo_description' => $collection['nearest_landmark'],
             'registration_channel' => 'collection_upload',
