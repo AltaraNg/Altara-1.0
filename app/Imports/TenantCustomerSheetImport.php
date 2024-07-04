@@ -366,7 +366,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             "down_payment_rate_id" => $downpaymentRate->id,
             "financed_by" => $this->tenant->name,
             "product_price" => $collection['product_amount'],
-            "fixed_repayment" => $collection['amortization'],
+            "fixed_repayment" => $collection['amortization'] ?? null,
             "cost_price" => $product->retail,
             'custom_order_number' => $collection['loan_id'],
             "order_date" => Carbon::parse($collection['loan_date'])->format('Y-m-d'),
