@@ -85,6 +85,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
                 'gender' => 'unknown',
                 'referee_1' => 'unknown',
                 'referee_2' => 'unknown',
+                'comp_area' => 'unknown',
                 'referee_1_phone_no' => 'unknown',
                 'referee_2_phone_no' => 'unknown',
                 'date_of_birth' => 'unknown',
