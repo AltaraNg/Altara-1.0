@@ -105,7 +105,8 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                     ],
                 );
                 $customerModelData = $this->customerData($collection, $branches, $employee);
-                $customerModelData = $customerModelData + $this->setNotNullableFields();
+                $customerModelData = array_merge($this->setNotNullableFields(), $customerModelData);
+//                dd($customerModelData);
                 $customer = Customer::query()->firstOrCreate(['telephone' => $customerModelData['telephone']], $customerModelData);
                 $customer_id = $customer->id;
                 $guarantorsModelsData = $this->guarantorsData($collection, $customer_id, $employee);
@@ -145,6 +146,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'customer_phone_number' => ['required', 'string', 'max:11'],
             'customer_home_address' => ['required', 'string', 'max:200'],
             'customer_work_address' => ['nullable', 'string', 'max:200'],
+            'customer_date_of_birth' => ['nullable', 'date'],
             'customer_employment_status' => ['nullable', 'string', 'max:200'],
             'customer_occupation' => ['nullable', 'string', 'max:200'],
             'customer_gender' => ['required', 'string', 'max:200'],
@@ -229,6 +231,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'area_address' => $collection['customer_home_address'],
             'cadd_addinfo' => $collection['customer_work_address'],
             'comp_area' => $collection['customer_work_address'],
+            'date_of_birth' => $collection['customer_date_of_birth'],
             'add_addinfo_description' => $collection['nearest_landmark'],
             'registration_channel' => 'collection_upload',
             'bvn' => $collection['customer_bvn'],
