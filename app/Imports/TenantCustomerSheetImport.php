@@ -104,6 +104,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                         'vendor_id' => $user->id,
                     ],
                 );
+
                 $customerModelData = $this->customerData($collection, $branches, $employee);
                 $customerModelData = array_merge($this->setNotNullableFields(), $customerModelData);
 //                dd($customerModelData);
@@ -124,7 +125,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                     $repaymentCycles,
                     $downpaymentRate
                 );
-
+                dd($orderModelData);
                 $this->newOrderRepository->store($orderModelData);
                 DB::commit();
             }
@@ -231,7 +232,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'area_address' => $collection['customer_home_address'],
             'cadd_addinfo' => $collection['customer_work_address'],
             'comp_area' => $collection['customer_work_address'] ?? 'N/A',
-            'date_of_birth' => $collection['customer_date_of_birth'],
+            'date_of_birth' => $collection['customer_date_of_birth'] ?? null,
             'add_addinfo_description' => $collection['nearest_landmark'],
             'registration_channel' => 'collection_upload',
             'bvn' => $collection['customer_bvn'],
@@ -364,7 +365,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             "repayment" => $collection['amount_owed'],
             "down_payment" => $collection['amount_paid'],
             "down_payment_rate_id" => $downpaymentRate->id,
-            "financed_by" => $this->tenant->name,
+            "financed_by" => NewOrder::COLLECTION_CLIENT,
             "product_price" => $collection['product_amount'],
             "fixed_repayment" => $collection['amortization'] ?? null,
             "cost_price" => $product->retail,
