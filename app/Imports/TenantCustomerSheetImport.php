@@ -35,9 +35,10 @@ use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmptyRows, WithHeadings, WithHeadingRow, WithColumnLimit, WithLimit, WithChunkReading
+class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEmptyRows, WithHeadings, WithHeadingRow, WithColumnLimit, WithLimit, WithChunkReading
 {
     use RemembersRowNumber;
+
     public Tenant $tenant;
     public string $employee_id;
     public NewOrderRepository $newOrderRepository;
@@ -61,23 +62,23 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
             $orderType = OrderType::query()->firstOrCreate(['name' => 'Collection'], ['name' => 'Collection']);
             $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
             $saleCategory = SalesCategory::query()->where('name', 'Repossesion Sale')->first();
-            $businessType =  BusinessType::query()->firstOrCreate(['name' => 'Collection', 'slug' => 'collection'], ['name' => 'Collection', 'slug' => 'collection']);
+            $businessType = BusinessType::query()->firstOrCreate(['name' => 'Collection', 'slug' => 'collection'], ['name' => 'Collection', 'slug' => 'collection']);
             $repaymentDurations = RepaymentDuration::query()->get();
             $repaymentCycles = RepaymentCycle::query()->get();
             $downpaymentRate = DownPaymentRate::query()->where('percent', 0)->first();
-            $tenantEmail  = $this->tenant->slug . ' '. $this->tenant->id;
+            $tenantEmail = $this->tenant->slug . ' ' . $this->tenant->id;
             $tenantEmail = str_replace(' ', '_', $tenantEmail);
             $tenantEmail = strtolower($tenantEmail);
             $user = User::query()->firstOrCreate([
                 'email' => $tenantEmail,
                 'tenant_id' => $this->tenant->id,
             ], [
-                'staff_id' => 'TNT/' .  $this->tenant->id,
-                'full_name' =>  $this->tenant->name,
+                'staff_id' => 'TNT/' . $this->tenant->id,
+                'full_name' => $this->tenant->name,
                 'date_of_appointment' => Carbon::now()->format('Y-m-d'),
                 'status' => 'inactive',
                 'category' => 'contract',
-                'phone_number' => 'TNT-' .$this->tenant->id,
+                'phone_number' => 'TNT-' . $this->tenant->id,
                 'highest_qualification' => 'unknown',
                 'password' => Hash::make('password'),
                 'portal_access' => false,
@@ -85,7 +86,6 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
                 'gender' => 'unknown',
                 'referee_1' => 'unknown',
                 'referee_2' => 'unknown',
-                'comp_area' => 'unknown',
                 'referee_1_phone_no' => 'unknown',
                 'referee_2_phone_no' => 'unknown',
                 'date_of_birth' => 'unknown',
@@ -105,11 +105,12 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
                     ],
                 );
                 $customerModelData = $this->customerData($collection, $branches, $employee);
-                $customer =  Customer::query()->firstOrCreate(['telephone' => $customerModelData['telephone']], $customerModelData);
-                $customer_id =  $customer->id;
+                $customerModelData = $customerModelData + $this->setNotNullableFields();
+                $customer = Customer::query()->firstOrCreate(['telephone' => $customerModelData['telephone']], $customerModelData);
+                $customer_id = $customer->id;
                 $guarantorsModelsData = $this->guarantorsData($collection, $customer_id, $employee);
-                foreach ($guarantorsModelsData as $guarantorModelData){
-                    Guarantor::query()->updateOrCreate(['customer_id' => $guarantorModelData['customer_id'], 'phone_number' => $guarantorModelData['phone_number']],$guarantorModelData);
+                foreach ($guarantorsModelsData as $guarantorModelData) {
+                    Guarantor::query()->updateOrCreate(['customer_id' => $guarantorModelData['customer_id'], 'phone_number' => $guarantorModelData['phone_number']], $guarantorModelData);
                 }
                 $orderModelData = $this->orderData(
                     $collection,
@@ -126,10 +127,11 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
                 $this->newOrderRepository->store($orderModelData);
                 DB::commit();
             }
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             Log::error($exception->getMessage());
             DB::rollBack();
-            dd($exception, $this->getRowNumber());
+//            dd($exception, $this->getRowNumber());
+            throw new \Exception($exception->getMessage());
         }
     }
 
@@ -147,13 +149,13 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
             'customer_occupation' => ['nullable', 'string', 'max:200'],
             'customer_gender' => ['required', 'string', 'max:200'],
             'other_phone_numbers' => ['nullable', 'string', 'max:200'],
-            'first_guarantor_first_name' => ['nullable', 'required_with:first_guarantor_last_name,first_guarantor_phone','string', 'max:200'],
+            'first_guarantor_first_name' => ['nullable', 'required_with:first_guarantor_last_name,first_guarantor_phone', 'string', 'max:200'],
             'first_guarantor_last_name' => ['nullable', 'required_with:first_guarantor_first_name,first_guarantor_phone', 'string', 'max:200'],
-            'first_guarantor_phone' => ['nullable','required_with:first_guarantor_first_name,first_guarantor_last_name', 'string', 'max:11'],
+            'first_guarantor_phone' => ['nullable', 'required_with:first_guarantor_first_name,first_guarantor_last_name', 'string', 'max:11'],
             'first_guarantor_address' => ['nullable', 'string', 'max:200'],
             'second_guarantor_first_name' => ['nullable', 'required_with:second_guarantor_last_name,second_guarantor_phone', 'string', 'max:200'],
-            'second_guarantor_last_name' => ['nullable','required_with:second_guarantor_first_name,second_guarantor_phone', 'string', 'max:200'],
-            'second_guarantor_phone' => ['nullable','required_with:second_guarantor_first_name,second_guarantor_last_name', 'string', 'max:11'],
+            'second_guarantor_last_name' => ['nullable', 'required_with:second_guarantor_first_name,second_guarantor_phone', 'string', 'max:200'],
+            'second_guarantor_phone' => ['nullable', 'required_with:second_guarantor_first_name,second_guarantor_last_name', 'string', 'max:11'],
             'second_guarantor_address' => ['nullable', 'string', 'max:200'],
             'branch' => ['required', 'string', 'max:200'],
             'work_address' => ['nullable', 'string', 'max:200'],
@@ -176,18 +178,18 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
     {
         return [
             'customer_first_name',
-            'customer_last_name' ,
+            'customer_last_name',
             'customer_phone_number',
             'house_address',
-            'guarantor_first_name' ,
-            'guarantor_last_name' ,
-            'guarantor_phone' ,
+            'guarantor_first_name',
+            'guarantor_last_name',
+            'guarantor_phone',
             'guarantor_address',
-            'branch' ,
-            'work_address' ,
+            'branch',
+            'work_address',
             'nearest_landmark',
             'local_government',
-            'city' ,
+            'city',
             'state',
             'product_name',
             'product_amount',
@@ -205,7 +207,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
 
     public function endColumn(): string
     {
-        return  'AT';
+        return 'AT';
     }
 
 
@@ -245,10 +247,49 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
             'nextofkin_relationship' => $collection['next_of_kin_relationship'],
 
 
-
         ];
     }
-    public function guarantorsData($collection, $customer_id, $employee) : array
+    private function setNotNullableFields()
+    {
+        return [
+            'registration_channel' => 'collection_upload',
+            'on_boarded' => true,
+            'add_street' => 'N/A',
+            'employee_name' => 'altara',
+            'add_nbstop' => 'N/A',
+            'add_houseno' => 'N/A',
+            'gender' => 'N/A',
+            'date_of_birth' => 'N/A',
+            'civil_status' => 'N/A',
+            'type_of_home' => 'N/A',
+            'no_of_rooms' => 'N/A',
+            'duration_of_residence' => 0,
+            'people_in_household' => 0,
+            'number_of_work' => 0,
+            'depend_on_you' => 0,
+            'level_of_education' => 'N/A',
+            'visit_hour_from' => 'N/A',
+            'visit_hour_to' => 'N/A',
+            'employment_status' => 'N/A',
+            'name_of_company_or_business' => 'N/A',
+            'cadd_nbstop' => 'N/A',
+            'company_city' => 'N/A',
+            'company_state' => 'N/A',
+            'company_telno' => 'N/A',
+            'days_of_work' => 'N/A',
+            'comp_street_name' => 'N/A',
+            'comp_house_no' => 'N/A',
+            'comp_area' => 'N/A',
+            'current_sal_or_business_income' => 'N/A',
+            'cvisit_hour_from' => 'N/A',
+            'cvisit_hour_to' => 'N/A',
+            'nextofkin_first_name' => 'N/A',
+            'nextofkin_middle_name'  => 'N/A',
+            'nextofkin_last_name' => 'N/A',
+            'nextofkin_telno' => 'N/A'
+        ];
+    }
+    public function guarantorsData($collection, $customer_id, $employee): array
     {
         $guarantorsModelData = [];
         if ($collection['first_guarantor_first_name'] && $collection['first_guarantor_last_name'] && $collection['first_guarantor_phone']) {
@@ -289,18 +330,18 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
         $collectionRepaymentCycle = $collection['repayment_cycle'];
         if ($collectionRepaymentCycle == 'daily' || $collectionRepaymentCycle == 'weekly') {
             $repaymentCycle = $repaymentCycles->where('name', 'bi_monthly')->first();
-        }else{
+        } else {
             $repaymentCycle = $repaymentCycles->where('name', $collectionRepaymentCycle)->first();
         }
 
         $collectionRepaymentDuration = $collection['payment_duration'];
         if ($collectionRepaymentDuration < 90) {
             $repaymentDuration = $repaymentDurations->where('value', 90)->first();
-        }elseif ($collectionRepaymentDuration < 180 ) {
+        } elseif ($collectionRepaymentDuration < 180) {
             $repaymentDuration = $repaymentDurations->where('value', 180)->first();
-        }elseif ($collectionRepaymentDuration < 270 ) {
+        } elseif ($collectionRepaymentDuration < 270) {
             $repaymentDuration = $repaymentDurations->where('value', 270)->first();
-        }else{
+        } else {
             $repaymentDuration = $repaymentDurations->where('value', 360)->first();
         }
 
@@ -336,6 +377,6 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation,SkipsEmp
 
     public function chunkSize(): int
     {
-       return 100;
+        return 100;
     }
 }
