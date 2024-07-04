@@ -65,7 +65,7 @@ class NewOrderRepository extends Repository
             unset($validated['raffle_code']);
         }
 
-        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL) {
+        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL || $data['financed_by'] == NewOrder::COLLECTION_CLIENT) {
             unset($validated['bnpl_vendor_product_id']);
         }
         if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
