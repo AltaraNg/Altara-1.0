@@ -42,7 +42,7 @@ class ProcessClientCustomerController extends Controller
                     $errorMessages[] = "Row $row: $error (Field: $attribute):";
                 }
             }
-            return  $this->sendError('Invalid import data', 412, $errorMessages, 412);
+            return $this->sendError('Invalid import data', 412, $errorMessages, 412);
         }
 
 
