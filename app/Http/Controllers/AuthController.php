@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PasswordResets;
 use App\Models\User;
 use App\Repositories\AuthRepository;
-use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Validator;
 
@@ -31,7 +31,7 @@ class AuthController extends Controller
     {
         $message = 'Check your login details and try again!';
         $user = User::where('staff_id', $request->staff_id)->first();
-        
+
         if (!$user) return response()->json([
             'staff_id' => ['The combination does not exist in our record!'],
             'message' => $message
@@ -67,6 +67,44 @@ class AuthController extends Controller
         }
     }
 
+    public function clientLogin(Request $request)
+    {
+        $message = 'Check your login details and try again!';
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) return response()->json([
+            'email' => ['The combination does not exist in our record!'],
+            'message' => $message
+        ], 404);
+
+        if ($user->portal_access === 1) {
+
+            if ($user && Hash::check($request->password, $user->password)) {
+                $user->api_token = Str::random(60);
+                $user->save();
+                return response()->json([
+                    'user_id' => $user->id,
+                    'auth' => true,
+                    'role' => $user->role_id,
+                    'api_token' => $user->api_token,
+                    'user_name' => $user->full_name,
+                    'portal_access' => $user->portal_access,
+                    'tenant' => $user->tenant,
+                    'message' => 'You have successfully logged in'
+                ], 200);
+            }
+            return response()->json([
+                'staff_id' => ['Provided credentials does not match'],
+                'message' => $message
+            ], 401);
+        } else {
+            return response()->json([
+                'authenticated' => false,
+                'message' => 'You are not authorized to access this portal!'
+            ], 403);
+        }
+    }
+
     public function logout(Request $request)
     {
         $user = $request->user();
@@ -76,7 +114,7 @@ class AuthController extends Controller
     }
     public function user(Request $request)
     {
-        $user = $request->user();   
+        $user = $request->user();
 
         $data = [
             'user_id' => $user->id,
@@ -88,7 +126,7 @@ class AuthController extends Controller
             'tenant' => $user->tenant,
             'in_house' => $user->tenant_id == 1,
         ];
-        
+
         return $this->sendSuccess(['user ' => $data]);
     }
 

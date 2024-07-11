@@ -65,12 +65,12 @@ class NewOrderRepository extends Repository
             unset($validated['raffle_code']);
         }
 
-        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL || $data['financed_by'] == NewOrder::COLLECTION_CLIENT) {
+        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL && $data['financed_by'] != NewOrder::COLLECTION_CLIENT) {
             unset($validated['bnpl_vendor_product_id']);
         }
-        if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
+        if ($data['financed_by'] === NewOrder::ALTARA_BNPL || $data['financed_by'] == NewOrder::COLLECTION_CLIENT) {
             $user_id = $validated['owner_id'];
-            $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id;
+            $branch_id = $data['branch_id'];
         } elseif ($data['financed_by'] === NewOrder::ALTARA_LOAN_APP) {
             $user_id = $validated['owner_id'];
             $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id ?? Branch::query()->where('name', 'Ikoyi')->first()->id;

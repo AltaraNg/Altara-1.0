@@ -37,7 +37,13 @@ class ClientOrderController extends Controller
             return OrderType::query()->where('name', 'Collection')->first();
         });
 
+
+
         $user = User::query()->where('id', $user->id)->first();
+
+
+
+
 
         $orders = $this->newOrderRepository->queryModel($newOrderFilter)
             ->where('business_type_id', $business_type->id)
