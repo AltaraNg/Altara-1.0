@@ -6,6 +6,7 @@ use App\BankAccount;
 use App\Helper\AutoCompleteSearchTrait;
 use App\Helper\DataViewer;
 use App\Helper\Scopes;
+use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,7 +19,7 @@ class Customer extends Model implements \OwenIt\Auditing\Contracts\Auditable
     /** this is a generic trait created to serve as a generic
      * scope for fetching and paginating the
      * model where it is called */
-    use DataViewer, Scopes, AutoCompleteSearchTrait, Notifiable, Auditable;
+    use DataViewer, Scopes, AutoCompleteSearchTrait, Notifiable, Auditable, Filterable;
 
     protected $guarded = [];
 

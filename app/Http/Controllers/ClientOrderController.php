@@ -38,17 +38,13 @@ class ClientOrderController extends Controller
         });
 
 
-
         $user = User::query()->where('id', $user->id)->first();
-
-
-
-
 
         $orders = $this->newOrderRepository->queryModel($newOrderFilter)
             ->where('business_type_id', $business_type->id)
             ->where('order_type_id', $order_type->id)
             ->where('owner_id', $user->id)
+            ->latest()
             ->paginate(\request('per_page') ?? 20);
         return $this->sendSuccess(['orders' => $orders], 'Orders retrieved successfully');
     }
