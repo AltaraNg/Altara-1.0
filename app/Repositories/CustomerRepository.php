@@ -26,4 +26,9 @@ class CustomerRepository extends Repository
     {
         return $this->model()::find($id);
     }
+
+    public function queryModel($filter)
+    {
+        return $this->model::filter($filter);
+    }
 }

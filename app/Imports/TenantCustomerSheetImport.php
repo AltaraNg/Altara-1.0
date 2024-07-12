@@ -18,6 +18,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Repositories\NewOrderRepository;
 use Carbon\Carbon;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +36,7 @@ use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEmptyRows, WithHeadings, WithHeadingRow, WithColumnLimit, WithLimit, WithChunkReading
+class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEmptyRows, WithHeadings, WithHeadingRow, WithColumnLimit, WithLimit, WithChunkReading, ShouldQueue
 {
     use RemembersRowNumber;
 
@@ -57,7 +58,8 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
     {
         try {
 
-            $branches = Branch::all();
+            $branches = Branch::query()->withoutGlobalScopes()->get();
+
             $employee = User::query()->where('staff_id', $this->employee_id)->first();
             $orderType = OrderType::query()->firstOrCreate(['name' => 'Collection'], ['name' => 'Collection']);
             $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
@@ -66,34 +68,10 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             $repaymentDurations = RepaymentDuration::query()->get();
             $repaymentCycles = RepaymentCycle::query()->get();
             $downpaymentRate = DownPaymentRate::query()->where('percent', 0)->first();
-            $tenantEmail = $this->tenant->slug . ' ' . $this->tenant->id;
-            $tenantEmail = str_replace(' ', '_', $tenantEmail);
-            $tenantEmail = strtolower($tenantEmail);
-            $user = User::query()->firstOrCreate([
-                'email' => $tenantEmail,
-                'tenant_id' => $this->tenant->id,
-            ], [
-                'staff_id' => 'TNT/' . $this->tenant->id,
-                'full_name' => $this->tenant->name,
-                'date_of_appointment' => Carbon::now()->format('Y-m-d'),
-                'status' => 'inactive',
-                'category' => 'contract',
-                'phone_number' => 'TNT-' . $this->tenant->id,
-                'highest_qualification' => 'unknown',
-                'password' => Hash::make('password'),
-                'portal_access' => false,
-                'address' => 'unknown',
-                'gender' => 'unknown',
-                'referee_1' => 'unknown',
-                'referee_2' => 'unknown',
-                'referee_1_phone_no' => 'unknown',
-                'referee_2_phone_no' => 'unknown',
-                'date_of_birth' => 'unknown',
-                'hr_id' => 1,
-                'nationality' => 'unknown',
-                'next_of_kin_name' => 'unknown',
-                'next_of_kin_phone_no' => 'unknown',
-            ]);
+
+            $user = User::query()->where('tenant_id', $this->tenant->id)->first();
+
+
             foreach ($collections as $collection) {
 
                 DB::beginTransaction();
@@ -104,16 +82,21 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                         'vendor_id' => $user->id,
                     ],
                 );
-
-                $customerModelData = $this->customerData($collection, $branches, $employee);
+                $branch =  (clone $branches)->where('name', $collection['branch'])->first();
+                if ($branch == null) {
+                    throw new \Exception('Invalid branch supplied: ' . $collection['branch']);
+                }
+                $customerModelData = $this->customerData($collection, $branch, $employee);
                 $customerModelData = array_merge($this->setNotNullableFields(), $customerModelData);
+
 //                dd($customerModelData);
-                $customer = Customer::query()->firstOrCreate(['telephone' => $customerModelData['telephone']], $customerModelData);
+                $customer = Customer::query()->firstOrCreate(['telephone' => $customerModelData['telephone'], 'tenant_id' => $customerModelData['tenant_id']], $customerModelData);
                 $customer_id = $customer->id;
                 $guarantorsModelsData = $this->guarantorsData($collection, $customer_id, $employee);
                 foreach ($guarantorsModelsData as $guarantorModelData) {
                     Guarantor::query()->updateOrCreate(['customer_id' => $guarantorModelData['customer_id'], 'phone_number' => $guarantorModelData['phone_number']], $guarantorModelData);
                 }
+
                 $orderModelData = $this->orderData(
                     $collection,
                     $orderType,
@@ -123,9 +106,11 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                     $customer_id,
                     $repaymentDurations,
                     $repaymentCycles,
-                    $downpaymentRate
+                    $downpaymentRate,
+                    $user,
+                    $branch
                 );
-//                dd($orderModelData);
+
                 $this->newOrderRepository->store($orderModelData);
                 DB::commit();
             }
@@ -133,7 +118,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             Log::error($exception->getMessage());
             DB::rollBack();
 //            dd($exception, $this->getRowNumber());
-            throw new \Exception($exception->getMessage());
+            throw $exception;
         }
     }
 
@@ -214,11 +199,11 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
     }
 
 
-    public function customerData($collection, $branches, $employee): array
+    public function customerData($collection, $branch, $employee): array
     {
         return [
             'tenant_id' => $this->tenant->id,
-            'branch_id' => $branches->where('name', $collection['branch'])->first()->id,
+            'branch_id' => $branch->id,
             'employee_id' => $employee->staff_id,
             'user_id' => $employee->id,
             'date_of_registration' => Carbon::now()->format('Y-m-d'),
@@ -328,7 +313,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
     }
 
 
-    public function orderData($collection, $orderType, $product, $businessType, $saleCategory, $customer_id, $repaymentDurations, $repaymentCycles, $downpaymentRate): array
+    public function orderData($collection, $orderType, $product, $businessType, $saleCategory, $customer_id, $repaymentDurations, $repaymentCycles, $downpaymentRate, $user, $branch): array
     {
         // $businessType = BusinessType::query()->where('slug', 'ap_products')->first();
         $collectionRepaymentCycle = $collection['repayment_cycle'];
@@ -353,8 +338,10 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             "bnpl_vendor_product_id" => $product->id,
             'business_type_id' => $businessType->id,
             "customer_id" => $customer_id,
+            "branch_id" => $branch->id,
             "bank_id" => 1,
-            "owner_id" => 1,
+            "owner_id" => $user->id,
+            "tenant_id" => $user->tenant_id,
             "inventory_id" => 2,
             "payment_gateway_id" => 1,
             "payment_method_id" => 1,

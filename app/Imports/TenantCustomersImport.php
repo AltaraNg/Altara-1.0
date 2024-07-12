@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Tenant;
 use App\Repositories\NewOrderRepository;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithConditionalSheets;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
