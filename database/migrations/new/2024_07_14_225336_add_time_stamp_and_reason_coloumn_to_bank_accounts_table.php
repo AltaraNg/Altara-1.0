@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cache', function (Blueprint $table) {
-            $table->string('key')->unique();
-            $table->text('value');
-            $table->integer('expiration');
+        Schema::table('bank_accounts', function (Blueprint $table) {
+            $table->text('reason')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cache');
+        Schema::table('bank_accounts', function (Blueprint $table) {
+            //
+        });
     }
 };

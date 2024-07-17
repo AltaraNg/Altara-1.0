@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cache', function (Blueprint $table) {
-            $table->string('key')->unique();
-            $table->text('value');
-            $table->integer('expiration');
+        Schema::disableForeignKeyConstraints();
+        Schema::table('banks', function (Blueprint $table) {
+            $table->unsignedInteger('id', true)->change();
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -27,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cache');
+        Schema::table('banks', function (Blueprint $table) {
+            //
+        });
     }
 };

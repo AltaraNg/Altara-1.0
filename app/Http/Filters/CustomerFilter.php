@@ -19,6 +19,5 @@ class CustomerFilter extends BaseFilter
         $this->builder->where('first_name', 'like', '%' . $name . '%')
             ->orWhere('middle_name', 'like', '%' . $name . '%')
             ->orWhere('last_name', 'like', '%' . $name . '%');
-
     }
 }
