@@ -62,5 +62,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'bnpl.admin.access' => \App\Http\Middleware\BnlpAdminAccessMiddleware::class,
         'mobile.app.access' => \App\Http\Middleware\MobileAppMiddleware::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }

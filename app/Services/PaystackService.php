@@ -9,10 +9,131 @@ use App\Models\Amortization;
 use App\Models\GuarantorPaystackAuthCode;
 use App\Models\LateFee;
 use App\Models\PriceCalculator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PaystackService implements PaymentGatewayInterface
 {
 
+
+    public function generateTemporaryAccountNumber($amount, $email, $expiration = 1)
+    {
+        $expiresAt = now()->addHours($expiration);
+        $data = [
+            'amount' => $amount * 100,
+            'email' => $email,
+            'bank_transfer' => [
+                "account_expires_at" => $expiresAt->toIso8601String(),
+            ],
+        ];
+//        dd($data);
+        $response = Http::withUrlParameters([
+            'endpoint' => config('paystack.paymentUrl'),
+        ])->withHeaders(["Authorization" => "Bearer " . config('paystack.secretKey')])
+            ->post('{+endpoint}/charge', $data);
+        if (!$response->json('status')) {
+            return [
+                'success' => false,
+                'message' => $response->json('message'),
+            ];
+        }
+        return [
+            'success' => true,
+            'message' => $response->json('message'),
+            'data' => $response->json('data'),
+        ];
+    }
+
+
+    public function initiatKyc($account_number, $bvn, $bank_code, $first_name, $last_name, $customer_code)
+    {
+        $identificationData = [
+            "country" => "NG",
+            "type" => "bank_account",
+        ];
+
+        if (config('app.env') != 'production') {
+            $identificationData = $identificationData + [
+                    "account_number" => "0111111111",
+                    "bvn" => "22222222222",
+                    "bank_code" => "007",
+                    "first_name" => "Uchenna",
+                    "last_name" => "Okoro",
+                ];
+        } else {
+            $identificationData = [
+                "account_number" => $account_number,
+                "bvn" => $bvn,
+                "bank_code" => $bank_code,
+                "first_name" => $first_name,
+                "last_name" => $last_name,
+            ];
+        }
+        $response = Http::withUrlParameters([
+            'endpoint' => config('paystack.paymentUrl'),
+            'customer_code' => $customer_code,
+        ])->withHeaders(["Authorization" => "Bearer " . config('paystack.secretKey')])
+            ->post('{+endpoint}/customer/{customer_code}/identification', $identificationData);
+        if ($response->json('message') != "Customer Identification in progress") {
+            $message = $response->json('message');
+            if (str_contains($message, 'BVN')) {
+                $message = "BVN cannot be more 11 characters than";
+            } elseif (str_contains($message, 'Customer already validated')) {
+                $message = "Kyc has already been processed";
+            } else {
+                $message = "An error occurred while trying to validate the bank account, try again later";
+            }
+            return $message;
+        }
+        return null;
+    }
+
+    public function createCustomer($email, $firstName, $lastName, $phone)
+    {
+        $response = Http::withUrlParameters([
+            'endpoint' => config('paystack.paymentUrl'),
+        ])->withHeaders(["Authorization" => "Bearer " . config('paystack.secretKey')])
+            ->post('{+endpoint}/customer', [
+                "email" => $email,
+                "first_name" => $firstName,
+                "last_name" => $lastName,
+                "phone" => $phone,
+            ]);
+        if ($response->status() != 200) {
+            Log::error($response->json());
+            return null;
+        }
+        return $response;
+    }
+
+    public function resolveAccountNumber($account_number, $bank_code)
+    {
+        $response = Http::withUrlParameters([
+            'endpoint' => config('paystack.paymentUrl'),
+        ])->withQueryParameters([
+            'account_number' => $account_number,
+            'bank_code' => $bank_code,
+        ])->withHeaders(["Authorization" => "Bearer " . config('paystack.secretKey')])
+            ->get('{+endpoint}/bank/resolve');
+
+
+        if ($response->unprocessableEntity()) {
+            return [
+                'status' => "failed",
+                'message' => 'Could not resolve account name, ensure you supplied right account number and selected correct bank',
+                'data' => null
+            ];
+        }
+        $data = $response->json('data');
+        return [
+            'status' => "success",
+            'message' => 'Account number resolved',
+            'data' => [
+                "account_number" => $data['account_number'],
+                "account_name" => $data['account_name'],
+            ]
+        ];
+    }
 
     public function charge(Amortization $amortization)
     {
@@ -43,6 +164,7 @@ class PaystackService implements PaymentGatewayInterface
         //execute post
         return json_decode(curl_exec($ch));
     }
+
     public function chargeLateFee(LateFee $lateFee)
     {
         $url = config('app.paystack_charge_url');
@@ -76,12 +198,12 @@ class PaystackService implements PaymentGatewayInterface
     {
         $url = config('app.paystack_charge_url');
         $fields = [
-            'authorization_code' => $account == 0 ? $this->getAuthCode($amortization): GuarantorPaystackAuthCode::where('id', $account)->first()->auth_code,
+            'authorization_code' => $account == 0 ? $this->getAuthCode($amortization) : GuarantorPaystackAuthCode::where('id', $account)->first()->auth_code,
             'email' => $account == 0 ? $this->getEmail($amortization) : GuarantorPaystackAuthCode::where('id', $account)->first()->guarantor_email,
             'amount' => $amount * 100,
             'subaccount' => $this->getBankCode($amortization)
         ];
-        return  $this->makePostRequest($url, $fields);
+        return $this->makePostRequest($url, $fields);
     }
 
     private function getAuthCode($amortization)
@@ -98,14 +220,15 @@ class PaystackService implements PaymentGatewayInterface
     {
         return ($amortization->expected_amount - $amortization->actual_amount) * 100;
     }
+
     public function getLateFee($order)
     {
         $amortizationList = $order->amortization;
         $totalPaid = $this->getTotalPaidRepayment($amortizationList);
         $expectedRepayment = $this->getTotalExpected($amortizationList);
-        $debt =  $expectedRepayment - $totalPaid;
-        $interest = PriceCalculator::where([['business_type_id','=', $order->business_type_id], ['down_payment_rate_id', $order->down_payment_rate_id], ['repayment_duration_id', $order->repayment_duration_id]])->first();
-        if ($interest == null){
+        $debt = $expectedRepayment - $totalPaid;
+        $interest = PriceCalculator::where([['business_type_id', '=', $order->business_type_id], ['down_payment_rate_id', $order->down_payment_rate_id], ['repayment_duration_id', $order->repayment_duration_id]])->first();
+        if ($interest == null) {
             return 'invalid';
         }
         return $debt * $interest->interest / 100;
@@ -115,6 +238,7 @@ class PaystackService implements PaymentGatewayInterface
     {
         return $amortization->new_orders->customer->email;
     }
+
     private function getTotalPaidRepayment($a)
     {
         $repayment = ($a->toArray());
@@ -135,6 +259,7 @@ class PaystackService implements PaymentGatewayInterface
     {
         return $item['actual_amount'];
     }
+
     public function extractExpected($item)
     {
         return $item['expected_amount'];

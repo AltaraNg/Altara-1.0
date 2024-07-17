@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\CustomerFilter;
 use App\Repositories\CustomerRepository;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 
 class ClientCustomerController extends Controller

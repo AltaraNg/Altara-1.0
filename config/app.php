@@ -57,6 +57,8 @@ return [
 
     'frontend_url' => env('FRONTEND_URL', 'https://play.altaracredit.com/'),
 
+    'client_frontend_url' => env('FRONTEND_URL', 'https://play.altaracredit.com/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -110,11 +112,11 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
-    'technology_email' => env('APP_TECHNOLOGY_MAIL', 'naderounmu@altaracredit.com'),
+    'technology_email' => env('APP_TECHNOLOGY_MAIL', 'tadewuyi@altaracredit.com'),
     'paystack_secret' => env('PAYSTACK_SECRET', 'sk_test_7d017f0c7ebcbefa33d35d9c94ca1f61dfe7d53c'),
     'paystack_charge_url' => env('PAYSTACK_CHARGE_URL', 'https://api.paystack.co/transaction/charge_authorization'),
-    'admin_email' => env('APP_ADMIN_MAIL', 'naderounmu@altaracredit.com'),
-    'operations_email' => env('APP_OPERATION_MAIL', ['email' => 'naderounmu@altaracredit.com']),
+    'admin_email' => env('APP_ADMIN_MAIL', 'tadewuyi@altaracredit.com'),
+    'operations_email' => env('APP_OPERATION_MAIL', ['email' => 'tadewuyi@altaracredit.com']),
 
     /*
     |--------------------------------------------------------------------------

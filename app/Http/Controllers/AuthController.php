@@ -137,6 +137,15 @@ class AuthController extends Controller
         return response()->json(['data' => [], 'message' => 'Reset Email Successfully Sent'], 201);
     }
 
+    public function verifyEmail($token)
+    {
+       $response =  $this->authRepository->verifyEmail($token);
+       if (!$response) {
+           return  $this->sendError("Invalid token supplied", 400, [], 400);
+       }
+       return $this->sendSuccess([], "Email verified successfully");
+    }
+
     public function reset()
     {
         $data = $this->validate(request(), PasswordResets::$resetRules);

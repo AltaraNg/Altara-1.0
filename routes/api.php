@@ -102,6 +102,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/password/reset', [AuthController::class, 'sendResetLinkEmail']);
 Route::put('/password/reset', [AuthController::class, 'reset']);
+Route::get('/verify/email/{token}', [AuthController::class, 'verifyEmail']);
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('tenants', [TenantController::class, 'index']);
     Route::get('/auth/user', [AuthController::class, 'user']);
@@ -306,3 +307,6 @@ Route::middleware('mobile.app.access')->prefix('/mobile-app')->group(function ()
     Route::post('/amortization/preview', [MobileAppLoanController::class, 'previewAmortization']);
     Route::post('/create/loan', [MobileAppLoanController::class, 'createLoan']);
 });
+
+
+Route::post('paystack/webhook', [\App\Http\Controllers\ProcessPaystackWebhookControler::class, 'processPaystackWebhook']);

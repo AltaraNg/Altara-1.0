@@ -82,7 +82,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                         'vendor_id' => $user->id,
                     ],
                 );
-                $branch =  (clone $branches)->where('name', $collection['branch'])->first();
+                $branch = (clone $branches)->where('name', $collection['branch'])->first();
                 if ($branch == null) {
                     throw new \Exception('Invalid branch supplied: ' . $collection['branch']);
                 }
@@ -90,7 +90,12 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                 $customerModelData = array_merge($this->setNotNullableFields(), $customerModelData);
 
 //                dd($customerModelData);
-                $customer = Customer::query()->firstOrCreate(['telephone' => $customerModelData['telephone'], 'tenant_id' => $customerModelData['tenant_id']], $customerModelData);
+                $customer = Customer::query()->firstOrCreate([
+                    'telephone' => $customerModelData['telephone'],
+                    'tenant_id' => $customerModelData['tenant_id'],
+                    'custom_customer_id' => $collection['customer_id'],
+                ],
+                    $customerModelData);
                 $customer_id = $customer->id;
                 $guarantorsModelsData = $this->guarantorsData($collection, $customer_id, $employee);
                 foreach ($guarantorsModelsData as $guarantorModelData) {
@@ -223,7 +228,6 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'bvn' => $collection['customer_bvn'],
             'state' => $collection['state'],
             'city' => $collection['city'],
-            'custom_customer_id' => $collection['customer_id'],
             'other_phone_numbers' => $collection['other_phone_numbers'],
 
 
@@ -238,6 +242,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
 
         ];
     }
+
     private function setNotNullableFields()
     {
         return [
@@ -273,11 +278,12 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'cvisit_hour_from' => 'N/A',
             'cvisit_hour_to' => 'N/A',
             'nextofkin_first_name' => 'N/A',
-            'nextofkin_middle_name'  => 'N/A',
+            'nextofkin_middle_name' => 'N/A',
             'nextofkin_last_name' => 'N/A',
             'nextofkin_telno' => 'N/A'
         ];
     }
+
     public function guarantorsData($collection, $customer_id, $employee): array
     {
         $guarantorsModelData = [];
