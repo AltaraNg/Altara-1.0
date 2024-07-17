@@ -75,7 +75,7 @@ class AuthController extends Controller
         if (!$user) return response()->json([
             'email' => ['The combination does not exist in our record!'],
             'message' => $message
-        ], 404);
+        ], 401);
 
         if ($user->portal_access === 1) {
 
