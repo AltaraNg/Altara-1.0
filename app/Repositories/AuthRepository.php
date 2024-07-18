@@ -54,7 +54,7 @@ class AuthRepository extends Repository
         if (config('app.env') !== 'production') {
             $user = User::where('email', config('app.technology_email'))->first();
         }
-        $verificationLink = config('app.client_frontend_url')  . "verify/email". $token;
+        $verificationLink = config('app.client_frontend_url')  . "verify/email?token=". $token;
         $user->notify(new ClientEmailVerificationNotification($tenant, $verificationLink));
         return $response;
     }
@@ -71,7 +71,7 @@ class AuthRepository extends Repository
            return false;
        }
        $user->markEmailAsVerified();
-       $emailVerification->delete();
+//       $emailVerification->delete();
        return true;
     }
 
@@ -85,5 +85,15 @@ class AuthRepository extends Repository
         return response()->json(['data' => [], 'message' => 'Password reset Successful'], 200);
     }
 
+    public function changePassword($email, $passowrd)
+    {
+        $user = User::where('email', $email)->first();
+        if (!$user){
+            return false;
+        }
+        $user->password = bcrypt($passowrd);
+        $user->save();
+        return true;
+    }
 
 }

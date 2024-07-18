@@ -34,16 +34,26 @@ class PopulateBanksCommand extends Command
         ])->withHeaders(["Authorization" => "Bearer " . config('paystack.secretKey')])
             ->get('{+endpoint}/bank?country=nigeria');
         $banks = Bank::all();
-        foreach ($response->json('data') as $bank) {
-            $bank = Bank::query()->updateOrCreate(
-                [
-                    'name' => $bank['name'],
-                ],
-                [
-                    'code' => $bank['code'],
-                ]
-            );
-            $this->info("Created bank {$bank->name}");
+        foreach ($response->json('data') as $retrievedbank) {
+            $bank = Bank::query()->where('name', $retrievedbank['name'])->first();
+            if ($bank) {
+                $bank->update([
+                    'code' => $retrievedbank['code'],
+                ]);
+                $this->info("Updated bank {$bank->name}");
+            }else{
+                $bank = Bank::query()->updateOrCreate(
+                    [
+                        'name' => $retrievedbank['name'],
+                    ],
+                    [
+                        'code' => $retrievedbank['code'],
+                    ]
+                );
+                $this->info("Created bank {$bank->name}");
+            }
+
+
         }
         return Command::SUCCESS;
     }
