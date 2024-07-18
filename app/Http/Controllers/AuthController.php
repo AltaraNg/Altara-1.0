@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmailVerification;
 use App\Models\PasswordResets;
 use App\Models\User;
 use App\Repositories\AuthRepository;
@@ -75,7 +76,12 @@ class AuthController extends Controller
         if (!$user) return response()->json([
             'email' => ['The combination does not exist in our record!'],
             'message' => $message
-        ], 404);
+        ], 401);
+
+        if ($user->email_verified_at == null) return response()->json([
+            'email' => ['The combination does not exist in our record!'],
+            'message' => $message
+        ], 401);
 
         if ($user->portal_access === 1) {
 
@@ -112,6 +118,7 @@ class AuthController extends Controller
         $user->save();
         return response()->json(['logged_out' => true]);
     }
+
     public function user(Request $request)
     {
         $user = $request->user();
@@ -130,6 +137,25 @@ class AuthController extends Controller
         return $this->sendSuccess(['user ' => $data]);
     }
 
+    public function clientUser(Request $request)
+    {
+        $user = $request->user();
+        $tenant = $user->tenant()->with(['bankAccount'])->get();
+        $data = [
+            'user_id' => $user->id,
+            'auth' => true,
+            'user_name' => $user->full_name,
+            'portal_access' => $user->portal_access,
+            'branch_id' => $user->branch_id,
+            'tenant' => $tenant,
+            'in_house' => $user->tenant_id == 1,
+            'message' => 'You have successfully fetched profile',
+
+        ];
+
+        return $this->sendSuccess(['user ' => $data]);
+    }
+
     public function sendResetLinkEmail()
     {
         $data = $this->validate(request(), PasswordResets::$rules);
@@ -139,11 +165,11 @@ class AuthController extends Controller
 
     public function verifyEmail($token)
     {
-       $response =  $this->authRepository->verifyEmail($token);
-       if (!$response) {
-           return  $this->sendError("Invalid token supplied", 400, [], 400);
-       }
-       return $this->sendSuccess([], "Email verified successfully");
+        $response = $this->authRepository->verifyEmail($token);
+        if (!$response) {
+            return $this->sendError("Invalid token supplied", 400, [], 400);
+        }
+        return $this->sendSuccess([], "Email verified successfully");
     }
 
     public function reset()
@@ -164,5 +190,24 @@ class AuthController extends Controller
             'reset' => true,
             'password' => $gen_password
         ]);
+    }
+
+    public function setPasswordViaEmailToken()
+    {
+        $validatedData = $this->validate(request(), [
+            'token' => 'required',
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $emailToken = EmailVerification::query()->where('token', $validatedData['token'])->first();
+        if (!$emailToken) {
+            return $this->sendError("Invalid token supplied", 400, [], 400);
+        }
+        $response = $this->authRepository->changePassword($validatedData['email'], $validatedData['password']);
+        if (!$response) {
+            return $this->sendError("Invalid token supplied", 400, [], 400);
+        }
+        EmailVerification::query()->where('token', $validatedData['token'])->delete();
+        return $this->sendSuccess([], 'Password successfully set');
     }
 }

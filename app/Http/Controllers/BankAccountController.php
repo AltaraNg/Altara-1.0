@@ -128,4 +128,9 @@ class BankAccountController extends Controller
     }
 
 
+    public function listOfBanks()
+    {
+        $banks = Bank::query()->where('code', '<>', null)->get();
+        return $this->sendSuccess(['banks' => $banks], "Banks list");
+    }
 }

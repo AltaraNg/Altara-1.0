@@ -15,4 +15,8 @@ class Tenant extends Model implements Wallet, WalletFloat
 {
     use HasFactory, HasWalletFloat;
     protected $guarded = [];
+
+    public function bankAccount(){
+        return $this->belongsTo(BankAccount::class);
+    }
 }

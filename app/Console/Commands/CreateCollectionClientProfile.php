@@ -55,12 +55,12 @@ class CreateCollectionClientProfile extends Command
         if ($tenantPassword == null) {
             $tenantPassword = "password";
         }
-
-        $user = User::query()->firstOrCreate([
-            'email' => $tenantEmail,
+//        damola@yopmail.com  Damola Technologies
+        $user = User::query()->updateOrCreate([
             'tenant_id' => $tenant->id,
-        ], [
             'staff_id' => 'TNT/' . Carbon::now()->year . '/' . $tenant->id,
+        ], [
+            'email' => $tenantEmail,
             'full_name' => $tenant->name,
             'date_of_appointment' => Carbon::now()->format('Y-m-d'),
             'status' => 'inactive',

@@ -320,4 +320,14 @@ class NewOrderFilter extends BaseFilter
             $q->where('telephone', 'like', '%' . $phone . '%');
         });
     }
+
+    public function customOrderNumber(string $order_number)
+    {
+        $this->builder->where('new_orders.custom_order_number', $order_number);
+    }
+
+    public function customCustomerId(string $order_number)
+    {
+        $this->builder->where('customers.custom_customer_id', $order_number);
+    }
 }

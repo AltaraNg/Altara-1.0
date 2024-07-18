@@ -108,13 +108,11 @@ class PaystackService implements PaymentGatewayInterface
 
     public function resolveAccountNumber($account_number, $bank_code)
     {
+        $params = "?account_number=$account_number&bank_code=$bank_code";
         $response = Http::withUrlParameters([
             'endpoint' => config('paystack.paymentUrl'),
-        ])->withQueryParameters([
-            'account_number' => $account_number,
-            'bank_code' => $bank_code,
         ])->withHeaders(["Authorization" => "Bearer " . config('paystack.secretKey')])
-            ->get('{+endpoint}/bank/resolve');
+            ->get('{+endpoint}/bank/resolve' . $params);
 
 
         if ($response->unprocessableEntity()) {
