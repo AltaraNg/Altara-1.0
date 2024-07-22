@@ -203,7 +203,7 @@ class AuthController extends Controller
         if (!$emailToken) {
             return $this->sendError("Invalid token supplied", 400, [], 400);
         }
-        $response = $this->authRepository->changePassword($validatedData['email'], $validatedData['password']);
+        $response = $this->authRepository->changePassword($emailToken->email, $validatedData['password']);
         if (!$response) {
             return $this->sendError("Invalid token supplied", 400, [], 400);
         }
