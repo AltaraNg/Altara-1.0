@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankAccount;
 use App\Models\EmailVerification;
 use App\Models\PasswordResets;
 use App\Models\User;
@@ -140,7 +141,8 @@ class AuthController extends Controller
     public function clientUser(Request $request)
     {
         $user = $request->user();
-        $tenant = $user->tenant()->with(['bankAccount'])->get();
+        $tenant = $user->tenant;
+        $tenant->bank_account = BankAccount::query()->where('tenant_id', $user->tenant_id)->with('bank')->first();
         $data = [
             'user_id' => $user->id,
             'auth' => true,
