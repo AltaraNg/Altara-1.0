@@ -33,7 +33,7 @@ class BankAccountController extends Controller
 
 
         if ($response['status'] == 'failed') {
-            return $this->respondError($response['message']);
+            return $this->sendError($response['message'], 400, [], 400);
         }
         $data = $response['data'];
 
