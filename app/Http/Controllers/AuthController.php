@@ -74,6 +74,7 @@ class AuthController extends Controller
         $message = 'Check your login details and try again!';
         $user = User::where('email', $request->email)->first();
 
+
         if (!$user) return response()->json([
             'email' => ['The combination does not exist in our record!'],
             'message' => $message
@@ -165,6 +166,24 @@ class AuthController extends Controller
         return response()->json(['data' => [], 'message' => 'Reset Email Successfully Sent'], 201);
     }
 
+    public function resendEmailVerificationTokenClient(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email|exists:users,email'
+        ]);
+        $user = User::query()->where('email', $request->input('email'))->first();
+        if (!$user) return response()->json([
+            'message' => 'The email does not exist in our record!',
+        ]);
+
+        if ($user->hasVerifiedEmail()) return response()->json([
+            'message' => 'The email has already been verified!',
+        ]);
+
+        $this->authRepository->sendClientEmailVerification($user->tenant, $user);
+        return response()->json(['data' => [], 'message' => 'Email Verification Token Successfully Sent'], 201);
+    }
+
     public function verifyEmail($token)
     {
         $response = $this->authRepository->verifyEmail($token);
@@ -206,6 +225,7 @@ class AuthController extends Controller
             return $this->sendError("Invalid token supplied", 400, [], 400);
         }
         $response = $this->authRepository->changePassword($emailToken->email, $validatedData['password']);
+
         if (!$response) {
             return $this->sendError("Invalid token supplied", 400, [], 400);
         }

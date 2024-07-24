@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'clientLogin']);
 Route::post('set/password/via/email/token', [AuthController::class, 'setPasswordViaEmailToken']);
+Route::post('resend/email/token', [AuthController::class, 'resendEmailVerificationTokenClient']);
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/auth/user', [AuthController::class, 'clientUser']);
     Route::get('orders', [\App\Http\Controllers\ClientOrderController::class, 'index']);
