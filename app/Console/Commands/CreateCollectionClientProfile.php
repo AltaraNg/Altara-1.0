@@ -68,7 +68,7 @@ class CreateCollectionClientProfile extends Command
             'phone_number' => 'TNT-' . $tenant->id,
             'highest_qualification' => 'unknown',
             'password' => Hash::make($tenantPassword ?? 'password'),
-            'portal_access' => false,
+            'portal_access' => true,
             'address' => 'unknown',
             'gender' => 'unknown',
             'referee_1' => 'unknown',

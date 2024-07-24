@@ -91,6 +91,9 @@ class AuthRepository extends Repository
         if (!$user){
             return false;
         }
+        if (!$user->email_verified_at) {
+            return false;
+        }
         $user->password = bcrypt($passowrd);
         $user->save();
         return true;
