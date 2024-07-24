@@ -123,7 +123,7 @@ class BankAccountController extends Controller
     public function show()
     {
         $user = auth()->user();
-        $bankAccount = BankAccount::query()->where('tenant_id', $user->tenant_id)->first();
+        $bankAccount = BankAccount::query()->where('tenant_id', $user->tenant_id)->with('bank')->first();
         return $this->sendSuccess(['bankAccount' => $bankAccount], "Bank account details");
     }
 
