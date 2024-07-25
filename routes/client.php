@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\ClientDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'clientLogin']);
@@ -15,5 +16,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('initiate/kyc/process', [BankAccountController::class, 'initiateKyc']);
     Route::get('bank/account', [BankAccountController::class, 'show']);
     Route::get('supported/banks', [BankAccountController::class, 'listOfBanks']);
+    Route::get('dashboard', [ClientDashboardController::class, 'dashboard']);
 });
 
