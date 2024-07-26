@@ -81,36 +81,36 @@ class AuthController extends Controller
         ], 401);
 
         if ($user->email_verified_at == null) return response()->json([
-            'email' => ['The combination does not exist in our record!'],
-            'message' => $message
+            'email' => ['Email has not yet been verified!'],
+            'message' => 'Email has not yet been verified!'
         ], 401);
 
-        if ($user->portal_access === 1) {
-
-            if ($user && Hash::check($request->password, $user->password)) {
-                $user->api_token = Str::random(60);
-                $user->save();
-                return response()->json([
-                    'user_id' => $user->id,
-                    'auth' => true,
-                    'role' => $user->role_id,
-                    'api_token' => $user->api_token,
-                    'user_name' => $user->full_name,
-                    'portal_access' => $user->portal_access,
-                    'tenant' => $user->tenant,
-                    'message' => 'You have successfully logged in'
-                ], 200);
-            }
-            return response()->json([
-                'staff_id' => ['Provided credentials does not match'],
-                'message' => $message
-            ], 401);
-        } else {
+        if ($user->portal_access == false) {
             return response()->json([
                 'authenticated' => false,
                 'message' => 'You are not authorized to access this portal!'
             ], 403);
         }
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            $user->api_token = Str::random(60);
+            $user->save();
+            return response()->json([
+                'user_id' => $user->id,
+                'auth' => true,
+                'role' => $user->role_id,
+                'api_token' => $user->api_token,
+                'user_name' => $user->full_name,
+                'portal_access' => $user->portal_access,
+                'tenant' => $user->tenant,
+                'message' => 'You have successfully logged in'
+            ], 200);
+        }
+        return response()->json([
+            'staff_id' => ['Provided credentials does not match'],
+            'message' => $message
+        ], 401);
+
     }
 
     public function logout(Request $request)
