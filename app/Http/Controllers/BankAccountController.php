@@ -92,12 +92,21 @@ class BankAccountController extends Controller
             $clientPaystackCode->customer_code,
         );
         if ($message != null) {
-            if (str_contains($message, 'BVN')) {
-                $message = "BVN cannot be more 11 characters than";
-            } elseif (str_contains($message, 'Customer already validated')) {
-                $message = "Kyc has already been processed";
-            } else {
-                $message = "An error occurred while trying to validate the bank account, try again later";
+            if ($message == "Kyc has already been processed"){
+                BankAccount::query()->updateOrCreate(
+                    [
+                        "tenant_id" => $user->tenant_id,
+                    ],
+                    [
+                        "first_name" => $validated['first_name'],
+                        "last_name" => $validated['last_name'],
+                        "account_number" => $validated['account_number'],
+                        "account_name" => $validated['account_name'],
+                        "kyc_status" => 'verified',
+                        "bvn" => $validated['bvn'],
+                        "bank_id" => $validated['bank_id'],
+                    ]
+                );
             }
             return $this->sendError($message, 400, [], 400);
         }

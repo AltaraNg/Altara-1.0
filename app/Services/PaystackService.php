@@ -81,6 +81,7 @@ class PaystackService implements PaymentGatewayInterface
             } elseif (str_contains($message, 'Customer already validated')) {
                 $message = "Kyc has already been processed";
             } else {
+                Log::error($message);
                 $message = "An error occurred while trying to validate the bank account, try again later";
             }
             return $message;
