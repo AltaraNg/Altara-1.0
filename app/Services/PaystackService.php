@@ -107,6 +107,19 @@ class PaystackService implements PaymentGatewayInterface
         return $response;
     }
 
+    public function fetchCustomer($email_or_code)
+    {
+        $response = Http::withUrlParameters([
+            'endpoint' => config('paystack.paymentUrl'),
+        ])->withHeaders(["Authorization" => "Bearer " . config('paystack.secretKey')])
+            ->get('{+endpoint}/customer/' . $email_or_code);
+        if ($response->status() != 200) {
+            Log::error($response->json());
+            return null;
+        }
+        return $response;
+    }
+
     public function resolveAccountNumber($account_number, $bank_code)
     {
         $params = "?account_number=$account_number&bank_code=$bank_code";

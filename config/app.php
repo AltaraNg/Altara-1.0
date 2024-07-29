@@ -57,7 +57,7 @@ return [
 
     'frontend_url' => env('FRONTEND_URL', 'https://play.altaracredit.com/'),
 
-    'client_frontend_url' => env('FRONTEND_URL', 'https://play.altaracredit.com/'),
+    'client_frontend_url' => env('CLIENT_PORTAL_FRONTEND_URL', 'https://collection-client.netlify.app/'),
 
     /*
     |--------------------------------------------------------------------------
