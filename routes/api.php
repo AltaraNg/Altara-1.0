@@ -274,6 +274,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('all/credit/checker/loan', [MobileAppLoanController::class, 'allCreditCheckerVerification']);
 
     Route::post('upload/client/customer', [ProcessClientCustomerController::class, 'store']);
+    Route::get('uploaded/client/customers', [CustomerController::class, 'clientCustomers']);
 });
 
 

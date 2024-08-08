@@ -20,6 +20,6 @@ class ClientCustomerController extends Controller
         $customers = $this->customerRepository->queryModel($customerFilter)
             ->where('tenant_id', $user->tenant_id)
             ->latest()->paginate(\request('per_page') ?? 20);
-        return $this->sendSuccess(['customers' => $customers], 'Orders retrieved successfully');
+        return $this->sendSuccess(['customers' => $customers], 'Customers retrieved successfully');
     }
 }
