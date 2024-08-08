@@ -73,7 +73,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
 
 
             foreach ($collections as $collection) {
-
+                dd($collection);
                 DB::beginTransaction();
                 $product = BnplVendorProduct::query()->firstOrCreate(
                     [
@@ -134,7 +134,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'customer_first_name' => ['required', 'string', 'max:200'],
             'customer_middle_name' => ['nullable', 'string', 'max:200'],
             'customer_surname' => ['required', 'string', 'max:200'],
-            'customer_phone_number' => ['required', 'string', 'max:11'],
+            'customer_phone_number' => ['required', 'string', 'max:13'],
             'customer_home_address' => ['required', 'string', 'max:200'],
             'customer_work_address' => ['nullable', 'string', 'max:200'],
             'customer_date_of_birth' => ['nullable', 'date'],
@@ -144,12 +144,14 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'other_phone_numbers' => ['nullable', 'string', 'max:200'],
             'first_guarantor_first_name' => ['nullable', 'required_with:first_guarantor_last_name,first_guarantor_phone', 'string', 'max:200'],
             'first_guarantor_last_name' => ['nullable', 'required_with:first_guarantor_first_name,first_guarantor_phone', 'string', 'max:200'],
-            'first_guarantor_phone' => ['nullable', 'required_with:first_guarantor_first_name,first_guarantor_last_name', 'string', 'max:11'],
+            'first_guarantor_phone' => ['nullable', 'required_with:first_guarantor_first_name,first_guarantor_last_name', 'string', 'max:13'],
             'first_guarantor_address' => ['nullable', 'string', 'max:200'],
+            'first_guarantor_gender' => ['nullable', 'string', 'max:200'],
             'second_guarantor_first_name' => ['nullable', 'required_with:second_guarantor_last_name,second_guarantor_phone', 'string', 'max:200'],
             'second_guarantor_last_name' => ['nullable', 'required_with:second_guarantor_first_name,second_guarantor_phone', 'string', 'max:200'],
-            'second_guarantor_phone' => ['nullable', 'required_with:second_guarantor_first_name,second_guarantor_last_name', 'string', 'max:11'],
+            'second_guarantor_phone' => ['nullable', 'required_with:second_guarantor_first_name,second_guarantor_last_name', 'string', 'max:13'],
             'second_guarantor_address' => ['nullable', 'string', 'max:200'],
+            'second_guarantor_gender' => ['nullable', 'string', 'max:200'],
             'branch' => ['required', 'string', 'max:200'],
             'work_address' => ['nullable', 'string', 'max:200'],
             'nearest_landmark' => ['required', 'string', 'max:200'],

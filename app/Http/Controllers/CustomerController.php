@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\CustomerCreatedEvent;
+use App\Http\Filters\CustomerFilter;
 use App\Models\Address;
 use App\Models\Branch;
 use App\Models\Customer;
@@ -12,6 +13,7 @@ use App\Models\ProcessingFee;
 use App\Models\State;
 use App\Models\Verification;
 use App\Models\WorkGuarantor;
+use App\Repositories\CustomerRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +21,10 @@ use Illuminate\Support\Facades\DB;
 class CustomerController extends Controller
 {
 
+    public function __construct(CustomerRepository $customerRepository)
+    {
+        $this->customerRepository = $customerRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -41,6 +47,16 @@ class CustomerController extends Controller
             'model' => $model,
             'columns' => $columns
         ]);
+    }
+
+    public function clientCustomers(CustomerFilter $customerFilter)
+    {
+        $user = auth()->user();
+
+        $customers = $this->customerRepository->queryModel($customerFilter)
+            ->where('tenant_id', '<>', 1)
+            ->latest();
+        return $this->sendSuccess(['customers' => $customers->paginate(\request('per_page') ?? 20)], 'Customers retrieved successfully');
     }
 
     public function create()

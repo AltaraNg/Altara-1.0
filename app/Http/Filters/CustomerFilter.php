@@ -4,10 +4,17 @@ namespace App\Http\Filters;
 
 class CustomerFilter extends BaseFilter
 {
-    public function custom_customer_id($custom_customer_id)
+    public function customCustomerId($custom_customer_id)
     {
         $this->builder->where('custom_customer_id', $custom_customer_id);
     }
+
+
+    public function tenant($tenant_id)
+    {
+        $this->builder->where('tenant_id', $tenant_id);
+    }
+
 
     public function telephone($phone)
     {
