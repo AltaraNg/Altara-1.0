@@ -154,10 +154,10 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                     'loan_id' => $collection['loan_id'] ?? null,
                     'message' => $exception->getMessage(),
                 ];
-                $this->updateProcessState('failed');
+                $this->updateProcessState();
             }
         }
-        $this->updateProcessState('completed');
+        $this->updateProcessState();
     }
 
 
