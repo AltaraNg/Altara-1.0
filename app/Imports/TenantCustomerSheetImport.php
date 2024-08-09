@@ -77,17 +77,14 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
     public function collection(Collection $collections)
     {
         if ($this->isValidation > 0) {
-            Log::info("----validated-----");
             return;
         }
-        Log::info("----passed validation-----");
 
         if ($this->processState->totalRows == null) {
             $this->processState->totalRows = $collections->count();
         }
 
         if ($this->clientCustomerCollectionId) {
-
             $this->processState->status = 'in_progress';
             $this->processState->total_rows = $this->totalRows ?? 0;
             $this->updateProcessState();
@@ -104,23 +101,23 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
         $saleCategory = SalesCategory::query()->where('name', 'Repossesion Sale')->first();
         /** @var BusinessType $businessType */
         $businessType = BusinessType::query()->firstOrCreate(['name' => 'Collection', 'slug' => 'collection'], ['name' => 'Collection', 'slug' => 'collection']);
+
         $repaymentDurations = RepaymentDuration::query()->get();
 
         $repaymentCycles = RepaymentCycle::query()->get();
+
         /** @var DownPaymentRate $downpaymentRate */
         $downpaymentRate = DownPaymentRate::query()->where('percent', 0)->first();
+
         /** @var User $user */
         $user = User::query()->where('tenant_id', $this->tenant->id)->first();
 
         $this->newOrderRepository = app(NewOrderRepository::class);
 
-
         foreach ($collections as $collection) {
-            if (in_array($collection['customer_id'], $this->processState->processedRows)) {
-                Log::info("got here in array");
+            if (NewOrder::query()->where('custom_order_number', $collection['loan_id'])->exists()) {
                 continue;
             }
-            Log::info("got here");
             try {
                 DB::beginTransaction();
                 $this->processRow($collection, $user, $branches, $employee, $orderType, $businessType, $saleCategory, $repaymentDurations, $repaymentCycles, $downpaymentRate);
