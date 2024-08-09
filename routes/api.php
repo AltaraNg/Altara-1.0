@@ -22,6 +22,8 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BusinessTypeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CautionController;
+use App\Http\Controllers\ClientCustomerCollectionController;
+use App\Http\Controllers\ClientCustomerController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactCustomerController;
 use App\Http\Controllers\CreditCheckController;
@@ -275,6 +277,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('upload/client/customer', [ProcessClientCustomerController::class, 'store']);
     Route::get('uploaded/client/customers', [CustomerController::class, 'clientCustomers']);
+    Route::get('uploaded/client/customer/collection/data', [ClientCustomerCollectionController::class, 'index']);
 });
 
 
