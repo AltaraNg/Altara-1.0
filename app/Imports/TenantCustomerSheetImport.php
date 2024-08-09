@@ -19,23 +19,18 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Repositories\NewOrderRepository;
 use Carbon\Carbon;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rules\RequiredIf;
 use Maatwebsite\Excel\Concerns\RemembersRowNumber;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEmptyRows, WithHeadings, WithHeadingRow, WithColumnLimit, WithLimit, WithChunkReading
 {
@@ -43,27 +38,37 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
 
     public Tenant $tenant;
     public string $employee_id;
-    public ?int $clientCustomerCollection;
+    public ?int $clientCustomerCollectionId;
     public NewOrderRepository $newOrderRepository;
-    public bool $isValidation;
+    private int $isValidation;
 
-    public int $numberOfRowsProcessed = 0;
-    public int $numberOfRowsFailed = 0;
-    public int $counter = 0;
-    public array $processedRows = [];
-    public array $failedRows = [];
+    protected ProcessState $processState;
 
-    public array $exceptionMessages = [];
-    public array $exceptionStackTraces = [];
+    protected ?ClientCustomerCollection $clientCustomerCollection = null;
 
-    private ?int $totalRows = null;
 
-    public function __construct(Tenant $tenant, string $employee_id, bool $isValidation, ?int $clientCustomerCollection)
+    public function __construct(Tenant $tenant, string $employee_id, int $isValidation, ?int $clientCustomerCollectionId)
     {
+        Log::info("constructor method: " . $isValidation);
         $this->tenant = $tenant;
         $this->employee_id = $employee_id;
         $this->isValidation = $isValidation;
-        $this->clientCustomerCollection = $clientCustomerCollection;
+        $this->clientCustomerCollectionId = $clientCustomerCollectionId;
+        if ($this->clientCustomerCollectionId != null) {
+            $this->clientCustomerCollection = ClientCustomerCollection::query()->where('id', $this->clientCustomerCollectionId)->first();
+            $this->processState = new ProcessState(
+                true,
+                $this->clientCustomerCollection->number_of_rows_processed,
+                $this->clientCustomerCollection->number_of_rows_failed,
+                0,
+                $this->clientCustomerCollection->processed_rows ?? [],
+                $this->clientCustomerCollection->failed_rows ?? [],
+                $this->clientCustomerCollection->error ?? [],
+                $this->clientCustomerCollection->total_rows,
+                $this->clientCustomerCollection->exception_stack_trace ?? [],
+                $this->clientCustomerCollection->status,
+            );
+        }
     }
 
     /**
@@ -71,124 +76,168 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
      */
     public function collection(Collection $collections)
     {
-        if ($this->isValidation) {
+        if ($this->isValidation > 0) {
+            Log::info("----validated-----");
             return;
         }
+        Log::info("----passed validation-----");
 
-        if ($this->totalRows == null) {
-            $this->totalRows = $collections->count();
+        if ($this->processState->totalRows == null) {
+            $this->processState->totalRows = $collections->count();
         }
 
-        $clientCustomerCollection = null;
-        if ($this->clientCustomerCollection) {
-            $clientCustomerCollection = ClientCustomerCollection::query()->where('id', $this->clientCustomerCollection)->first();
-            $clientCustomerCollection->status = 'in_progress';
-            $clientCustomerCollection->total_rows = $this->totalRows ?? 0;
-            $clientCustomerCollection->save();
+        if ($this->clientCustomerCollectionId) {
+
+            $this->processState->status = 'in_progress';
+            $this->processState->total_rows = $this->totalRows ?? 0;
+            $this->updateProcessState();
             Log::info("updated total number of rows processed: " . $collections->count());
         }
         $branches = Branch::query()->withoutGlobalScopes()->get();
 
+        /** @var User $employee */
         $employee = User::query()->where('staff_id', $this->employee_id)->first();
+        /** @var OrderType $orderType */
         $orderType = OrderType::query()->firstOrCreate(['name' => 'Collection'], ['name' => 'Collection']);
         $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
+        /** @var SalesCategory $saleCategory */
         $saleCategory = SalesCategory::query()->where('name', 'Repossesion Sale')->first();
+        /** @var BusinessType $businessType */
         $businessType = BusinessType::query()->firstOrCreate(['name' => 'Collection', 'slug' => 'collection'], ['name' => 'Collection', 'slug' => 'collection']);
         $repaymentDurations = RepaymentDuration::query()->get();
+
         $repaymentCycles = RepaymentCycle::query()->get();
+        /** @var DownPaymentRate $downpaymentRate */
         $downpaymentRate = DownPaymentRate::query()->where('percent', 0)->first();
+        /** @var User $user */
         $user = User::query()->where('tenant_id', $this->tenant->id)->first();
 
         $this->newOrderRepository = app(NewOrderRepository::class);
+
+
         foreach ($collections as $collection) {
+            if (in_array($collection['customer_id'], $this->processState->processedRows)) {
+                Log::info("got here in array");
+                continue;
+            }
+            Log::info("got here");
             try {
                 DB::beginTransaction();
-                $product = BnplVendorProduct::query()->firstOrCreate(
-                    [
-                        'name' => $collection['product_name'],
-                        'price' => $collection['product_amount'],
-                        'vendor_id' => $user->id,
-                    ],
-                );
-                $branch = (clone $branches)->where('name', $collection['branch'])->first();
-                if ($branch == null) {
-                    throw new \Exception('Invalid branch supplied: ' . $collection['branch']);
-                }
-                $customerModelData = $this->customerData($collection, $branch, $employee);
-                $customerModelData = array_merge($this->setNotNullableFields(), $customerModelData);
-
-                $customer = Customer::query()->firstOrCreate([
-                    'telephone' => $customerModelData['telephone'],
-                    'tenant_id' => $customerModelData['tenant_id'],
-                    'custom_customer_id' => $collection['customer_id'],
-                ],
-                    $customerModelData);
-                $customer_id = $customer->id;
-                $guarantorsModelsData = $this->guarantorsData($collection, $customer_id, $employee);
-                foreach ($guarantorsModelsData as $guarantorModelData) {
-                    Guarantor::query()->updateOrCreate(['customer_id' => $guarantorModelData['customer_id'], 'phone_number' => $guarantorModelData['phone_number']], $guarantorModelData);
-                }
-
-                $orderModelData = $this->orderData(
-                    $collection,
-                    $orderType,
-                    $product,
-                    $businessType,
-                    $saleCategory,
-                    $customer_id,
-                    $repaymentDurations,
-                    $repaymentCycles,
-                    $downpaymentRate,
-                    $user,
-                    $branch
-                );
-
-                $this->newOrderRepository->store($orderModelData);
+                $this->processRow($collection, $user, $branches, $employee, $orderType, $businessType, $saleCategory, $repaymentDurations, $repaymentCycles, $downpaymentRate);
                 DB::commit();
-                $this->counter += 1;
-                $this->numberOfRowsProcessed += 1;
-                $this->processedRows[] = $collection['customer_id'];
-                if ($this->counter == 50 && $clientCustomerCollection) {
-                    $clientCustomerCollection->number_of_rows_processed = $this->numberOfRowsProcessed;
-                    $clientCustomerCollection->save();
-                    $this->counter = 0;
+                $this->processState->counter += 1;
+                $this->processState->numberOfRowsProcessed += 1;
+                $this->processState->processedRows[] = $collection['loan_id'];
+                if ($this->processState->counter == 50) {
+                    $this->updateProcessState();
+                    $this->processState->counter = 0;
                 }
 
             } catch (\Exception $exception) {
                 Log::error($exception->getMessage());
                 DB::rollBack();
-                $this->numberOfRowsFailed += 1;
-                $this->failedRows[] = $collection['customer_id'];
-                if ($clientCustomerCollection) {
-                    $this->exceptionStackTraces[] = [
-                        'row' => $this->rowNumber,
-                        'customer_id' => $collection['customer_id'],
-                        'trace' => $exception,
-                    ];
-                    $this->exceptionMessages[] = [
-                        'row' => $this->rowNumber,
-                        'customer_id' => $collection['customer_id'],
-                        'message' => $exception->getMessage(),
-                    ];
-                    $clientCustomerCollection->number_of_rows_processed = $this->numberOfRowsProcessed;
-                    $clientCustomerCollection->number_of_rows_failed = $this->numberOfRowsFailed;
-                    $clientCustomerCollection->error = $this->exceptionMessages;
-                    $clientCustomerCollection->exception_stack_trace = $this->exceptionStackTraces;
-                    $clientCustomerCollection->save();
-                }
-            } finally {
-                $clientCustomerCollection->processed_rows = $this->processedRows;
-                $clientCustomerCollection->failed_rows = $this->failedRows;
-                $clientCustomerCollection->number_of_rows_processed = $this->numberOfRowsProcessed;
-                $clientCustomerCollection->save();
+                $this->processState->numberOfRowsFailed += 1;
+                $this->processState->failedRows[] = [
+                    'row' => $this->rowNumber,
+                    'customer_id' => $collection['customer_id'],
+                    'loan_id' => $collection['loan_id'] ?? null,
+                ];
+                $this->processState->exceptionStackTraces[] = [
+                    'row' => $this->rowNumber,
+                    'customer_id' => $collection['customer_id'],
+                    'loan_id' => $collection['loan_id'] ?? null,
+                    'trace' => $exception,
+                ];
+                $this->processState->exceptionMessages[] = [
+                    'row' => $this->rowNumber,
+                    'customer_id' => $collection['customer_id'],
+                    'loan_id' => $collection['loan_id'] ?? null,
+                    'message' => $exception->getMessage(),
+                ];
+                $this->updateProcessState('failed');
             }
         }
-        if ($clientCustomerCollection) {
-            $clientCustomerCollection->number_of_rows_processed = $this->numberOfRowsProcessed;
-            $clientCustomerCollection->status = $clientCustomerCollection->number_of_rows_processed >= $collections->count() ? 'completed' : 'failed';
-            $clientCustomerCollection->number_of_rows_failed = $this->numberOfRowsFailed;
-            $clientCustomerCollection->save();
+        $this->updateProcessState('completed');
+    }
+
+
+    /**
+     *
+     * @param mixed $collection
+     * @param User $user
+     * @param  $branches
+     * @param User $employee
+     * @param OrderType $orderType
+     * @param BusinessType $businessType
+     * @param SalesCategory $saleCategory
+     * @param $repaymentDurations
+     * @param $repaymentCycles
+     * @param DownPaymentRate $downpaymentRate
+     * @return void
+     * @throws \Exception
+     */
+    public function processRow(mixed $collection, User $user, $branches, User $employee, OrderType $orderType, BusinessType $businessType, SalesCategory $saleCategory, $repaymentDurations, $repaymentCycles, DownPaymentRate $downpaymentRate): void
+    {
+
+        $product = BnplVendorProduct::query()->firstOrCreate(
+            [
+                'name' => $collection['product_name'],
+                'price' => $collection['product_amount'],
+                'vendor_id' => $user->id,
+            ],
+        );
+        $branch = (clone $branches)->where('name', $collection['branch'])->first();
+        if ($branch == null) {
+            throw new \Exception('Invalid branch supplied: ' . $collection['branch']);
         }
+        $customerModelData = $this->customerData($collection, $branch, $employee);
+        $customerModelData = array_merge($this->setNotNullableFields(), $customerModelData);
+
+        $customer = Customer::query()->firstOrCreate([
+            'telephone' => $customerModelData['telephone'],
+            'tenant_id' => $customerModelData['tenant_id'],
+            'custom_customer_id' => $collection['customer_id'],
+        ],
+            $customerModelData);
+        $customer_id = $customer->id;
+        $guarantorsModelsData = $this->guarantorsData($collection, $customer_id, $employee);
+        foreach ($guarantorsModelsData as $guarantorModelData) {
+            Guarantor::query()->updateOrCreate(['customer_id' => $guarantorModelData['customer_id'], 'phone_number' => $guarantorModelData['phone_number']], $guarantorModelData);
+        }
+
+        $orderModelData = $this->orderData(
+            $collection,
+            $orderType,
+            $product,
+            $businessType,
+            $saleCategory,
+            $customer_id,
+            $repaymentDurations,
+            $repaymentCycles,
+            $downpaymentRate,
+            $user,
+            $branch
+        );
+        $this->newOrderRepository->store($orderModelData);
+    }
+
+    protected function updateProcessState(): void
+    {
+
+        $this->clientCustomerCollection->total_rows = $this->processState->totalRows;
+
+        $this->clientCustomerCollection->processed_rows = $this->processState->processedRows;
+        $this->clientCustomerCollection->number_of_rows_processed = $this->processState->numberOfRowsProcessed;
+
+        $this->clientCustomerCollection->number_of_rows_failed = $this->processState->numberOfRowsFailed;
+        $this->clientCustomerCollection->failed_rows = $this->processState->failedRows;
+
+        $this->clientCustomerCollection->error = $this->processState->exceptionMessages;
+        $this->clientCustomerCollection->exception_stack_trace = $this->processState->exceptionStackTraces;
+
+
+        $this->clientCustomerCollection->status = $this->processState->numberOfRowsProcessed >= $this->processState->totalRows ? 'completed' : 'not_completed';
+        $this->clientCustomerCollection->save();
     }
 
     public function rules(): array

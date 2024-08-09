@@ -3,8 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Tenant;
-use App\Repositories\NewOrderRepository;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithConditionalSheets;
@@ -17,10 +16,10 @@ class TenantCustomersImport implements WithMultipleSheets, SkipsUnknownSheets, W
 
     public Tenant $tenant;
     public string $employee_id;
-    public bool $isValidation;
+    private int $isValidation;
     public ?int $clientCustomerCollection;
 
-    public function __construct(Tenant $tenant, string $employee_id, $isValidation, ?int $clientCustomerCollection = null)
+    public function __construct(Tenant $tenant, string $employee_id, int $isValidation, ?int $clientCustomerCollection = null)
     {
         $this->tenant = $tenant;
         $this->employee_id = $employee_id;
@@ -31,6 +30,7 @@ class TenantCustomersImport implements WithMultipleSheets, SkipsUnknownSheets, W
 
     public function makeTenantCustomerSheetImport()
     {
+        Log::info("makeTenantCustomerSheetImport method: ".  $this->isValidation);
         return new TenantCustomerSheetImport($this->tenant, $this->employee_id, $this->isValidation, $this->clientCustomerCollection);
     }
 

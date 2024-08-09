@@ -34,7 +34,7 @@ class ProcessClientCustomerController extends Controller
             'file' => ['required', 'file', 'mimes:xlsx', 'max:2048'],
         ]);
 
-        $isValidation = $request->input('is_validation', true);
+        $isValidation = $request->input('is_validation', 1) ? 1 : 0;
 
         /** @var Tenant $client */
         $client = Tenant::query()->where('id', $validatedData['client_id'])->first();
@@ -46,14 +46,14 @@ class ProcessClientCustomerController extends Controller
 
             if ($isValidation) {
                 $import = new TenantCustomersImport($client, auth()->user()->staff_id, $isValidation);
-                $import =  $import->onlySheets('Customers');
+                $import = $import->onlySheets('Customers');
                 Excel::import($import, $request->file('file'));
             } else {
-                $import = new TenantCustomersImport($client, auth()->user()->staff_id, true);
-                $import =  $import->onlySheets('Customers');
+                $import = new TenantCustomersImport($client, auth()->user()->staff_id, 1);
+                $import = $import->onlySheets('Customers');
                 Excel::import($import, $request->file('file'));
-
                 $filename = 'collections' . '/' . $client->slug . '/' . Str::slug($client->slug) . '-' . Carbon::now()->toDateTimeString();
+                $filename = Str::replace(" ", '_', $filename);
                 $s3 = Storage::disk('s3');
                 $response = $s3->put($filename, file_get_contents($request->file('file')), 'public');
                 if (!$response) {
@@ -64,7 +64,8 @@ class ProcessClientCustomerController extends Controller
                     'uploaded_file_url' => $filename,
                     'uploaded_by_id' => auth()->id(),
                 ]);
-                ProcessClientCustomerJob::dispatch($clientCustomerCollection->id, $client->id, auth()->user()->staff_id);
+
+                ProcessClientCustomerJob::dispatch($clientCustomerCollection->id, $client->id, auth()->user()->staff_id, $isValidation);
             }
         } catch (ValidationException $exception) {
             $failures = $exception->failures();
