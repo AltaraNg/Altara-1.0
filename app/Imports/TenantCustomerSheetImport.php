@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\BnplVendorProduct;
 use App\Models\Branch;
 use App\Models\BusinessType;
+use App\Models\ClientCustomerCollection;
 use App\Models\Customer;
 use App\Models\DownPaymentRate;
 use App\Models\Guarantor;
@@ -36,19 +37,33 @@ use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEmptyRows, WithHeadings, WithHeadingRow, WithColumnLimit, WithLimit, WithChunkReading, ShouldQueue
+class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEmptyRows, WithHeadings, WithHeadingRow, WithColumnLimit, WithLimit, WithChunkReading
 {
     use RemembersRowNumber;
 
     public Tenant $tenant;
     public string $employee_id;
+    public ?int $clientCustomerCollection;
     public NewOrderRepository $newOrderRepository;
+    public bool $isValidation;
 
-    public function __construct(Tenant $tenant, string $employee_id, NewOrderRepository $newOrderRepository)
+    public int $numberOfRowsProcessed = 0;
+    public int $numberOfRowsFailed = 0;
+    public int $counter = 0;
+    public array $processedRows = [];
+    public array $failedRows = [];
+
+    public array $exceptionMessages = [];
+    public array $exceptionStackTraces = [];
+
+    private ?int $totalRows = null;
+
+    public function __construct(Tenant $tenant, string $employee_id, bool $isValidation, ?int $clientCustomerCollection)
     {
         $this->tenant = $tenant;
         $this->employee_id = $employee_id;
-        $this->newOrderRepository = $newOrderRepository;
+        $this->isValidation = $isValidation;
+        $this->clientCustomerCollection = $clientCustomerCollection;
     }
 
     /**
@@ -56,24 +71,37 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
      */
     public function collection(Collection $collections)
     {
-        try {
+        if ($this->isValidation) {
+            return;
+        }
 
-            $branches = Branch::query()->withoutGlobalScopes()->get();
+        if ($this->totalRows == null) {
+            $this->totalRows = $collections->count();
+        }
 
-            $employee = User::query()->where('staff_id', $this->employee_id)->first();
-            $orderType = OrderType::query()->firstOrCreate(['name' => 'Collection'], ['name' => 'Collection']);
-            $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
-            $saleCategory = SalesCategory::query()->where('name', 'Repossesion Sale')->first();
-            $businessType = BusinessType::query()->firstOrCreate(['name' => 'Collection', 'slug' => 'collection'], ['name' => 'Collection', 'slug' => 'collection']);
-            $repaymentDurations = RepaymentDuration::query()->get();
-            $repaymentCycles = RepaymentCycle::query()->get();
-            $downpaymentRate = DownPaymentRate::query()->where('percent', 0)->first();
+        $clientCustomerCollection = null;
+        if ($this->clientCustomerCollection) {
+            $clientCustomerCollection = ClientCustomerCollection::query()->where('id', $this->clientCustomerCollection)->first();
+            $clientCustomerCollection->status = 'in_progress';
+            $clientCustomerCollection->total_rows = $this->totalRows ?? 0;
+            $clientCustomerCollection->save();
+            Log::info("updated total number of rows processed: " . $collections->count());
+        }
+        $branches = Branch::query()->withoutGlobalScopes()->get();
 
-            $user = User::query()->where('tenant_id', $this->tenant->id)->first();
+        $employee = User::query()->where('staff_id', $this->employee_id)->first();
+        $orderType = OrderType::query()->firstOrCreate(['name' => 'Collection'], ['name' => 'Collection']);
+        $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
+        $saleCategory = SalesCategory::query()->where('name', 'Repossesion Sale')->first();
+        $businessType = BusinessType::query()->firstOrCreate(['name' => 'Collection', 'slug' => 'collection'], ['name' => 'Collection', 'slug' => 'collection']);
+        $repaymentDurations = RepaymentDuration::query()->get();
+        $repaymentCycles = RepaymentCycle::query()->get();
+        $downpaymentRate = DownPaymentRate::query()->where('percent', 0)->first();
+        $user = User::query()->where('tenant_id', $this->tenant->id)->first();
 
-
-            foreach ($collections as $collection) {
-                dd($collection);
+        $this->newOrderRepository = app(NewOrderRepository::class);
+        foreach ($collections as $collection) {
+            try {
                 DB::beginTransaction();
                 $product = BnplVendorProduct::query()->firstOrCreate(
                     [
@@ -89,7 +117,6 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
                 $customerModelData = $this->customerData($collection, $branch, $employee);
                 $customerModelData = array_merge($this->setNotNullableFields(), $customerModelData);
 
-//                dd($customerModelData);
                 $customer = Customer::query()->firstOrCreate([
                     'telephone' => $customerModelData['telephone'],
                     'tenant_id' => $customerModelData['tenant_id'],
@@ -118,12 +145,49 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
 
                 $this->newOrderRepository->store($orderModelData);
                 DB::commit();
+                $this->counter += 1;
+                $this->numberOfRowsProcessed += 1;
+                $this->processedRows[] = $collection['customer_id'];
+                if ($this->counter == 50 && $clientCustomerCollection) {
+                    $clientCustomerCollection->number_of_rows_processed = $this->numberOfRowsProcessed;
+                    $clientCustomerCollection->save();
+                    $this->counter = 0;
+                }
+
+            } catch (\Exception $exception) {
+                Log::error($exception->getMessage());
+                DB::rollBack();
+                $this->numberOfRowsFailed += 1;
+                $this->failedRows[] = $collection['customer_id'];
+                if ($clientCustomerCollection) {
+                    $this->exceptionStackTraces[] = [
+                        'row' => $this->rowNumber,
+                        'customer_id' => $collection['customer_id'],
+                        'trace' => $exception,
+                    ];
+                    $this->exceptionMessages[] = [
+                        'row' => $this->rowNumber,
+                        'customer_id' => $collection['customer_id'],
+                        'message' => $exception->getMessage(),
+                    ];
+                    $clientCustomerCollection->number_of_rows_processed = $this->numberOfRowsProcessed;
+                    $clientCustomerCollection->number_of_rows_failed = $this->numberOfRowsFailed;
+                    $clientCustomerCollection->error = $this->exceptionMessages;
+                    $clientCustomerCollection->exception_stack_trace = $this->exceptionStackTraces;
+                    $clientCustomerCollection->save();
+                }
+            } finally {
+                $clientCustomerCollection->processed_rows = $this->processedRows;
+                $clientCustomerCollection->failed_rows = $this->failedRows;
+                $clientCustomerCollection->number_of_rows_processed = $this->numberOfRowsProcessed;
+                $clientCustomerCollection->save();
             }
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
-            DB::rollBack();
-//            dd($exception, $this->getRowNumber());
-            throw $exception;
+        }
+        if ($clientCustomerCollection) {
+            $clientCustomerCollection->number_of_rows_processed = $this->numberOfRowsProcessed;
+            $clientCustomerCollection->status = $clientCustomerCollection->number_of_rows_processed >= $collections->count() ? 'completed' : 'failed';
+            $clientCustomerCollection->number_of_rows_failed = $this->numberOfRowsFailed;
+            $clientCustomerCollection->save();
         }
     }
 

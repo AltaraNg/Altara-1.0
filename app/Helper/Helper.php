@@ -159,7 +159,7 @@ class Helper
 
     /**
      * getEnglishOrdinalSuffix
-     * 
+     *
      * converts number to ordinal suffix
      * example:
      * getEnglishOrdinalSuffix(2) = 2nd
@@ -182,5 +182,10 @@ class Helper
             }
         }
         return $n . 'th';
+    }
+
+    public static function is_decimal( $val )
+    {
+        return is_numeric( $val ) && floor( $val ) != $val;
     }
 }
