@@ -4,6 +4,7 @@
 namespace App\Amortization;
 
 use App\Exceptions\AException;
+use App\Helper\Helper;
 use App\Models\Inventory;
 use App\Models\PriceCalculator;
 use App\Models\RepaymentCycle;
@@ -509,7 +510,7 @@ abstract class Amortization
         $plan = [];
         $payments = [];
         $totalAmount = $this->order->repayment;
-        $useFloat = is_float($totalAmount);
+        $useFloat = Helper::is_decimal($totalAmount);
 
         if ($useFloat) {
             $basePayment = floor($totalAmount / $this->repaymentCount() * 100) / 100;
