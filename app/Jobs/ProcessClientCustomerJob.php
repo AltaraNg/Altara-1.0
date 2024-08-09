@@ -21,20 +21,23 @@ class ProcessClientCustomerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $clientCustomerCollection;
+    public int $clientCustomerCollectionId;
     public int $clientID;
     public string $staffID;
+    public int $isValidation;
+
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(int $clientCustomerCollection, int $clientID, string $staffID)
+    public function __construct(int $clientCustomerCollectionId, int $clientID, string $staffID, int $isValidation)
     {
-        $this->clientCustomerCollection = $clientCustomerCollection;
+        $this->clientCustomerCollectionId = $clientCustomerCollectionId;
         $this->clientID = $clientID;
         $this->staffID = $staffID;
+        $this->isValidation = $isValidation;
     }
 
     /**
@@ -45,12 +48,14 @@ class ProcessClientCustomerJob implements ShouldQueue
     public function handle()
     {
 
-        $clientCustomerCollection = ClientCustomerCollection::query()->where('id', $this->clientCustomerCollection)->first();
+        Log::info("in the job: " . $this->clientCustomerCollectionId);
+        $clientCustomerCollection = ClientCustomerCollection::query()->where('id', $this->clientCustomerCollectionId)->first();
         if (!$clientCustomerCollection) {
             return;
         }
+        Log::info("retrieved item with id: " . $clientCustomerCollection->id);
         // Download the Excel file
-        $response = Http::get(Storage::disk('s3')->url($clientCustomerCollection->uploaded_file_url));
+        $response = Http::get($clientCustomerCollection->uploaded_file_url);
         if ($response->successful()) {
             $path = 'app/temp';
 
@@ -64,7 +69,7 @@ class ProcessClientCustomerJob implements ShouldQueue
             try {
                 chmod(storage_path('app/temp/' . $temporaryFileName), 0775);
                 $client = Tenant::query()->where('id', $this->clientID)->first();
-                $import = new TenantCustomersImport($client, $this->staffID, false, $this->clientCustomerCollection);
+                $import = new TenantCustomersImport($client, $this->staffID, $this->isValidation, $this->clientCustomerCollectionId);
                 $import->onlySheets('Customers');
                 Excel::import($import, $temporaryFilePath);
             } catch (\Exception $e) {
@@ -73,6 +78,7 @@ class ProcessClientCustomerJob implements ShouldQueue
                 Storage::disk('local')->delete('temp/' . $temporaryFileName);
             }
         }
+        Log::info("no response for: " . $clientCustomerCollection->id);
 
     }
 }

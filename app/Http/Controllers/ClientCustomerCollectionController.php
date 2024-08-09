@@ -19,6 +19,6 @@ class ClientCustomerCollectionController extends Controller
         $clientCustomerCollectionQuery = $this->clientCustomerCollectionRepository->queryModel($filter)->with(['client', 'uploadedBy:id,full_name,staff_id']);
         $clientCustomerCollections = $clientCustomerCollectionQuery->latest()->paginate(\request('per_page', 15));
 
-        return $this->sendSuccess(['clientCustomerCollections' => $clientCustomerCollections], 'Uploaded client customer collections');
+        return $this->sendSuccess(['clientCustomerCollections' => $clientCustomerCollections], 'Uploaded client customer collections data');
     }
 }
