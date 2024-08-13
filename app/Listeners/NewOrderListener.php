@@ -20,7 +20,7 @@ class NewOrderListener
      */
     public function handle(NewOrderEvent $event)
     {
-        if ($event->order->repayment > 1 && $event->order->businessType->slug != 'ap_cash_n_carry') {
+        if ($event->order->repayment > 1 && $event->order->businessType->slug != 'ap_cash_n_carry' && $event->order->businessType->slug != 'collection') {
             try {
                 $p = app()->make('App\Amortization\\' . Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
                 try {
