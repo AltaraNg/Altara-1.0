@@ -30,6 +30,9 @@ class   NewOrder extends Model implements \OwenIt\Auditing\Contracts\Auditable
     const ALTARA_BNPL = 'altara-bnpl';
     const ALTARA_LOAN_APP = 'altara-loan-app';
 
+    const COLLECTION_CLIENT = 'collection-client';
+
+
 
     /**
      * Validation rules

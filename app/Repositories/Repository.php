@@ -56,6 +56,11 @@ abstract class Repository
         return $this->model::filter($filter)->paginate($this->limit);
     }
 
+    public function queryModel($filter)
+    {
+        return $this->model::filter($filter);
+    }
+
     public function store(array $data)
     {
         return $this->model::create($data);

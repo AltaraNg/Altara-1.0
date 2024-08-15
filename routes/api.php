@@ -22,6 +22,8 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BusinessTypeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CautionController;
+use App\Http\Controllers\ClientCustomerCollectionController;
+use App\Http\Controllers\ClientCustomerController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactCustomerController;
 use App\Http\Controllers\CreditCheckController;
@@ -66,6 +68,7 @@ use App\Http\Controllers\PaystackAuthCodeController;
 use App\Http\Controllers\PaystackCustomersCodeController;
 use App\Http\Controllers\PersonalGuarantorController;
 use App\Http\Controllers\PriceCalculatorController;
+use App\Http\Controllers\ProcessClientCustomerController;
 use App\Http\Controllers\ProcessingFeeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTransferController;
@@ -101,6 +104,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/password/reset', [AuthController::class, 'sendResetLinkEmail']);
 Route::put('/password/reset', [AuthController::class, 'reset']);
+Route::get('/verify/email/{token}', [AuthController::class, 'verifyEmail']);
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('tenants', [TenantController::class, 'index']);
     Route::get('/auth/user', [AuthController::class, 'user']);
@@ -271,6 +275,9 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('/update/credit/checker/status/{creditCheckerVerification}/loan', [MobileAppLoanController::class, 'updateCreditCheckerVerificationStatus']);
     Route::get('all/credit/checker/loan', [MobileAppLoanController::class, 'allCreditCheckerVerification']);
 
+    Route::post('upload/client/customer', [ProcessClientCustomerController::class, 'store']);
+    Route::get('uploaded/client/customers', [CustomerController::class, 'clientCustomers']);
+    Route::get('uploaded/client/customer/collection/data', [ClientCustomerCollectionController::class, 'index']);
 });
 
 
@@ -304,3 +311,6 @@ Route::middleware('mobile.app.access')->prefix('/mobile-app')->group(function ()
     Route::post('/amortization/preview', [MobileAppLoanController::class, 'previewAmortization']);
     Route::post('/create/loan', [MobileAppLoanController::class, 'createLoan']);
 });
+
+
+Route::post('paystack/webhook', [\App\Http\Controllers\ProcessPaystackWebhookControler::class, 'processPaystackWebhook']);

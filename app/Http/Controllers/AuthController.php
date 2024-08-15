@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankAccount;
+use App\Models\EmailVerification;
 use App\Models\PasswordResets;
 use App\Models\User;
 use App\Repositories\AuthRepository;
-use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Validator;
 
@@ -31,7 +33,7 @@ class AuthController extends Controller
     {
         $message = 'Check your login details and try again!';
         $user = User::where('staff_id', $request->staff_id)->first();
-        
+
         if (!$user) return response()->json([
             'staff_id' => ['The combination does not exist in our record!'],
             'message' => $message
@@ -67,6 +69,50 @@ class AuthController extends Controller
         }
     }
 
+    public function clientLogin(Request $request)
+    {
+        $message = 'Check your login details and try again!';
+        $user = User::where('email', $request->email)->first();
+
+
+        if (!$user) return response()->json([
+            'email' => ['The combination does not exist in our record!'],
+            'message' => $message
+        ], 401);
+
+        if ($user->email_verified_at == null) return response()->json([
+            'email' => ['Email has not yet been verified!'],
+            'message' => 'Email has not yet been verified!'
+        ], 401);
+
+        if ($user->portal_access == false) {
+            return response()->json([
+                'authenticated' => false,
+                'message' => 'You are not authorized to access this portal!'
+            ], 403);
+        }
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            $user->api_token = Str::random(60);
+            $user->save();
+            return response()->json([
+                'user_id' => $user->id,
+                'auth' => true,
+                'role' => $user->role_id,
+                'api_token' => $user->api_token,
+                'user_name' => $user->full_name,
+                'portal_access' => $user->portal_access,
+                'tenant' => $user->tenant,
+                'message' => 'You have successfully logged in'
+            ], 200);
+        }
+        return response()->json([
+            'staff_id' => ['Provided credentials does not match'],
+            'message' => $message
+        ], 401);
+
+    }
+
     public function logout(Request $request)
     {
         $user = $request->user();
@@ -74,9 +120,10 @@ class AuthController extends Controller
         $user->save();
         return response()->json(['logged_out' => true]);
     }
+
     public function user(Request $request)
     {
-        $user = $request->user();   
+        $user = $request->user();
 
         $data = [
             'user_id' => $user->id,
@@ -88,7 +135,27 @@ class AuthController extends Controller
             'tenant' => $user->tenant,
             'in_house' => $user->tenant_id == 1,
         ];
-        
+
+        return $this->sendSuccess(['user ' => $data]);
+    }
+
+    public function clientUser(Request $request)
+    {
+        $user = $request->user();
+        $tenant = $user->tenant;
+        $tenant->bank_account = BankAccount::query()->where('tenant_id', $user->tenant_id)->with('bank')->first();
+        $data = [
+            'user_id' => $user->id,
+            'auth' => true,
+            'user_name' => $user->full_name,
+            'portal_access' => $user->portal_access,
+            'branch_id' => $user->branch_id,
+            'tenant' => $tenant,
+            'in_house' => $user->tenant_id == 1,
+            'message' => 'You have successfully fetched profile',
+
+        ];
+
         return $this->sendSuccess(['user ' => $data]);
     }
 
@@ -97,6 +164,33 @@ class AuthController extends Controller
         $data = $this->validate(request(), PasswordResets::$rules);
         $this->authRepository->sendResetLinkEmail($data);
         return response()->json(['data' => [], 'message' => 'Reset Email Successfully Sent'], 201);
+    }
+
+    public function resendEmailVerificationTokenClient(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email|exists:users,email'
+        ]);
+        $user = User::query()->where('email', $request->input('email'))->first();
+        if (!$user) return response()->json([
+            'message' => 'The email does not exist in our record!',
+        ]);
+
+        if ($user->hasVerifiedEmail()) return response()->json([
+            'message' => 'The email has already been verified!',
+        ]);
+
+        $this->authRepository->sendClientEmailVerification($user->tenant, $user);
+        return response()->json(['data' => [], 'message' => 'Email Verification Token Successfully Sent'], 201);
+    }
+
+    public function verifyEmail($token)
+    {
+        $response = $this->authRepository->verifyEmail($token);
+        if (!$response) {
+            return $this->sendError("Invalid token supplied", 400, [], 400);
+        }
+        return $this->sendSuccess([], "Email verified successfully");
     }
 
     public function reset()
@@ -117,5 +211,25 @@ class AuthController extends Controller
             'reset' => true,
             'password' => $gen_password
         ]);
+    }
+
+    public function setPasswordViaEmailToken()
+    {
+        $validatedData = $this->validate(request(), [
+            'token' => 'required',
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $emailToken = EmailVerification::query()->where('token', $validatedData['token'])->first();
+        if (!$emailToken) {
+            return $this->sendError("Invalid token supplied", 400, [], 400);
+        }
+        $response = $this->authRepository->changePassword($emailToken->email, $validatedData['password']);
+
+        if (!$response) {
+            return $this->sendError("Invalid token supplied", 400, [], 400);
+        }
+        EmailVerification::query()->where('token', $validatedData['token'])->delete();
+        return $this->sendSuccess([], 'Password successfully set');
     }
 }

@@ -58,6 +58,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
+//        dd(get_class($e));
         if ($e instanceof AException) {
             return ResponseHelper::createErrorResponse($e->getMessage(), $e->getCode(), [
                 'errors' => $e->getErrorMessages()
@@ -80,7 +81,7 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof AuthenticationException) {
             return ResponseHelper::createErrorResponse($e->getMessage(), ResponseCodes::RESOURCE_AUTHORISATION_ERROR, [], ResponseCodes::UNAUTHENTICATED);
         } elseif ($e instanceof InvalidApiKeyException) {
-          
+
             return ResponseHelper::createErrorResponse($e->getMessage(), ResponseCodes::BAD_REQUEST, [], ResponseCodes::BAD_REQUEST);
         } else {
             return ResponseHelper::createErrorResponse(

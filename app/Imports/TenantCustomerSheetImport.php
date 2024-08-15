@@ -1,0 +1,491 @@
+<?php
+
+namespace App\Imports;
+
+use App\Models\BnplVendorProduct;
+use App\Models\Branch;
+use App\Models\BusinessType;
+use App\Models\ClientCustomerCollection;
+use App\Models\Customer;
+use App\Models\DownPaymentRate;
+use App\Models\Guarantor;
+use App\Models\NewOrder;
+use App\Models\OrderType;
+use App\Models\PaymentMethod;
+use App\Models\RepaymentCycle;
+use App\Models\RepaymentDuration;
+use App\Models\SalesCategory;
+use App\Models\Tenant;
+use App\Models\User;
+use App\Repositories\NewOrderRepository;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\RemembersRowNumber;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithLimit;
+use Maatwebsite\Excel\Concerns\WithValidation;
+
+class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEmptyRows, WithHeadings, WithHeadingRow, WithColumnLimit, WithLimit, WithChunkReading
+{
+    use RemembersRowNumber;
+
+    public Tenant $tenant;
+    public string $employee_id;
+    public ?int $clientCustomerCollectionId;
+    public NewOrderRepository $newOrderRepository;
+    private int $isValidation;
+
+    protected ProcessState $processState;
+
+    protected ?ClientCustomerCollection $clientCustomerCollection = null;
+
+
+    public function __construct(Tenant $tenant, string $employee_id, int $isValidation, ?int $clientCustomerCollectionId)
+    {
+        Log::info("constructor method: " . $isValidation);
+        $this->tenant = $tenant;
+        $this->employee_id = $employee_id;
+        $this->isValidation = $isValidation;
+        $this->clientCustomerCollectionId = $clientCustomerCollectionId;
+        if ($this->clientCustomerCollectionId != null) {
+            $this->clientCustomerCollection = ClientCustomerCollection::query()->where('id', $this->clientCustomerCollectionId)->first();
+            $this->processState = new ProcessState(
+                true,
+                $this->clientCustomerCollection->number_of_rows_processed,
+                $this->clientCustomerCollection->number_of_rows_failed,
+                0,
+                $this->clientCustomerCollection->processed_rows ?? [],
+                $this->clientCustomerCollection->failed_rows ?? [],
+                $this->clientCustomerCollection->error ?? [],
+                $this->clientCustomerCollection->total_rows,
+                $this->clientCustomerCollection->exception_stack_trace ?? [],
+                $this->clientCustomerCollection->status,
+            );
+        }
+    }
+
+    /**
+     * @param Collection $collections
+     */
+    public function collection(Collection $collections)
+    {
+        if ($this->isValidation > 0) {
+            return;
+        }
+
+        if ($this->processState->totalRows == null) {
+            $this->processState->totalRows = $collections->count();
+        }
+
+        if ($this->clientCustomerCollectionId) {
+            $this->processState->status = 'in_progress';
+            $this->processState->total_rows = $this->totalRows ?? 0;
+            $this->updateProcessState();
+            Log::info("updated total number of rows processed: " . $collections->count());
+        }
+        $branches = Branch::query()->withoutGlobalScopes()->get();
+
+        /** @var User $employee */
+        $employee = User::query()->where('staff_id', $this->employee_id)->first();
+        /** @var OrderType $orderType */
+        $orderType = OrderType::query()->firstOrCreate(['name' => 'Collection'], ['name' => 'Collection']);
+        $paymentMethod = PaymentMethod::query()->where('name', 'direct-debit')->first();
+        /** @var SalesCategory $saleCategory */
+        $saleCategory = SalesCategory::query()->where('name', 'Repossesion Sale')->first();
+        /** @var BusinessType $businessType */
+        $businessType = BusinessType::query()->firstOrCreate(['name' => 'Collection', 'slug' => 'collection'], ['name' => 'Collection', 'slug' => 'collection']);
+
+        $repaymentDurations = RepaymentDuration::query()->get();
+
+        $repaymentCycles = RepaymentCycle::query()->get();
+
+        /** @var DownPaymentRate $downpaymentRate */
+        $downpaymentRate = DownPaymentRate::query()->where('percent', 0)->first();
+
+        /** @var User $user */
+        $user = User::query()->where('tenant_id', $this->tenant->id)->first();
+
+        $this->newOrderRepository = app(NewOrderRepository::class);
+
+        foreach ($collections as $collection) {
+            if (NewOrder::query()->where('custom_order_number', $collection['loan_id'])->exists()) {
+                continue;
+            }
+            try {
+                DB::beginTransaction();
+                $this->processRow($collection, $user, $branches, $employee, $orderType, $businessType, $saleCategory, $repaymentDurations, $repaymentCycles, $downpaymentRate);
+                DB::commit();
+                $this->processState->counter += 1;
+                $this->processState->numberOfRowsProcessed += 1;
+                $this->processState->processedRows[] = $collection['loan_id'];
+                if ($this->processState->counter == 50) {
+                    $this->updateProcessState();
+                    $this->processState->counter = 0;
+                }
+
+            } catch (\Exception $exception) {
+                Log::error($exception->getMessage());
+                DB::rollBack();
+                $this->processState->numberOfRowsFailed += 1;
+                $this->processState->failedRows[] = [
+                    'row' => $this->rowNumber,
+                    'customer_id' => $collection['customer_id'],
+                    'loan_id' => $collection['loan_id'] ?? null,
+                ];
+                $this->processState->exceptionStackTraces[] = [
+                    'row' => $this->rowNumber,
+                    'customer_id' => $collection['customer_id'],
+                    'loan_id' => $collection['loan_id'] ?? null,
+                    'trace' => $exception,
+                ];
+                $this->processState->exceptionMessages[] = [
+                    'row' => $this->rowNumber,
+                    'customer_id' => $collection['customer_id'],
+                    'loan_id' => $collection['loan_id'] ?? null,
+                    'message' => $exception->getMessage(),
+                ];
+                $this->updateProcessState();
+            }
+        }
+        $this->updateProcessState();
+    }
+
+
+    /**
+     *
+     * @param mixed $collection
+     * @param User $user
+     * @param  $branches
+     * @param User $employee
+     * @param OrderType $orderType
+     * @param BusinessType $businessType
+     * @param SalesCategory $saleCategory
+     * @param $repaymentDurations
+     * @param $repaymentCycles
+     * @param DownPaymentRate $downpaymentRate
+     * @return void
+     * @throws \Exception
+     */
+    public function processRow(mixed $collection, User $user, $branches, User $employee, OrderType $orderType, BusinessType $businessType, SalesCategory $saleCategory, $repaymentDurations, $repaymentCycles, DownPaymentRate $downpaymentRate): void
+    {
+
+        $product = BnplVendorProduct::query()->firstOrCreate(
+            [
+                'name' => $collection['product_name'],
+                'price' => $collection['product_amount'],
+                'vendor_id' => $user->id,
+            ],
+        );
+        $branch = (clone $branches)->where('name', $collection['branch'])->first();
+        if ($branch == null) {
+            throw new \Exception('Invalid branch supplied: ' . $collection['branch']);
+        }
+        $customerModelData = $this->customerData($collection, $branch, $employee);
+        $customerModelData = array_merge($this->setNotNullableFields(), $customerModelData);
+
+        $customer = Customer::query()->firstOrCreate([
+            'telephone' => $customerModelData['telephone'],
+            'tenant_id' => $customerModelData['tenant_id'],
+            'custom_customer_id' => $collection['customer_id'],
+        ],
+            $customerModelData);
+        $customer_id = $customer->id;
+        $guarantorsModelsData = $this->guarantorsData($collection, $customer_id, $employee);
+        foreach ($guarantorsModelsData as $guarantorModelData) {
+            Guarantor::query()->updateOrCreate(['customer_id' => $guarantorModelData['customer_id'], 'phone_number' => $guarantorModelData['phone_number']], $guarantorModelData);
+        }
+
+        $orderModelData = $this->orderData(
+            $collection,
+            $orderType,
+            $product,
+            $businessType,
+            $saleCategory,
+            $customer_id,
+            $repaymentDurations,
+            $repaymentCycles,
+            $downpaymentRate,
+            $user,
+            $branch
+        );
+        $this->newOrderRepository->store($orderModelData);
+    }
+
+    protected function updateProcessState(): void
+    {
+
+        $this->clientCustomerCollection->total_rows = $this->processState->totalRows;
+
+        $this->clientCustomerCollection->processed_rows = $this->processState->processedRows;
+        $this->clientCustomerCollection->number_of_rows_processed = $this->processState->numberOfRowsProcessed;
+
+        $this->clientCustomerCollection->number_of_rows_failed = $this->processState->numberOfRowsFailed;
+        $this->clientCustomerCollection->failed_rows = $this->processState->failedRows;
+
+        $this->clientCustomerCollection->error = $this->processState->exceptionMessages;
+        $this->clientCustomerCollection->exception_stack_trace = $this->processState->exceptionStackTraces;
+
+
+        $this->clientCustomerCollection->status = $this->processState->numberOfRowsProcessed >= $this->processState->totalRows ? 'completed' : 'not_completed';
+        $this->clientCustomerCollection->save();
+    }
+
+    public function rules(): array
+    {
+        return [
+            'customer_id' => ['required', 'string', 'max:200'],
+            'customer_first_name' => ['required', 'string', 'max:200'],
+            'customer_middle_name' => ['nullable', 'string', 'max:200'],
+            'customer_surname' => ['required', 'string', 'max:200'],
+            'customer_phone_number' => ['required', 'string', 'max:13'],
+            'customer_home_address' => ['required', 'string', 'max:200'],
+            'customer_work_address' => ['nullable', 'string', 'max:200'],
+            'customer_date_of_birth' => ['nullable', 'date'],
+            'customer_employment_status' => ['nullable', 'string', 'max:200'],
+            'customer_occupation' => ['nullable', 'string', 'max:200'],
+            'customer_gender' => ['required', 'string', 'max:200'],
+            'other_phone_numbers' => ['nullable', 'string', 'max:200'],
+            'first_guarantor_first_name' => ['nullable', 'required_with:first_guarantor_last_name,first_guarantor_phone', 'string', 'max:200'],
+            'first_guarantor_last_name' => ['nullable', 'required_with:first_guarantor_first_name,first_guarantor_phone', 'string', 'max:200'],
+            'first_guarantor_phone' => ['nullable', 'required_with:first_guarantor_first_name,first_guarantor_last_name', 'string', 'max:13'],
+            'first_guarantor_address' => ['nullable', 'string', 'max:200'],
+            'first_guarantor_gender' => ['nullable', 'string', 'max:200'],
+            'second_guarantor_first_name' => ['nullable', 'required_with:second_guarantor_last_name,second_guarantor_phone', 'string', 'max:200'],
+            'second_guarantor_last_name' => ['nullable', 'required_with:second_guarantor_first_name,second_guarantor_phone', 'string', 'max:200'],
+            'second_guarantor_phone' => ['nullable', 'required_with:second_guarantor_first_name,second_guarantor_last_name', 'string', 'max:13'],
+            'second_guarantor_address' => ['nullable', 'string', 'max:200'],
+            'second_guarantor_gender' => ['nullable', 'string', 'max:200'],
+            'branch' => ['required', 'string', 'max:200'],
+            'work_address' => ['nullable', 'string', 'max:200'],
+            'nearest_landmark' => ['required', 'string', 'max:200'],
+            'local_government' => ['required', 'string', 'max:200'],
+            'city' => ['required', 'string', 'max:200'],
+            'state' => ['required', 'string', 'max:200'],
+            'product_name' => ['required', 'string', 'max:200'],
+            'product_amount' => ['required', 'numeric', 'min:1'],
+            'amount_paid' => ['required', 'numeric', 'min:0'],
+            'amount_owed' => ['required', 'numeric', 'min:0'],
+            'payment_duration' => ['required', 'numeric', 'min:1'],
+            'loan_date' => ['required', 'date'],
+            'loan_id' => ['required', 'string', 'max:200', 'unique:new_orders,custom_order_number'],
+            'repayment_cycle' => ['required', 'string', 'max:200'],
+        ];
+    }
+
+    public function headings(): array
+    {
+        return [
+            'customer_first_name',
+            'customer_last_name',
+            'customer_phone_number',
+            'house_address',
+            'guarantor_first_name',
+            'guarantor_last_name',
+            'guarantor_phone',
+            'guarantor_address',
+            'branch',
+            'work_address',
+            'nearest_landmark',
+            'local_government',
+            'city',
+            'state',
+            'product_name',
+            'product_amount',
+            'amount_paid',
+            'amount_owed',
+            'payment_duration',
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+        ];
+    }
+
+    public function endColumn(): string
+    {
+        return 'AT';
+    }
+
+
+    public function customerData($collection, $branch, $employee): array
+    {
+        return [
+            'tenant_id' => $this->tenant->id,
+            'branch_id' => $branch->id,
+            'employee_id' => $employee->staff_id,
+            'user_id' => $employee->id,
+            'date_of_registration' => Carbon::now()->format('Y-m-d'),
+            'first_name' => $collection['customer_first_name'],
+            'last_name' => $collection['customer_surname'],
+            'middle_name' => $collection['customer_middle_name'],
+            'telephone' => $collection['customer_phone_number'],
+            'gender' => $collection['customer_gender'],
+            'occupation' => $collection['customer_occupation'],
+            'employment_status' => $collection['customer_employment_status'],
+            'area_address' => $collection['customer_home_address'],
+            'cadd_addinfo' => $collection['customer_work_address'],
+            'comp_area' => $collection['customer_work_address'] ?? 'N/A',
+            'date_of_birth' => $collection['customer_date_of_birth'] ?? null,
+            'add_addinfo_description' => $collection['nearest_landmark'],
+            'registration_channel' => 'collection_upload',
+            'bvn' => $collection['customer_bvn'],
+            'state' => $collection['state'],
+            'city' => $collection['city'],
+            'other_phone_numbers' => $collection['other_phone_numbers'],
+
+
+            //next of kin
+            'nextofkin_first_name' => $collection['next_of_kin_first_name'] ?? 'n/a',
+            'nextofkin_last_name' => $collection['next_of_kin_surname'] ?? 'n/a',
+            'nextofkin_middle_name' => $collection['next_of_kin_middle_name'],
+            'nextofkin_telno' => $collection['next_of_kin_phone_number'] ?? 'n/a',
+            'nextofkin_gender' => $collection['next_of_kin_gender'],
+            'nextofkin_relationship' => $collection['next_of_kin_relationship'],
+
+
+        ];
+    }
+
+    private function setNotNullableFields()
+    {
+        return [
+            'registration_channel' => 'collection_upload',
+            'on_boarded' => true,
+            'add_street' => 'N/A',
+            'employee_name' => 'altara',
+            'add_nbstop' => 'N/A',
+            'add_houseno' => 'N/A',
+            'gender' => 'N/A',
+            'date_of_birth' => 'N/A',
+            'civil_status' => 'N/A',
+            'type_of_home' => 'N/A',
+            'no_of_rooms' => 'N/A',
+            'duration_of_residence' => 0,
+            'people_in_household' => 0,
+            'number_of_work' => 0,
+            'depend_on_you' => 0,
+            'level_of_education' => 'N/A',
+            'visit_hour_from' => 'N/A',
+            'visit_hour_to' => 'N/A',
+            'employment_status' => 'N/A',
+            'name_of_company_or_business' => 'N/A',
+            'cadd_nbstop' => 'N/A',
+            'company_city' => 'N/A',
+            'company_state' => 'N/A',
+            'company_telno' => 'N/A',
+            'days_of_work' => 'N/A',
+            'comp_street_name' => 'N/A',
+            'comp_house_no' => 'N/A',
+            'comp_area' => 'N/A',
+            'current_sal_or_business_income' => 'N/A',
+            'cvisit_hour_from' => 'N/A',
+            'cvisit_hour_to' => 'N/A',
+            'nextofkin_first_name' => 'N/A',
+            'nextofkin_middle_name' => 'N/A',
+            'nextofkin_last_name' => 'N/A',
+            'nextofkin_telno' => 'N/A'
+        ];
+    }
+
+    public function guarantorsData($collection, $customer_id, $employee): array
+    {
+        $guarantorsModelData = [];
+        if ($collection['first_guarantor_first_name'] && $collection['first_guarantor_last_name'] && $collection['first_guarantor_phone']) {
+            $guarantorsModelData[] = [
+                'customer_id' => $customer_id,
+                'created_by' => $employee->id,
+                'first_name' => $collection['first_guarantor_first_name'],
+                'last_name' => $collection['first_guarantor_last_name'],
+                'occupation' => $collection['first_guarantor_occupation'],
+                'home_address' => $collection['first_guarantor_home_address'],
+                'work_address' => $collection['first_guarantor_work_address'],
+                'gender' => $collection['first_guarantor_gender'],
+                'phone_number' => $collection['first_guarantor_phone'],
+            ];
+        }
+
+        if ($collection['second_guarantor_first_name'] && $collection['second_guarantor_last_name'] && $collection['second_guarantor_phone']) {
+            $guarantorsModelData[] = [
+                'customer_id' => $customer_id,
+                'created_by' => $employee->id,
+                'first_name' => $collection['second_guarantor_first_name'],
+                'last_name' => $collection['second_guarantor_last_name'],
+//                'middle_name' => $collection['second_guarantor_middle_name'],
+                'occupation' => $collection['second_guarantor_occupation'],
+                'home_address' => $collection['second_guarantor_home_address'],
+                'work_address' => $collection['second_guarantor_work_address'],
+                'gender' => $collection['second_guarantor_gender'],
+                'phone_number' => $collection['second_guarantor_phone'],
+            ];
+        }
+        return $guarantorsModelData;
+    }
+
+
+    public function orderData($collection, $orderType, $product, $businessType, $saleCategory, $customer_id, $repaymentDurations, $repaymentCycles, $downpaymentRate, $user, $branch): array
+    {
+        // $businessType = BusinessType::query()->where('slug', 'ap_products')->first();
+        $collectionRepaymentCycle = $collection['repayment_cycle'];
+        if ($collectionRepaymentCycle == 'daily' || $collectionRepaymentCycle == 'weekly') {
+            $repaymentCycle = $repaymentCycles->where('name', 'bi_monthly')->first();
+        } else {
+            $repaymentCycle = $repaymentCycles->where('name', $collectionRepaymentCycle)->first();
+        }
+
+        $collectionRepaymentDuration = $collection['payment_duration'];
+        if ($collectionRepaymentDuration < 90) {
+            $repaymentDuration = $repaymentDurations->where('value', 90)->first();
+        } elseif ($collectionRepaymentDuration < 180) {
+            $repaymentDuration = $repaymentDurations->where('value', 180)->first();
+        } elseif ($collectionRepaymentDuration < 270) {
+            $repaymentDuration = $repaymentDurations->where('value', 270)->first();
+        } else {
+            $repaymentDuration = $repaymentDurations->where('value', 360)->first();
+        }
+
+        return [
+            "bnpl_vendor_product_id" => $product->id,
+            'business_type_id' => $businessType->id,
+            "customer_id" => $customer_id,
+            "branch_id" => $branch->id,
+            "bank_id" => 1,
+            "owner_id" => $user->id,
+            "tenant_id" => $user->tenant_id,
+            "inventory_id" => 2,
+            "payment_gateway_id" => 1,
+            "payment_method_id" => 1,
+            "order_type_id" => $orderType->id,
+            "sales_category_id" => $saleCategory->id,
+            "repayment_cycle_id" => $repaymentCycle->id,
+            "repayment_duration_id" => $repaymentDuration->id,
+            "repayment" => $collection['amount_owed'],
+            "down_payment" => $collection['amount_paid'],
+            "down_payment_rate_id" => $downpaymentRate->id,
+            "financed_by" => NewOrder::COLLECTION_CLIENT,
+            "product_price" => $collection['product_amount'],
+            "fixed_repayment" => $collection['amortization'] ?? null,
+            "cost_price" => $product->retail,
+            'custom_order_number' => $collection['loan_id'],
+            "order_date" => Carbon::parse($collection['loan_date'])->format('Y-m-d'),
+        ];
+    }
+
+    public function limit(): int
+    {
+        return 500;
+    }
+
+    public function chunkSize(): int
+    {
+        return 100;
+    }
+}

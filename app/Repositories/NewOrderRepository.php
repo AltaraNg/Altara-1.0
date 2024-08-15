@@ -61,16 +61,16 @@ class NewOrderRepository extends Repository
 
         if ($raffleCode){
             $raffleCodeItem = RaffleDrawCode::where('code', $validated['raffle_code'])->first();
-            
+
             unset($validated['raffle_code']);
         }
 
-        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL) {
+        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL && $data['financed_by'] != NewOrder::COLLECTION_CLIENT) {
             unset($validated['bnpl_vendor_product_id']);
         }
-        if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
+        if ($data['financed_by'] === NewOrder::ALTARA_BNPL || $data['financed_by'] == NewOrder::COLLECTION_CLIENT) {
             $user_id = $validated['owner_id'];
-            $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id;
+            $branch_id = $data['branch_id'];
         } elseif ($data['financed_by'] === NewOrder::ALTARA_LOAN_APP) {
             $user_id = $validated['owner_id'];
             $branch_id = (Customer::where('id', $validated['customer_id'])->first())->branch_id ?? Branch::query()->where('name', 'Ikoyi')->first()->id;
@@ -82,7 +82,7 @@ class NewOrderRepository extends Repository
 
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
-            'order_date' => Carbon::now(),
+            'order_date' => $validated['order_date'] ?? Carbon::now(),
             'user_id' => $user_id,
             'branch_id' => $branch_id,
             'status_id' => $validated['repayment'] > 0 &&  $businessType->slug != 'ap_cash_n_carry' ? OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id : OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,

@@ -295,6 +295,11 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->where('financed_by', $financed_by);
     }
+
+    public function tenant(int $tenant_id )
+    {
+        $this->builder->where('tenant_id', $tenant_id);
+    }
     public function bnplOrders()
     {
         $this->builder->whereNotNull('bnpl_vendor_product_id')->orderBy('order_date', 'desc');
@@ -314,5 +319,15 @@ class NewOrderFilter extends BaseFilter
         $this->builder->whereHas('customer', function ($q) use ($phone) {
             $q->where('telephone', 'like', '%' . $phone . '%');
         });
+    }
+
+    public function customOrderNumber(string $order_number)
+    {
+        $this->builder->where('new_orders.custom_order_number', $order_number);
+    }
+
+    public function customCustomerId(string $order_number)
+    {
+        $this->builder->where('customers.custom_customer_id', $order_number);
     }
 }
