@@ -83,6 +83,11 @@ class Payment extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function staff()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     /**
      * @return BelongsTo
      */
@@ -129,7 +134,8 @@ class Payment extends Model
             'date' => $this->created_at->toDateTimeString(),
             'comment' => $this->comment,
             'orderable_type' => $this->orderable_type,
-            'orderable_id' => $this->orderable_id
+            'orderable_id' => $this->orderable_id,
+            'staff_id' => $this->staff->staff_id
         ];
     }
 }

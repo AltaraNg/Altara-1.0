@@ -27,4 +27,13 @@ class CustomerFilter extends BaseFilter
             ->orWhere('middle_name', 'like', '%' . $name . '%')
             ->orWhere('last_name', 'like', '%' . $name . '%');
     }
+    public function state(string $state)
+    {
+        $this->builder->where('state', 'like', '%' . $state .'%');
+    }
+
+    public function city(string $city)
+    {
+        $this->builder->where('city', 'like', '%' . $city .'%');
+    }
 }
