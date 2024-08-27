@@ -45,7 +45,7 @@ class DisapproveCustomers extends Command
                 $query->select('id', 'full_name');
             },
             'branch','verification', 'address', 'workGuarantor', 'personalGuarantor', 'document', 'processingFee'
-        ])->whereId('date_of_registration','<=',$date);
+        ])->where('date_of_registration','<=',$date);
 
         return $customers;
     }
