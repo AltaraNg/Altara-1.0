@@ -264,7 +264,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'second_guarantor_gender' => ['nullable', 'string', 'max:200'],
             'branch' => ['required', 'string', 'max:200'],
             'work_address' => ['nullable', 'string', 'max:200'],
-            'nearest_landmark' => ['required', 'string', 'max:200'],
+            'nearest_landmark' => ['nullable', 'string', 'max:200'],
             'local_government' => ['required', 'string', 'max:200'],
             'city' => ['required', 'string', 'max:200'],
             'state' => ['required', 'string', 'max:200'],
