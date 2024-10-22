@@ -265,7 +265,7 @@ class TenantCustomerSheetImport implements ToCollection, WithValidation, SkipsEm
             'branch' => ['required', 'string', 'max:200'],
             'work_address' => ['nullable', 'string', 'max:200'],
             'nearest_landmark' => ['nullable', 'string', 'max:200'],
-            'local_government' => ['required', 'string', 'max:200'],
+            'local_government' => ['nullable', 'string', 'max:200'],
             'city' => ['required', 'string', 'max:200'],
             'state' => ['required', 'string', 'max:200'],
             'product_name' => ['required', 'string', 'max:200'],
